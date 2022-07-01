@@ -36,7 +36,6 @@ cf is a cloud exploitation framework, designed for testing the security of cloud
 func init() {
 	RootCmd.PersistentFlags().StringVar(&logLevel, "logLevel", "info", "设置日志等级 (Set log level) [trace|debug|info|warn|error|fatal|panic]")
 	RootCmd.CompletionOptions.DisableDefaultCmd = true
-	util.AlertUpdateInfo()
 }
 
 func Execute() {
