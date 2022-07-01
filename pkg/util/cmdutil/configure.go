@@ -1,16 +1,17 @@
 package cmdutil
 
 import (
-	"githubu.com/teamssix/cf/pkg/cloud"
-	"githubu.com/teamssix/cf/pkg/util"
 	"encoding/json"
 	"errors"
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
+	"githubu.com/teamssix/cf/pkg/cloud"
+	"githubu.com/teamssix/cf/pkg/util"
 
 	"github.com/AlecAivazis/survey/v2"
 )
@@ -24,13 +25,13 @@ func ConfigureAccessKey() {
 	AccessKeySecret := config.AccessKeySecret
 	STSToken := config.STSToken
 	if AccessKeyId != "" {
-		OldAccessKeyId =  fmt.Sprintf(" [%s] ",maskAK(AccessKeyId))
+		OldAccessKeyId = fmt.Sprintf(" [%s] ", maskAK(AccessKeyId))
 	}
 	if AccessKeySecret != "" {
-		OldAccessKeySecret = fmt.Sprintf(" [%s] ",maskAK(AccessKeySecret))
+		OldAccessKeySecret = fmt.Sprintf(" [%s] ", maskAK(AccessKeySecret))
 	}
 	if STSToken != "" {
-		OldSTSToken = fmt.Sprintf(" [%s] ",maskAK(STSToken))
+		OldSTSToken = fmt.Sprintf(" [%s] ", maskAK(STSToken))
 	}
 	var qs = []*survey.Question{
 		{
@@ -57,7 +58,7 @@ func ConfigureAccessKey() {
 func SaveAccessKey(config cloud.Credential) {
 	home, err := GetCFHomeDir()
 	util.HandleErr(err)
-	if FileExists(home) == false{
+	if FileExists(home) == false {
 		err = os.MkdirAll(home, 0700)
 	}
 	util.HandleErr(err)
@@ -82,7 +83,7 @@ func GetAliCredential() cloud.Credential {
 	var credentials cloud.Credential
 	if _, err := os.Stat(AliCredentialFilePath); errors.Is(err, os.ErrNotExist) {
 		return credentials
-	}else{
+	} else {
 		file, err := ioutil.ReadFile(AliCredentialFilePath)
 		if err != nil {
 			util.HandleErr(err)

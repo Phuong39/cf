@@ -1,23 +1,23 @@
 package aliecs
 
 import (
-	"githubu.com/teamssix/cf/pkg/util"
-	"githubu.com/teamssix/cf/pkg/util/cmdutil"
+	"os"
+
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth/credentials"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	log "github.com/sirupsen/logrus"
-	"os"
+	"githubu.com/teamssix/cf/pkg/util"
+	"githubu.com/teamssix/cf/pkg/util/cmdutil"
 )
-
 
 func ECSClient(region string) *ecs.Client {
 	aliconfig := cmdutil.GetAliCredential()
-	if aliconfig.AccessKeyId == ""{
+	if aliconfig.AccessKeyId == "" {
 		log.Warnln("需要先配置访问凭证 (Access Key need to be configured first)")
 		os.Exit(0)
 		return nil
-	}else{
+	} else {
 		config := sdk.NewConfig()
 		if aliconfig.STSToken == "" {
 			credential := credentials.NewAccessKeyCredential(aliconfig.AccessKeyId, aliconfig.AccessKeySecret)
@@ -39,7 +39,7 @@ func ECSClient(region string) *ecs.Client {
 	}
 }
 
-func GetECSRegions()([]ecs.Region){
+func GetECSRegions() []ecs.Region {
 	client := ECSClient("cn-hangzhou")
 	request := ecs.CreateDescribeRegionsRequest()
 	request.Scheme = "https"

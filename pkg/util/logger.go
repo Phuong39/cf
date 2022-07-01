@@ -1,8 +1,9 @@
 package util
 
 import (
-	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 	"os"
+
+	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 
 	log "github.com/sirupsen/logrus"
 )

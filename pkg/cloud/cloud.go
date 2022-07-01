@@ -1,8 +1,9 @@
 package cloud
 
 import (
-	"github.com/olekukonko/tablewriter"
 	"os"
+
+	"github.com/olekukonko/tablewriter"
 )
 
 type Credential struct {
@@ -19,9 +20,9 @@ type TableData struct {
 }
 
 type Resource struct {
-	Name         string
-	Region       string
-	Properties   *Property
+	Name       string
+	Region     string
+	Properties *Property
 }
 
 type Property map[string]string
@@ -41,7 +42,7 @@ func GetRegions(key string) []string {
 	return regionMaps["default"]
 }
 
-func PrintTable(data TableData,Caption string) {
+func PrintTable(data TableData, Caption string) {
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader(data.Header)
 	table.SetAutoMergeCells(true)
