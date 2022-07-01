@@ -22,7 +22,7 @@ func Upgrade(version string) {
 	if check {
 		log.Infof("当前版本为 %s ，发现 %s 新版本，正在下载新版本 (The current version is %s , Found %s new version, downloading new version now)", version, newVersion, version, newVersion)
 		fileName := fmt.Sprintf("cf-%s-%s-%s.tar.gz", newVersion, runtime.GOOS, runtime.GOARCH)
-		downloadURL := "https://ghproxy.com/github.com/teamssix/cf/releases/download/v0.0.1/" + fileName
+		downloadURL := fmt.Sprintf("https://ghproxy.com/github.com/teamssix/cf/releases/download/%s/%s", newVersion, fileName)
 		path, _ := os.Executable()
 		_, oldFileName := filepath.Split(path)
 		oldBakFileName := oldFileName + ".bak"
