@@ -1,4 +1,5 @@
 <p align="center">
+<img width="500" src="./docs/images/cf.png"><br><br>
 <a href="https://github.com/teamssix/cf/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/teamssix/cf" /></a>
 <a href="https://github.com/teamssix/cf/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/teamssix/cf" /></a>
 <a href="https://github.com/teamssix/cf/releases"><img alt="GitHub issues" src="https://img.shields.io/github/release/teamssix/cf" /></a>
@@ -7,6 +8,9 @@
 <a href="https://github.com/teamssix"><img alt="Github" src="https://img.shields.io/github/followers/TeamsSix?style=social" /></a><br></br>
 中文 | <a href="./docs/README_EN.md">English</a>
 </p>
+
+---
+
 CF 是一个云环境利用框架，主要用来方便红队人员在获得云服务的访问凭证即 Access Key 的后续工作。
 
 CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
@@ -42,7 +46,7 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 
 ## 使用手册
 
-使用手册请参见：[wiki.teamssix.com/CF](https://wiki.teamssix.com/CF)
+使用手册请参见：[wiki.teamssix.com/cf](https://wiki.teamssix.com/cf)
 
 ## 简单上手
 
@@ -88,7 +92,7 @@ cf ecs exec -m
 
 ![img](./docs/images/1656584778.png)
 
-如果感觉还不错的话，师傅记得给个 Star 呀 ~，另外 CF 的更多使用方法可以参见使用文档：[wiki.teamssix.com/CF](https://wiki.teamssix.com/CF)
+如果感觉还不错的话，师傅记得给个 Star 呀 ~，另外 CF 的更多使用方法可以参见使用文档：[wiki.teamssix.com/cf](https://wiki.teamssix.com/cf)
 
 ## 注意事项
 

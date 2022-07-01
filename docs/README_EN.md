@@ -1,4 +1,5 @@
 <p align="center">
+  <img width="500" src="./images/cf.png"><br><br>
 <a href="https://github.com/teamssix/cf/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/teamssix/cf" /></a>
 <a href="https://github.com/teamssix/cf/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/teamssix/cf" /></a>
 <a href="https://github.com/teamssix/cf/releases"><img alt="GitHub issues" src="https://img.shields.io/github/release/teamssix/cf" /></a>
@@ -8,6 +9,7 @@
 <a href="../README.md">中文</a> | English
 </p>
 
+---
 
 CF is a cloud exploitation framework, It can facilitate the work of the red team after obtaining access key.
 
@@ -41,7 +43,7 @@ Currently CF has these functions as follows:
 
 ## Manual
 
-For detailed manuals, please visit: [wiki.teamssix.com/CF](https://wiki.teamssix.com/CF)
+For detailed manuals, please visit: [wiki.teamssix.com/cf](https://wiki.teamssix.com/cf)
 
 > The manual currently supports Chinese only
 
