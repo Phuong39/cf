@@ -1,8 +1,8 @@
 package cmdutil
 
 import (
-	"cf/pkg/cloud"
-	"cf/pkg/util"
+	"githubu.com/teamssix/cf/pkg/cloud"
+	"githubu.com/teamssix/cf/pkg/util"
 	"encoding/json"
 	log "github.com/sirupsen/logrus"
 	"os"

@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"cf/pkg/cloud"
+	"githubu.com/teamssix/cf/pkg/cloud"
 	"github.com/gookit/color"
 	"github.com/spf13/cobra"
 )

@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"cf/pkg/cloud/aliecs"
-	"cf/pkg/cloud/alioss"
+	"githubu.com/teamssix/cf/pkg/cloud/aliecs"
+	"githubu.com/teamssix/cf/pkg/cloud/alioss"
 	"fmt"
 	"github.com/spf13/cobra"
 )

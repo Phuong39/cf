@@ -1,14 +1,16 @@
 package cmdutil
 
 import (
-	"cf/pkg/cloud"
-	"cf/pkg/util"
+	"githubu.com/teamssix/cf/pkg/cloud"
+	"githubu.com/teamssix/cf/pkg/util"
 	"encoding/json"
 	"errors"
+	"fmt"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/AlecAivazis/survey/v2"
 )
@@ -22,13 +24,13 @@ func ConfigureAccessKey() {
 	AccessKeySecret := config.AccessKeySecret
 	STSToken := config.STSToken
 	if AccessKeyId != "" {
-		OldAccessKeyId = " [********************" + AccessKeyId[len(AccessKeyId)-4:] + "] "
+		OldAccessKeyId =  fmt.Sprintf(" [%s] ",maskAK(AccessKeyId))
 	}
 	if AccessKeySecret != "" {
-		OldAccessKeySecret = " [********************" + AccessKeySecret[len(AccessKeySecret)-4:] + "] "
+		OldAccessKeySecret = fmt.Sprintf(" [%s] ",maskAK(AccessKeySecret))
 	}
 	if STSToken != "" {
-		OldSTSToken = " [********************" + STSToken[len(STSToken)-4:] + "] "
+		OldSTSToken = fmt.Sprintf(" [%s] ",maskAK(STSToken))
 	}
 	var qs = []*survey.Question{
 		{
@@ -91,4 +93,10 @@ func GetAliCredential() cloud.Credential {
 		}
 		return credentials
 	}
+}
+
+func maskAK(ak string) string {
+	prefix := ak[:2]
+	suffix := ak[len(ak)-4:]
+	return prefix + strings.Repeat("*", 18) + suffix
 }

@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"cf/pkg/cloud/aliecs"
+	"githubu.com/teamssix/cf/pkg/cloud/aliecs"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

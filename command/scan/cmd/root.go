@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"cf/pkg/util"
+	"githubu.com/teamssix/cf/pkg/util"
 	cc "github.com/ivanpirog/coloredcobra"
 	"github.com/spf13/cobra"
 	"os"
