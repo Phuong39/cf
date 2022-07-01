@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"githubu.com/teamssix/cf/pkg/util/cmdutil"
 	"github.com/gookit/color"
 	"github.com/spf13/cobra"
+	"githubu.com/teamssix/cf/pkg/util/cmdutil"
 
 	log "github.com/sirupsen/logrus"
 )

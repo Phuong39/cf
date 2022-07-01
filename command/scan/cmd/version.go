@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"githubu.com/teamssix/cf/pkg/cloud"
 	"github.com/spf13/cobra"
+	"githubu.com/teamssix/cf/pkg/cloud"
 )
 
 func init() {
@@ -19,6 +19,6 @@ var versionCmd = &cobra.Command{
 		}
 		var header = []string{"当前版本 (Version)", "更新时间 (Update Time)"}
 		var td = cloud.TableData{Header: header, Body: data}
-		cloud.PrintTable(td,"")
+		cloud.PrintTable(td, "")
 	},
 }

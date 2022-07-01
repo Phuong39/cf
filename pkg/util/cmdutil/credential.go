@@ -1,10 +1,11 @@
 package cmdutil
 
 import (
-	"githubu.com/teamssix/cf/pkg/util"
 	"errors"
 	"os"
 	"path/filepath"
+
+	"githubu.com/teamssix/cf/pkg/util"
 )
 
 func GetCFHomeDir() (string, error) {

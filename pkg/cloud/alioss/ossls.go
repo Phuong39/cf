@@ -1,15 +1,16 @@
 package alioss
 
 import (
-	"githubu.com/teamssix/cf/pkg/cloud"
-	"githubu.com/teamssix/cf/pkg/util"
-	"githubu.com/teamssix/cf/pkg/util/cmdutil"
 	"fmt"
-	"github.com/aliyun/aliyun-oss-go-sdk/oss"
-	log "github.com/sirupsen/logrus"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	log "github.com/sirupsen/logrus"
+	"githubu.com/teamssix/cf/pkg/cloud"
+	"githubu.com/teamssix/cf/pkg/util"
+	"githubu.com/teamssix/cf/pkg/util/cmdutil"
 )
 
 type Bucket = cloud.Resource
@@ -31,7 +32,7 @@ type error interface {
 
 var (
 	OSSCacheFilePath = cmdutil.ReturnOSSCacheFile()
-	header = []string{"序号 (SN)", "名称 (Name)", "存储桶 ACL (Bucket ACL)", "对象数量 (Object Number)", "存储桶大小 (Bucket Size)", "区域 (Region)","存储桶地址 (Bucket URL)"}
+	header           = []string{"序号 (SN)", "名称 (Name)", "存储桶 ACL (Bucket ACL)", "对象数量 (Object Number)", "存储桶大小 (Bucket Size)", "区域 (Region)", "存储桶地址 (Bucket URL)"}
 )
 
 func (o *OSSCollector) ListBuckets() ([]Bucket, error) {
@@ -47,7 +48,7 @@ func (o *OSSCollector) ListBuckets() ([]Bucket, error) {
 		marker = oss.Marker(lbr.NextMarker)
 		for _, bucket := range lbr.Buckets {
 			obj := Bucket{Name: bucket.Name,
-				Region:       bucket.Location[4:],
+				Region: bucket.Location[4:],
 			}
 			out = append(out, obj)
 		}
@@ -58,7 +59,7 @@ func (o *OSSCollector) ListBuckets() ([]Bucket, error) {
 	return out, err
 }
 
-func (o *OSSCollector) ListObjects() ([]Object) {
+func (o *OSSCollector) ListObjects() []Object {
 	var size = 10
 	var out []Object
 	marker := oss.Marker("")
@@ -93,7 +94,7 @@ func (o *OSSCollector) ListObjects() ([]Object) {
 	return out
 }
 
-func (o *OSSCollector) GetBucketACL() ([]Acl) {
+func (o *OSSCollector) GetBucketACL() []Acl {
 	OSSCollector := &OSSCollector{}
 	Buckets, err := OSSCollector.ListBuckets()
 	util.HandleErr(err)
@@ -129,10 +130,10 @@ func PrintBucketsListRealTime(region string) {
 
 	Buckets, err := OSSCollector.ListBuckets()
 	if err != nil {
-		if  strings.Contains(err.Error(), "You are forbidden to list buckets.") {
+		if strings.Contains(err.Error(), "You are forbidden to list buckets.") {
 			log.Errorln("当前凭证不具备 OSS 的读取权限，无法获取 OSS 数据。 (OSS data is not available because the current credential does not have read access to OSS.)")
 			os.Exit(0)
-		}else{
+		} else {
 			util.HandleErr(err)
 		}
 	}
@@ -143,11 +144,11 @@ func PrintBucketsListRealTime(region string) {
 	ACL := OSSCollector.GetBucketACL()
 
 	var num = 0
-	for _,o := range Buckets {
+	for _, o := range Buckets {
 		if region == "all" {
 			num = len(Buckets)
-		}else{
-			if region == o.Region{
+		} else {
+			if region == o.Region {
 				num = num + 1
 			}
 		}
@@ -155,47 +156,47 @@ func PrintBucketsListRealTime(region string) {
 	var data = make([][]string, num)
 	num = 0
 	for i, o := range Buckets {
-		if region == "all"{
+		if region == "all" {
 			SN := strconv.Itoa(i + 1)
 			ObjectNumber := strconv.Itoa(Objects[i].ObjectNumber)
 			ObjectSize := formatFileSize(Objects[i].ObjectSize)
 			BucketACL := ACL[i].Acl
 			BucketURL := fmt.Sprintf("https://%s.oss-%s.aliyuncs.com", o.Name, o.Region)
 			data[i] = []string{SN, o.Name, BucketACL, ObjectNumber, ObjectSize, o.Region, BucketURL}
-		}else{
-			if region == o.Region{
+		} else {
+			if region == o.Region {
 				ObjectNumber := strconv.Itoa(Objects[i].ObjectNumber)
 				ObjectSize := formatFileSize(Objects[i].ObjectSize)
 				BucketACL := ACL[i].Acl
 				BucketURL := fmt.Sprintf("https://%s.oss-%s.aliyuncs.com", o.Name, o.Region)
-				data[num] = []string{strconv.Itoa(num+1), o.Name, BucketACL, ObjectNumber, ObjectSize, o.Region, BucketURL}
+				data[num] = []string{strconv.Itoa(num + 1), o.Name, BucketACL, ObjectNumber, ObjectSize, o.Region, BucketURL}
 				num = num + 1
 			}
 		}
 	}
 	var td = cloud.TableData{Header: header, Body: data}
-	if len(data) == 0{
+	if len(data) == 0 {
 		log.Info("没有存储桶 (No Bucket)")
-		cmdutil.WriteCacheFile(td,OSSCacheFilePath)
-	}else{
+		cmdutil.WriteCacheFile(td, OSSCacheFilePath)
+	} else {
 		Caption := "OSS 资源 (OSS resources)"
-		cloud.PrintTable(td,Caption)
-		cmdutil.WriteCacheFile(td,OSSCacheFilePath)
+		cloud.PrintTable(td, Caption)
+		cmdutil.WriteCacheFile(td, OSSCacheFilePath)
 	}
 }
 
 func PrintBucketsListHistory(region string) {
-	if cmdutil.FileExists(OSSCacheFilePath){
-		cmdutil.PrintCacheFile(OSSCacheFilePath,header,region,"all")
-	}else{
+	if cmdutil.FileExists(OSSCacheFilePath) {
+		cmdutil.PrintCacheFile(OSSCacheFilePath, header, region, "all")
+	} else {
 		PrintBucketsListRealTime(region)
 	}
 }
 
-func PrintBucketsList(region string,lsFlushCache bool){
-	if lsFlushCache{
+func PrintBucketsList(region string, lsFlushCache bool) {
+	if lsFlushCache {
 		PrintBucketsListRealTime(region)
-	}else{
+	} else {
 		PrintBucketsListHistory(region)
 	}
 }

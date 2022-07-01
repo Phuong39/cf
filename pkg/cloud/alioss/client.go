@@ -1,13 +1,14 @@
 package alioss
 
 import (
+	"fmt"
+	"os"
+	"strings"
+
+	log "github.com/sirupsen/logrus"
 	"githubu.com/teamssix/cf/pkg/cloud"
 	"githubu.com/teamssix/cf/pkg/util"
 	"githubu.com/teamssix/cf/pkg/util/cmdutil"
-	"fmt"
-	log "github.com/sirupsen/logrus"
-	"os"
-	"strings"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 )
@@ -23,11 +24,11 @@ func CreateOSSEndpoint(region string) string {
 
 func (o *OSSCollector) OSSClient(region string) *OSSCollector {
 	config := cmdutil.GetAliCredential()
-	if config.AccessKeyId == ""{
+	if config.AccessKeyId == "" {
 		log.Warnln("需要先配置访问凭证 (Access Key need to be configured first)")
 		os.Exit(0)
 		return nil
-	}else{
+	} else {
 		if config.STSToken == "" {
 			client, err := oss.New(CreateOSSEndpoint(region), config.AccessKeyId, config.AccessKeySecret)
 			util.HandleErr(err)
