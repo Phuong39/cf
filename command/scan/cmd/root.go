@@ -3,16 +3,17 @@ package cmd
 import (
 	"os"
 
+	"githubu.com/teamssix/cf/pkg/util"
+
 	cc "github.com/ivanpirog/coloredcobra"
 	"github.com/spf13/cobra"
-	"githubu.com/teamssix/cf/pkg/util"
 )
 
 var logLevel string
 
 var RootCmd = &cobra.Command{
 	Use:   "cf",
-	Short: "CF is a cloud exploitation framework, designed for testing the security of cloud environments.",
+	Short: "cf is a cloud exploitation framework, designed for testing the security of cloud environments.",
 	Long: `
  ▄████   ▐████▄       
  ██▀        ▀██      ██████╗    ███████╗
@@ -24,8 +25,8 @@ var RootCmd = &cobra.Command{
  
         github.com/teamssix/cf
 
-CF 是一个云环境利用框架，本工具仅可用于合法合规用途。
-CF is a cloud exploitation framework, designed for testing the security of cloud environments.
+cf 是一个云环境利用框架，本工具仅可用于合法合规用途。
+cf is a cloud exploitation framework, designed for testing the security of cloud environments.
 `,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		util.Init(logLevel)
@@ -35,6 +36,7 @@ CF is a cloud exploitation framework, designed for testing the security of cloud
 func init() {
 	RootCmd.PersistentFlags().StringVar(&logLevel, "logLevel", "info", "设置日志等级 (Set log level) [trace|debug|info|warn|error|fatal|panic]")
 	RootCmd.CompletionOptions.DisableDefaultCmd = true
+	util.AlertUpdateInfo()
 }
 
 func Execute() {
