@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"cf/pkg/util/cmdutil"
+	"githubu.com/teamssix/cf/pkg/util/cmdutil"
 	"github.com/gookit/color"
 	"github.com/spf13/cobra"
 

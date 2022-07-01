@@ -1,9 +1,9 @@
 package alioss
 
 import (
-	"cf/pkg/cloud"
-	"cf/pkg/util"
-	"cf/pkg/util/cmdutil"
+	"githubu.com/teamssix/cf/pkg/cloud"
+	"githubu.com/teamssix/cf/pkg/util"
+	"githubu.com/teamssix/cf/pkg/util/cmdutil"
 	"fmt"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	log "github.com/sirupsen/logrus"

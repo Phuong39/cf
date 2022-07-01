@@ -1,7 +1,7 @@
 package cmdutil
 
 import (
-	"cf/pkg/util"
+	"githubu.com/teamssix/cf/pkg/util"
 	"errors"
 	"os"
 	"path/filepath"

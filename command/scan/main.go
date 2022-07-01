@@ -1,7 +1,7 @@
 package main
 
 import (
-	"cf/command/scan/cmd"
+	"githubu.com/teamssix/cf/command/scan/cmd"
 )
 
 func main() {

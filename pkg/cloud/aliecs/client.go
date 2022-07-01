@@ -1,8 +1,8 @@
 package aliecs
 
 import (
-	"cf/pkg/util"
-	"cf/pkg/util/cmdutil"
+	"githubu.com/teamssix/cf/pkg/util"
+	"githubu.com/teamssix/cf/pkg/util/cmdutil"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth/credentials"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"

@@ -1,8 +1,8 @@
 package aliecs
 
 import (
-	"cf/pkg/util"
-	"cf/pkg/util/cmdutil"
+	"githubu.com/teamssix/cf/pkg/util"
+	"githubu.com/teamssix/cf/pkg/util/cmdutil"
 	"encoding/base64"
 	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
