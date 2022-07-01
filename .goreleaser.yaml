@@ -14,7 +14,6 @@ builds:
       - openbsd
     goarch:
       - amd64
-      - amd
       - arm64
       - arm
     main: ./command/scan
