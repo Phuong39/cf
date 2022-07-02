@@ -24,7 +24,7 @@ func ReturnOSSCacheFile() string {
 	if AccessKeyId == "" {
 		ossCacheFile = ""
 	} else {
-		ossCacheFile = ReturnCacheDict() + "/" + AccessKeyId[:6] + "_oss.json"
+		ossCacheFile = ReturnCacheDict() + "/" + AccessKeyId[len(AccessKeyId)-6:] + "_oss.json"
 	}
 	return ossCacheFile
 }
@@ -36,7 +36,7 @@ func ReturnECSCacheFile() string {
 	if AccessKeyId == "" {
 		ecsCacheFile = ""
 	} else {
-		ecsCacheFile = ReturnCacheDict() + "/" + AccessKeyId[:6] + "_ecs.json"
+		ecsCacheFile = ReturnCacheDict() + "/" + AccessKeyId[len(AccessKeyId)-6:] + "_ecs.json"
 	}
 	return ecsCacheFile
 }
