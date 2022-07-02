@@ -1,13 +1,16 @@
 <p align="center">
-<img width="500" src="./docs/images/cf.png"><br><br>
+<img width="500" src="https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022209168.png"><br><br>
 <a href="https://github.com/teamssix/cf/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/teamssix/cf" /></a>
 <a href="https://github.com/teamssix/cf/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/teamssix/cf" /></a>
-<a href="https://github.com/teamssix/cf/releases"><img alt="GitHub issues" src="https://img.shields.io/github/release/teamssix/cf" /></a>
+<a href="https://github.com/teamssix/cf/releases"><img alt="GitHub issues" src="https://img.shields.io/github/release/teamssix/cf" /></a> 
+<a href="https://github.com/teamssix/cf/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
+<a href="https://goreportcard.com/report/github.com/teamssix/cf"><img alt="Go Report Card" src="https://goreportcard.com/badge/github.com/teamssix/cf" /></a>
 <a href="https://twitter.com/intent/tweet/?text=CF%2C%20an%20amazing%20cloud%20exploitation%20framework%0Ahttps%3A%2F%2Fgithub.com%2Fteamssix%2Fcf%0A%23cloud%20%23security%20%23cloudsecurity%20%23cybersecurtiy"><img alt="tweet" src="https://img.shields.io/twitter/url?url=https://github.com/teamssix/cf" /></a>
 <a href="https://twitter.com/teamssix"><img alt="Twitter" src="https://img.shields.io/twitter/url/https/twitter.com/teamssix.svg?style=social&label=Follow%20the%20author" /></a>
 <a href="https://github.com/teamssix"><img alt="Github" src="https://img.shields.io/github/followers/TeamsSix?style=social" /></a><br></br>
-中文 | <a href="./docs/README_EN.md">English</a>
+中文 | <a href="README_EN.md">English</a>
 </p>
+
 
 ---
 
@@ -48,9 +51,11 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 
 使用手册请参见：[wiki.teamssix.com/cf](https://wiki.teamssix.com/cf)
 
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022242767.png)
+
 ## 简单上手
 
-![img](./docs/images/1656583858.png)
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022240064.png)
 
 配置 CF
 
@@ -58,7 +63,7 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 cf configure
 ```
 
-![img](./docs/images/1656583779.png)
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022241064.png)
 
 一键列出当前访问凭证的云服务资源，当前仅支持 OSS 和 ECS 资源。
 
@@ -66,7 +71,7 @@ cf configure
 cf ls
 ```
 
-![img](./docs/images/1656584422.png)
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022242810.png)
 
 查看 CF 为实例执行命令的操作的帮助信息
 
@@ -74,7 +79,7 @@ cf ls
 cf ecs exec -h
 ```
 
-![img](./docs/images/1656584478.png)
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022215293.png)
 
 一键为所有实例执行三要素，方便 HVV
 
@@ -82,7 +87,7 @@ cf ecs exec -h
 cf ecs exec -b
 ```
 
-![img](./docs/images/1656584649.png)
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022241381.png)
 
 一键获取实例中的临时访问凭证数据
 
@@ -90,7 +95,7 @@ cf ecs exec -b
 cf ecs exec -m
 ```
 
-![img](./docs/images/1656584778.png)
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022241672.png)
 
 如果感觉还不错的话，师傅记得给个 Star 呀 ~，另外 CF 的更多使用方法可以参见使用文档：[wiki.teamssix.com/cf](https://wiki.teamssix.com/cf)
 
