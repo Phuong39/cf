@@ -3,3 +3,4 @@
 .idea/*
 command/scan/cf
 command/scan/cf.bak
+tmp/*
