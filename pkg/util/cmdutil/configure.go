@@ -41,7 +41,7 @@ func ConfigureAccessKey() {
 		},
 		{
 			Name:     "AccessKeySecret",
-			Prompt:   &survey.Input{Message: "Access Key Secret (必须 Required)" + OldAccessKeySecret + ":"},
+			Prompt:   &survey.Password{Message: "Access Key Secret (必须 Required)" + OldAccessKeySecret + ":"},
 			Validate: survey.Required,
 		},
 		{
@@ -98,6 +98,6 @@ func GetAliCredential() cloud.Credential {
 
 func maskAK(ak string) string {
 	prefix := ak[:2]
-	suffix := ak[len(ak)-4:]
+	suffix := ak[len(ak)-6:]
 	return prefix + strings.Repeat("*", 18) + suffix
 }

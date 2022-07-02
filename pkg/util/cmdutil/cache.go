@@ -24,7 +24,7 @@ func ReturnOSSCacheFile() string {
 	if AccessKeyId == "" {
 		ossCacheFile = ""
 	} else {
-		ossCacheFile = ReturnCacheDict() + "/" + AccessKeyId[:6] + "_oss.json"
+		ossCacheFile = ReturnCacheDict() + "/" + AccessKeyId[len(AccessKeyId)-6:] + "_oss.json"
 	}
 	return ossCacheFile
 }
@@ -36,7 +36,7 @@ func ReturnECSCacheFile() string {
 	if AccessKeyId == "" {
 		ecsCacheFile = ""
 	} else {
-		ecsCacheFile = ReturnCacheDict() + "/" + AccessKeyId[:6] + "_ecs.json"
+		ecsCacheFile = ReturnCacheDict() + "/" + AccessKeyId[len(AccessKeyId)-6:] + "_ecs.json"
 	}
 	return ecsCacheFile
 }
@@ -63,21 +63,22 @@ func WriteCacheFile(td cloud.TableData, filePath string) {
 func ReadCacheFile(filePath string) [][]string {
 	if !FileExists(filePath) {
 		log.Debugf("%s 文件不存在 (%s file does not exist)", filePath, filePath)
-		log.Warnln("需要先配置访问凭证 (Access Key need to be configured first)")
+		if filePath == ReturnOSSCacheFile() {
+			log.Warnln("需要先使用 [cf oss ls] 命令获取 OSS 资源 (You need to use the [cf oss ls] command to get the OSS resources first)")
+		} else if filePath == ReturnECSCacheFile() {
+			log.Warnln("需要先使用 [cf ecs ls] 命令获取 ECS 资源 (You need to use the [cf ecs ls] command to get the ECS resources first)")
+		}
 		os.Exit(0)
-		return nil
-	} else {
-		log.Debugln("读取文件 (read file): " + filePath)
-		filePtr, err := os.Open(filePath)
-		util.HandleErr(err)
-		defer filePtr.Close()
-		var data [][]string
-		decoder := json.NewDecoder(filePtr)
-		err = decoder.Decode(&data)
-
-		util.HandleErr(err)
-		return data
 	}
+	log.Debugln("读取文件 (read file): " + filePath)
+	filePtr, err := os.Open(filePath)
+	util.HandleErr(err)
+	defer filePtr.Close()
+	var data [][]string
+	decoder := json.NewDecoder(filePtr)
+	err = decoder.Decode(&data)
+	util.HandleErr(err)
+	return data
 }
 
 func PrintCacheFile(filePath string, header []string, region string, specifiedInstanceID string) {
