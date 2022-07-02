@@ -9,6 +9,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/AlecAivazis/survey/v2"
+
 	"github.com/teamssix/cf/pkg/util/cmdutil"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
@@ -135,6 +137,16 @@ func ECSExec(command string, commandFile string, scriptType string, specifiedIns
 			log.Warnf("未找到 %s 实例的相关信息 (No information found about the %s instance)", specifiedInstanceID, specifiedInstanceID)
 		}
 	} else {
+		if specifiedInstanceID == "all" {
+			confirm := false
+			prompt := &survey.Confirm{
+				Message: "还未指定实例，如果不指定则该操作将在所有实例上执行，确定继续吗？(No instance has been specified yet, sure to continue?)",
+			}
+			survey.AskOne(prompt, &confirm)
+			if !confirm {
+				os.Exit(0)
+			}
+		}
 		for _, i := range InstancesList {
 			region := i.RegionId
 			OSType := i.OSType

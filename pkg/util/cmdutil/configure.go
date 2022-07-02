@@ -41,7 +41,7 @@ func ConfigureAccessKey() {
 		},
 		{
 			Name:     "AccessKeySecret",
-			Prompt:   &survey.Input{Message: "Access Key Secret (必须 Required)" + OldAccessKeySecret + ":"},
+			Prompt:   &survey.Password{Message: "Access Key Secret (必须 Required)" + OldAccessKeySecret + ":"},
 			Validate: survey.Required,
 		},
 		{
