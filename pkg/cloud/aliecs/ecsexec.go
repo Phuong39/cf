@@ -138,13 +138,26 @@ func ECSExec(command string, commandFile string, scriptType string, specifiedIns
 		}
 	} else {
 		if specifiedInstanceID == "all" {
-			confirm := false
-			prompt := &survey.Confirm{
-				Message: "还未指定实例，如果不指定则该操作将在所有实例上执行，确定继续吗？(No instance has been specified yet, sure to continue?)",
+			var (
+				selectInstanceIDList []string
+				selectInstanceID     string
+			)
+			selectInstanceIDList = append(selectInstanceIDList, "全部实例 (all instances)")
+			for _, i := range InstancesList {
+				selectInstanceIDList = append(selectInstanceIDList, fmt.Sprintf("%s (%s)", i.InstanceId, i.OSName))
 			}
-			survey.AskOne(prompt, &confirm)
-			if !confirm {
-				os.Exit(0)
+			prompt := &survey.Select{
+				Message: "选择一个实例 (Choose a instance): ",
+				Options: selectInstanceIDList,
+			}
+			survey.AskOne(prompt, &selectInstanceID)
+			for _, j := range InstancesList {
+				if selectInstanceID != "all" {
+					if selectInstanceID == fmt.Sprintf("%s (%s)", j.InstanceId, j.OSName) {
+						InstancesList = nil
+						InstancesList = append(InstancesList, j)
+					}
+				}
 			}
 		}
 		for _, i := range InstancesList {
