@@ -21,7 +21,7 @@ Hi, I'm TeamsSix and I'm glad you've found this place. You can find and follow m
 
 `)
 		data := [][]string{
-			[]string{"@teamssix", "TeamsSix", "teamssix.com", "github.com/teamssix", "wiki.teamssix.com", "狼组安全团队 @wgpsec"},
+			{"@teamssix", "TeamsSix", "teamssix.com", "github.com/teamssix", "wiki.teamssix.com", "狼组安全团队 @wgpsec"},
 		}
 		var header = []string{"推特 (Twitter)", "微信公众号 (WeChat Official Accounts)", "博客 (Blog)", "Github", "云安全知识库 T Wiki", "所属团队 (Organization)"}
 		var td = cloud.TableData{Header: header, Body: data}
