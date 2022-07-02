@@ -22,6 +22,7 @@ func Init(level string) {
 	log.SetOutput(os.Stdout)
 	log.SetFormatter(logFormat())
 	log.SetLevel(logLevel(level))
+	AlertUpdateInfo()
 }
 
 func logLevel(level string) log.Level {

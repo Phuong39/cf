@@ -7,8 +7,8 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth/credentials"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	log "github.com/sirupsen/logrus"
-	"githubu.com/teamssix/cf/pkg/util"
-	"githubu.com/teamssix/cf/pkg/util/cmdutil"
+	"github.com/teamssix/cf/pkg/util"
+	"github.com/teamssix/cf/pkg/util/cmdutil"
 )
 
 func ECSClient(region string) *ecs.Client {

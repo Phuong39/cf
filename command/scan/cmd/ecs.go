@@ -3,7 +3,7 @@ package cmd
 import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"githubu.com/teamssix/cf/pkg/cloud/aliecs"
+	"github.com/teamssix/cf/pkg/cloud/aliecs"
 )
 
 var (

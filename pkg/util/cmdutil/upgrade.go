@@ -11,7 +11,7 @@ import (
 	"runtime"
 	"strings"
 
-	"githubu.com/teamssix/cf/pkg/util"
+	"github.com/teamssix/cf/pkg/util"
 
 	"github.com/schollz/progressbar/v3"
 	log "github.com/sirupsen/logrus"

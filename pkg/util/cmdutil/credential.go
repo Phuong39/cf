@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"githubu.com/teamssix/cf/pkg/util"
+	"github.com/teamssix/cf/pkg/util"
 )
 
 func GetCFHomeDir() (string, error) {

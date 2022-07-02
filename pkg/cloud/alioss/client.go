@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	log "github.com/sirupsen/logrus"
-	"githubu.com/teamssix/cf/pkg/cloud"
-	"githubu.com/teamssix/cf/pkg/util"
-	"githubu.com/teamssix/cf/pkg/util/cmdutil"
+	"github.com/teamssix/cf/pkg/cloud"
+	"github.com/teamssix/cf/pkg/util"
+	"github.com/teamssix/cf/pkg/util/cmdutil"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 )

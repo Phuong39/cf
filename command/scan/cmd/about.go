@@ -3,7 +3,7 @@ package cmd
 import (
 	"github.com/gookit/color"
 	"github.com/spf13/cobra"
-	"githubu.com/teamssix/cf/pkg/cloud"
+	"github.com/teamssix/cf/pkg/cloud"
 )
 
 func init() {

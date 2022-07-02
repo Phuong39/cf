@@ -10,8 +10,8 @@ import (
 	"strings"
 
 	log "github.com/sirupsen/logrus"
-	"githubu.com/teamssix/cf/pkg/cloud"
-	"githubu.com/teamssix/cf/pkg/util"
+	"github.com/teamssix/cf/pkg/cloud"
+	"github.com/teamssix/cf/pkg/util"
 
 	"github.com/AlecAivazis/survey/v2"
 )
