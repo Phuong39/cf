@@ -51,7 +51,7 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 
 使用手册请参见：[wiki.teamssix.com/cf](https://wiki.teamssix.com/cf)
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022242767.png)
+[![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022242767.png)](https://wiki.teamssix.com/cf)
 
 ## 简单上手
 
