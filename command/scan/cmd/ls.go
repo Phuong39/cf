@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"githubu.com/teamssix/cf/pkg/cloud/aliecs"
-	"githubu.com/teamssix/cf/pkg/cloud/alioss"
+	"github.com/teamssix/cf/pkg/cloud/aliecs"
+	"github.com/teamssix/cf/pkg/cloud/alioss"
 )
 
 var (

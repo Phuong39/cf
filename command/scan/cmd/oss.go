@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"githubu.com/teamssix/cf/pkg/cloud/alioss"
+	"github.com/teamssix/cf/pkg/cloud/alioss"
 )
 
 var (

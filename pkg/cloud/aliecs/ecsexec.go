@@ -9,12 +9,12 @@ import (
 	"strings"
 	"time"
 
-	"githubu.com/teamssix/cf/pkg/util/cmdutil"
+	"github.com/teamssix/cf/pkg/util/cmdutil"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"github.com/gookit/color"
 	log "github.com/sirupsen/logrus"
-	"githubu.com/teamssix/cf/pkg/util"
+	"github.com/teamssix/cf/pkg/util"
 )
 
 var timeSleepSum int

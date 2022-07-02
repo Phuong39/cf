@@ -3,7 +3,7 @@ package cmd
 import (
 	"os"
 
-	"githubu.com/teamssix/cf/pkg/util"
+	"github.com/teamssix/cf/pkg/util"
 
 	cc "github.com/ivanpirog/coloredcobra"
 	"github.com/spf13/cobra"

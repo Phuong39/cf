@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"os"
 
-	"githubu.com/teamssix/cf/pkg/util"
+	"github.com/teamssix/cf/pkg/util"
 
 	log "github.com/sirupsen/logrus"
-	"githubu.com/teamssix/cf/pkg/cloud"
+	"github.com/teamssix/cf/pkg/cloud"
 )
 
 func ReturnCacheDict() string {
