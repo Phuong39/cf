@@ -24,13 +24,13 @@ Currently CF has these functions as follows:
 
 * Currently supported features
 
-  - [x] List oss
-  - [x] List instances
+  - [x] List OSS
+  - [x] List ECS
   - [x] Get the STS Token in the instance metadata
   - [x] Batch execution of multiple commands used to prove permission acquisition
   - [x] Get intances reverse shell
   - [x] Support alibaba cloud
-  - [x] List rds
+  - [x] List RDS
   - [x] ......
 * Features intended to be supported in the short term
   - [ ] Attack trail removal

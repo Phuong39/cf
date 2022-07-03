@@ -25,21 +25,19 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 * 已实现
 
   - [x] 列出对象存储（包括存储桶大小和文件数量信息）
-  - [x] 列出实例
+  - [x] 列出 ECS 实例
   - [x] 一键获得实例上的临时访问凭证
   - [x] 一键为所有实例执行三要素，方便 HVV
   - [x] 一键为实例反弹 Shell
   - [x] 支持阿里云
+  - [x] 列出 RDS 云数据库实例
   - [x] ……
-
 * 预计短期内实现
 
-  - [ ] 列出云数据库
   - [ ] 云上痕迹清除
   - [ ] 一键接管控制台
   - [ ] 一键查看当前访问凭证所拥有的权限
   - [ ] ……
-
 * 预计长期内实现
 
   - [ ] 自动检测当前运行环境是不是实例，如果是则一键扫描本地实例的凭证信息
@@ -51,11 +49,11 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 
 使用手册请参见：[wiki.teamssix.com/cf](https://wiki.teamssix.com/cf)
 
-[![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022242767.png)](https://wiki.teamssix.com/cf)
+[![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207040116875.png)](https://wiki.teamssix.com/cf)
 
 ## 简单上手
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022240064.png)
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207040107887.png)
 
 配置 CF
 
@@ -71,7 +69,7 @@ cf configure
 cf ls
 ```
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022242810.png)
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207040107386.png)
 
 查看 CF 为实例执行命令的操作的帮助信息
 
