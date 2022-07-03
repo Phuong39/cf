@@ -70,13 +70,13 @@ var ecsExecCmd = &cobra.Command{
 	Long:  "在实例上执行命令 (Execute the command on the instance)",
 	Run: func(cmd *cobra.Command, args []string) {
 		if lhost != "" && lport == "" {
-			log.Warnln("未指定反弹 shell 的主机端口 (The port of the listening host is not set)\n")
+			log.Warnln("未指定反弹 shell 的主机端口 (The port of the listening host is not set)")
 			cmd.Help()
 		} else if lhost == "" && lport != "" {
-			log.Warnln("未指定反弹 shell 的主机 IP (The ip of the listening host is not set)\n")
+			log.Warnln("未指定反弹 shell 的主机 IP (The ip of the listening host is not set)")
 			cmd.Help()
 		} else if command == "" && batchCommand == false && userData == false && metaDataSTSToken == false && commandFile == "" && lhost == "" && lport == "" {
-			log.Warnln("还未指定要执行的命令 (The command to be executed has not been specified yet)\n")
+			log.Warnln("还未指定要执行的命令 (The command to be executed has not been specified yet)")
 			cmd.Help()
 		} else {
 			aliecs.ECSExec(command, commandFile, scriptType, ecsExecSpecifiedInstanceID, ecsExecRegion, batchCommand, userData, metaDataSTSToken, ecsFlushCache, lhost, lport, timeOut)

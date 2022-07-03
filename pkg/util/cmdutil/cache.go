@@ -2,6 +2,7 @@ package cmdutil
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 
 	"github.com/teamssix/cf/pkg/util"
@@ -39,6 +40,18 @@ func ReturnECSCacheFile() string {
 		ecsCacheFile = ReturnCacheDict() + "/" + AccessKeyId[len(AccessKeyId)-6:] + "_ecs.json"
 	}
 	return ecsCacheFile
+}
+
+func ReturnRDSCacheFile() string {
+	config := GetAliCredential()
+	var rdsCacheFile string
+	AccessKeyId := config.AccessKeyId
+	if AccessKeyId == "" {
+		rdsCacheFile = ""
+	} else {
+		rdsCacheFile = ReturnCacheDict() + "/" + AccessKeyId[len(AccessKeyId)-6:] + "_rds.json"
+	}
+	return rdsCacheFile
 }
 
 func createCacheDict() {
@@ -81,90 +94,177 @@ func ReadCacheFile(filePath string) [][]string {
 	return data
 }
 
-func PrintCacheFile(filePath string, header []string, region string, specifiedInstanceID string) {
+func PrintOSSCacheFile(filePath string, header []string, region string) {
 	data := ReadCacheFile(filePath)
-	if filePath == ReturnOSSCacheFile() {
-		if region == "all" {
-			var td = cloud.TableData{Header: header, Body: data}
-			if len(data) == 0 {
-				log.Info("没有存储桶 (No Bucket)")
-			} else {
-				Caption := "OSS 资源 (OSS resources)"
-				cloud.PrintTable(td, Caption)
-			}
-		} else {
-			var dataRegion [][]string
-			for _, i := range data {
-				if i[5] == region {
-					dataRegion = append(dataRegion, i)
-				}
-			}
-			var td = cloud.TableData{Header: header, Body: dataRegion}
-			if len(dataRegion) == 0 {
-				log.Info("该区域下没有存储桶 (No Bucket was found in the region)")
-			} else {
-				Caption := "OSS 资源 (OSS resources)"
-				cloud.PrintTable(td, Caption)
+	if region == "all" {
+		PrintTable(data, header, "OSS")
+	} else {
+		var dataRegion [][]string
+		for _, i := range data {
+			if i[5] == region {
+				dataRegion = append(dataRegion, i)
 			}
 		}
-	} else if filePath == ReturnECSCacheFile() {
-		if region == "all" && specifiedInstanceID == "all" {
-			var td = cloud.TableData{Header: header, Body: data}
-			if len(data) == 0 {
-				log.Info("未发现 ECS，可能是因为当前访问凭证权限不够 (No ECS found, Probably because the current Access Key do not have enough permissions)")
-			} else {
-				Caption := "ECS 资源 (ECS resources)"
-				cloud.PrintTable(td, Caption)
-			}
-		} else if region != "all" && specifiedInstanceID == "all" {
-			var dataRegion [][]string
-			for _, i := range data {
-				if i[8] == region {
-					dataRegion = append(dataRegion, i)
-				}
-			}
-			var td = cloud.TableData{Header: header, Body: dataRegion}
-			if len(dataRegion) == 0 {
-				log.Infof("在 %s 区域下未发现 ECS，可能是因为当前访问凭证权限不够 (No ECS was found in %s region, Probably because the current Access Key do not have enough permissions)", region, region)
-			} else {
-				Caption := "ECS 资源 (ECS resources)"
-				cloud.PrintTable(td, Caption)
-			}
-		} else if region == "all" && specifiedInstanceID != "all" {
-			var dataSpecifiedInstanceID [][]string
-			for _, i := range data {
-				if i[1] == specifiedInstanceID {
-					dataSpecifiedInstanceID = append(dataSpecifiedInstanceID, i)
-				}
-			}
-			var td = cloud.TableData{Header: header, Body: dataSpecifiedInstanceID}
-			if len(dataSpecifiedInstanceID) == 0 {
-				log.Infof("未发现实例 ID 为 %s 的 ECS，可能是因为当前访问凭证权限不够 (No ECS with %s instance ID found, Probably because the current Access Key do not have enough permissions)", specifiedInstanceID, specifiedInstanceID)
-			} else {
-				Caption := "ECS 资源 (ECS resources)"
-				cloud.PrintTable(td, Caption)
-			}
-		} else {
-			var dataRegion [][]string
-			for _, i := range data {
-				if i[8] == region {
-					dataRegion = append(dataRegion, i)
-				}
-			}
-			var dataSpecifiedInstanceID [][]string
-			for _, i := range dataRegion {
-				if i[1] == specifiedInstanceID {
-					dataSpecifiedInstanceID = append(dataSpecifiedInstanceID, i)
-				}
-			}
-			var td = cloud.TableData{Header: header, Body: dataSpecifiedInstanceID}
-			if len(dataSpecifiedInstanceID) == 0 {
-				log.Infof("在 %s 区域下未发现实例 ID 为 %s 的 ECS，可能是因为当前访问凭证权限不够 (No ECS with instance ID %s found in %s region, Probably because the current Access Key do not have enough permissions)", region, specifiedInstanceID, specifiedInstanceID, region)
-			} else {
-				Caption := "ECS 资源 (ECS resources)"
-				cloud.PrintTable(td, Caption)
-			}
-		}
+		PrintTable(dataRegion, header, "OSS")
+	}
+}
 
+func PrintECSCacheFile(filePath string, header []string, region string, specifiedInstanceID string) {
+	data := ReadCacheFile(filePath)
+	if region == "all" && specifiedInstanceID == "all" {
+		PrintTable(data, header, "ECS")
+	} else if region != "all" && specifiedInstanceID == "all" {
+		var dataRegion [][]string
+		for _, i := range data {
+			if i[8] == region {
+				dataRegion = append(dataRegion, i)
+			}
+		}
+		PrintTable(dataRegion, header, "ECS")
+	} else if region == "all" && specifiedInstanceID != "all" {
+		var dataSpecifiedInstanceID [][]string
+		for _, i := range data {
+			if i[1] == specifiedInstanceID {
+				dataSpecifiedInstanceID = append(dataSpecifiedInstanceID, i)
+			}
+		}
+		PrintTable(dataSpecifiedInstanceID, header, "ECS")
+	} else {
+		var dataRegion [][]string
+		for _, i := range data {
+			if i[8] == region {
+				dataRegion = append(dataRegion, i)
+			}
+		}
+		var dataSpecifiedInstanceID [][]string
+		for _, i := range dataRegion {
+			if i[1] == specifiedInstanceID {
+				dataSpecifiedInstanceID = append(dataSpecifiedInstanceID, i)
+			}
+		}
+		PrintTable(dataSpecifiedInstanceID, header, "ECS")
+	}
+}
+
+func PrintRDSCacheFile(filePath string, header []string, region string, specifiedDBInstanceID string, engine string) {
+	data := ReadCacheFile(filePath)
+	if region == "all" {
+		if specifiedDBInstanceID == "all" {
+			if engine == "all" {
+				//region all,specifiedDBInstanceID all,engine all
+				PrintTable(data, header, "RDS")
+			} else {
+				//region all,specifiedDBInstanceID all,engine single
+				var dataEngine [][]string
+				for _, i := range data {
+					if i[2] == engine {
+						dataEngine = append(dataEngine, i)
+					}
+				}
+				PrintTable(dataEngine, header, "RDS")
+			}
+		} else {
+			if engine == "all" {
+				//region all,specifiedDBInstanceID single,engine all
+				var dataSpecifiedDBInstanceID [][]string
+				for _, i := range data {
+					if i[1] == specifiedDBInstanceID {
+						dataSpecifiedDBInstanceID = append(dataSpecifiedDBInstanceID, i)
+					}
+				}
+				PrintTable(dataSpecifiedDBInstanceID, header, "RDS")
+			} else {
+				//region all,specifiedDBInstanceID single,engine single
+				var dataEngine [][]string
+				for _, i := range data {
+					if i[2] == engine {
+						dataEngine = append(dataEngine, i)
+					}
+				}
+				var dataSpecifiedDBInstanceID [][]string
+				for _, i := range dataEngine {
+					if i[1] == specifiedDBInstanceID {
+						dataSpecifiedDBInstanceID = append(dataSpecifiedDBInstanceID, i)
+					}
+				}
+				PrintTable(dataSpecifiedDBInstanceID, header, "RDS")
+			}
+		}
+	} else {
+		if specifiedDBInstanceID == "all" {
+			if engine == "all" {
+				//region single,specifiedDBInstanceID all,engine all
+				var dataRegion [][]string
+				for _, i := range data {
+					if i[5] == region {
+						dataRegion = append(dataRegion, i)
+					}
+				}
+				PrintTable(dataRegion, header, "RDS")
+			} else {
+				//region single,specifiedDBInstanceID all,engine single
+				var dataEngine [][]string
+				for _, i := range data {
+					if i[2] == engine {
+						dataEngine = append(dataEngine, i)
+					}
+				}
+				var dataRegion [][]string
+				for _, i := range dataEngine {
+					if i[5] == region {
+						dataRegion = append(dataRegion, i)
+					}
+				}
+				PrintTable(dataRegion, header, "RDS")
+			}
+		} else {
+			if engine == "all" {
+				//region single,specifiedDBInstanceID single,engine all
+				var dataSpecifiedDBInstanceID [][]string
+				for _, i := range data {
+					if i[1] == specifiedDBInstanceID {
+						dataSpecifiedDBInstanceID = append(dataSpecifiedDBInstanceID, i)
+					}
+				}
+				var dataRegion [][]string
+				for _, i := range dataSpecifiedDBInstanceID {
+					if i[5] == region {
+						dataRegion = append(dataRegion, i)
+					}
+				}
+				PrintTable(dataRegion, header, "RDS")
+			} else {
+				//region single,specifiedDBInstanceID single,engine single
+				var dataEngine [][]string
+				for _, i := range data {
+					if i[2] == engine {
+						dataEngine = append(dataEngine, i)
+					}
+				}
+				var dataSpecifiedDBInstanceID [][]string
+				for _, i := range dataEngine {
+					if i[1] == specifiedDBInstanceID {
+						dataSpecifiedDBInstanceID = append(dataSpecifiedDBInstanceID, i)
+					}
+				}
+				var dataRegion [][]string
+				for _, i := range dataSpecifiedDBInstanceID {
+					if i[5] == region {
+						dataRegion = append(dataRegion, i)
+					}
+				}
+				PrintTable(dataRegion, header, "RDS")
+			}
+		}
+	}
+}
+
+func PrintTable(data [][]string, header []string, resourceType string) {
+	var td = cloud.TableData{Header: header, Body: data}
+	if len(data) == 0 {
+		log.Info(fmt.Sprintf("未发现 %s (No %s found)", resourceType, resourceType))
+	} else {
+		Caption := fmt.Sprintf("%s 资源 (%s resources)", resourceType, resourceType)
+		cloud.PrintTable(td, Caption)
 	}
 }

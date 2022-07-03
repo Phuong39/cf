@@ -40,8 +40,10 @@ func Upgrade(version string) {
 
 func downloadFile(downloadURL string, fileName string) {
 	log.Debugln("下载地址 (download url): " + downloadURL)
-	req, _ := http.NewRequest("GET", downloadURL, nil)
-	resp, _ := http.DefaultClient.Do(req)
+	req, err := http.NewRequest("GET", downloadURL, nil)
+	util.HandleErr(err)
+	resp, err := http.DefaultClient.Do(req)
+	util.HandleErr(err)
 	defer resp.Body.Close()
 	f, _ := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY, 0644)
 	defer f.Close()
