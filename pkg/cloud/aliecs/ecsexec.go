@@ -200,6 +200,7 @@ func ECSExec(command string, commandFile string, scriptType string, specifiedIns
 					util.HandleErr(err)
 					defer file.Close()
 					contentByte, err := ioutil.ReadAll(file)
+					util.HandleErr(err)
 					content := string(contentByte)
 					command = content[:len(content)-1]
 				}
