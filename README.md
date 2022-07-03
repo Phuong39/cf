@@ -63,7 +63,7 @@ cf configure
 
 ![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022241064.png)
 
-一键列出当前访问凭证的云服务资源，当前仅支持 OSS 和 ECS 资源。
+一键列出当前访问凭证的云服务资源
 
 ```bash
 cf ls
