@@ -64,7 +64,7 @@ cf configure
 
 ![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022241064.png)
 
-One step lists the cloud service resources with current access key, currently only OSS and ECS resources are supported.
+One step lists the cloud service resources with current access key
 
 ```bash
 cf ls
