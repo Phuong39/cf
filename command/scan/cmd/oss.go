@@ -14,7 +14,7 @@ func init() {
 	RootCmd.AddCommand(ossCmd)
 	ossCmd.AddCommand(osslsCmd)
 	osslsCmd.Flags().StringVarP(&osslsregion, "region", "r", "all", "指定区域 ID (Set Region ID)")
-	osslsCmd.Flags().BoolVar(&osslsFlushCache, "flushCache", false, "刷新缓存，不使用缓存数据 (Refresh the cache without using cached data)")
+	ossCmd.PersistentFlags().BoolVar(&osslsFlushCache, "flushCache", false, "刷新缓存，不使用缓存数据 (Refresh the cache without using cached data)")
 }
 
 var ossCmd = &cobra.Command{
