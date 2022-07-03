@@ -30,9 +30,9 @@ Currently CF has these functions as follows:
   - [x] Batch execution of multiple commands used to prove permission acquisition
   - [x] Get intances reverse shell
   - [x] Support alibaba cloud
+  - [x] List rds
   - [x] ......
 * Features intended to be supported in the short term
-  - [ ] List rds
   - [ ] Attack trail removal
   - [ ] Takeover console
   - [ ] View permissions for access key
@@ -50,11 +50,11 @@ For detailed manuals, please visit: [wiki.teamssix.com/cf](https://wiki.teamssix
 
 > The manual currently supports Chinese only
 
-[![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022242767.png)](https://wiki.teamssix.com/cf)
+[![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207040116875.png)](https://wiki.teamssix.com/cf)
 
 ## Easy to start
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022240064.png)
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207040107887.png)
 
 Configuration
 
@@ -70,7 +70,7 @@ One step lists the cloud service resources with current access key, currently on
 cf ls
 ```
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022242810.png)
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207040107386.png)
 
 View help information for ecs exec commands
 
