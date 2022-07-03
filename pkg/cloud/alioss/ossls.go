@@ -176,7 +176,7 @@ func PrintBucketsListRealTime(region string) {
 	}
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {
-		log.Info("没有存储桶 (No Bucket)")
+		log.Info("没发现存储桶 (No Buckets Found)")
 		cmdutil.WriteCacheFile(td, OSSCacheFilePath)
 	} else {
 		Caption := "OSS 资源 (OSS resources)"
@@ -187,7 +187,7 @@ func PrintBucketsListRealTime(region string) {
 
 func PrintBucketsListHistory(region string) {
 	if cmdutil.FileExists(OSSCacheFilePath) {
-		cmdutil.PrintCacheFile(OSSCacheFilePath, header, region, "all")
+		cmdutil.PrintOSSCacheFile(OSSCacheFilePath, header, region)
 	} else {
 		PrintBucketsListRealTime(region)
 	}

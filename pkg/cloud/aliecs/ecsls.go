@@ -27,9 +27,8 @@ var (
 	header           = []string{"序号 (SN)", "实例 ID (Instance ID)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "云助手状态 (Cloud Assistant Status)", "私有 IP (Private Ip Address)", "公网 IP (Public Ip Address)", "区域 ID (Region ID)"}
 )
 
-func DescribeInstances(region string, running bool, SpecifiedInstanceID string) ([]Instances, error) {
+func DescribeInstances(region string, running bool, SpecifiedInstanceID string) []Instances {
 	var out []Instances
-	var err error
 	var response *ecs.DescribeInstancesResponse
 	request := ecs.CreateDescribeInstancesRequest()
 	request.Scheme = "https"
@@ -39,7 +38,8 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 	if SpecifiedInstanceID != "all" {
 		request.InstanceIds = fmt.Sprintf("[\"%s\"]", SpecifiedInstanceID)
 	}
-	response, err = ECSClient(region).DescribeInstances(request)
+	response, err := ECSClient(region).DescribeInstances(request)
+	util.HandleErr(err)
 	InstancesList := response.Instances.Instance
 	log.Tracef("正在 %s 区域中查找实例 (Looking for instances in the %s region)", region, region)
 	if len(InstancesList) != 0 {
@@ -82,25 +82,23 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 			out = append(out, obj)
 		}
 	}
-	return out, err
+	return out
 }
 
 func ReturnInstancesList(region string, running bool, specifiedInstanceID string) []Instances {
 	var InstancesList []Instances
 	var Instance []Instances
-	var err error
 	if region == "all" {
 		for _, j := range GetECSRegions() {
 			region := j.RegionId
-			Instance, err = DescribeInstances(region, running, specifiedInstanceID)
+			Instance = DescribeInstances(region, running, specifiedInstanceID)
 			for _, i := range Instance {
 				InstancesList = append(InstancesList, i)
 			}
 		}
 	} else {
-		InstancesList, err = DescribeInstances(region, running, specifiedInstanceID)
+		InstancesList = DescribeInstances(region, running, specifiedInstanceID)
 	}
-	util.HandleErr(err)
 	return InstancesList
 }
 
@@ -135,7 +133,7 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {
 	if cmdutil.FileExists(ECSCacheFilePath) {
-		cmdutil.PrintCacheFile(ECSCacheFilePath, header, region, specifiedInstanceID)
+		cmdutil.PrintECSCacheFile(ECSCacheFilePath, header, region, specifiedInstanceID)
 	} else {
 		PrintInstancesListRealTime(region, running, specifiedInstanceID)
 	}

@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/teamssix/cf/pkg/cloud/aliecs"
 	"github.com/teamssix/cf/pkg/cloud/alioss"
+	"github.com/teamssix/cf/pkg/cloud/alirds"
 )
 
 var (
@@ -21,11 +22,13 @@ func init() {
 
 var lsCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "列出当前凭证下的 OSS 和 ECS 资源 (List OSS and ECS resources)",
-	Long:  `列出当前凭证下的 OSS 和 ECS 资源 (List OSS and ECS resources)`,
+	Short: "列出当前凭证下的云服务资源 (List all resources)",
+	Long:  `列出当前凭证下的云服务资源 (List all resources)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		alioss.PrintBucketsList(lsRegion, lsFlushCache)
-		fmt.Println("\n")
-		aliecs.PrintInstancesList(lsRegion, running, "all", lsFlushCache)
+		fmt.Println("")
+		aliecs.PrintInstancesList(lsRegion, false, "all", lsFlushCache)
+		fmt.Println("")
+		alirds.PrintDBInstancesList(lsRegion, false, "all", "all", lsFlushCache)
 	},
 }
