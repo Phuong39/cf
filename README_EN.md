@@ -20,7 +20,7 @@ CF is a cloud exploitation framework, It can facilitate the work of the red team
 
 CF download address: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
 
-> Currently CF only supports Alibaba cloud, and will continue to update the support for other cloud provider.
+> Currently CF only supports Alibaba cloud, and will continue to update the support for other cloud service providers.
 
 Currently CF has these functions as follows: 
 
@@ -43,7 +43,7 @@ Currently CF has these functions as follows:
 
   - [ ] Automatically detect if the current running environment is an instance, and if so, scan the local instance for credential information
   - [ ] Add the resulting credentials to the CF
-  - [ ] Support other cloud provider such as Tencent Cloud
+  - [ ] Support other cloud service providers such as Tencent Cloud
   - [ ] ......
 
 ## Manual
@@ -103,7 +103,7 @@ If it feels good, maybe you can give me a Star ~
 ## Warning
 
 * This tool can only be used in legal scenarios and is strictly forbidden to be used in illegal scenarios.
-* The risks involved in this tool are the responsibility of the tenant and not the cloud provider.
+* The risks involved in this tool are the responsibility of the tenant and not the cloud service providers.
 
 ## More
 
