@@ -111,9 +111,10 @@ func PrintOSSCacheFile(filePath string, header []string, region string) {
 
 func PrintECSCacheFile(filePath string, header []string, region string, specifiedInstanceID string) {
 	data := ReadCacheFile(filePath)
-	if region == "all" && specifiedInstanceID == "all" {
+	switch {
+	case region == "all" && specifiedInstanceID == "all":
 		PrintTable(data, header, "ECS")
-	} else if region != "all" && specifiedInstanceID == "all" {
+	case region != "all" && specifiedInstanceID == "all":
 		var dataRegion [][]string
 		for _, i := range data {
 			if i[8] == region {
@@ -121,7 +122,7 @@ func PrintECSCacheFile(filePath string, header []string, region string, specifie
 			}
 		}
 		PrintTable(dataRegion, header, "ECS")
-	} else if region == "all" && specifiedInstanceID != "all" {
+	case region == "all" && specifiedInstanceID != "all":
 		var dataSpecifiedInstanceID [][]string
 		for _, i := range data {
 			if i[1] == specifiedInstanceID {
@@ -129,7 +130,7 @@ func PrintECSCacheFile(filePath string, header []string, region string, specifie
 			}
 		}
 		PrintTable(dataSpecifiedInstanceID, header, "ECS")
-	} else {
+	case region != "all" && specifiedInstanceID != "all":
 		var dataRegion [][]string
 		for _, i := range data {
 			if i[8] == region {
@@ -148,114 +149,95 @@ func PrintECSCacheFile(filePath string, header []string, region string, specifie
 
 func PrintRDSCacheFile(filePath string, header []string, region string, specifiedDBInstanceID string, engine string) {
 	data := ReadCacheFile(filePath)
-	if region == "all" {
-		if specifiedDBInstanceID == "all" {
-			if engine == "all" {
-				//region all,specifiedDBInstanceID all,engine all
-				PrintTable(data, header, "RDS")
-			} else {
-				//region all,specifiedDBInstanceID all,engine single
-				var dataEngine [][]string
-				for _, i := range data {
-					if i[2] == engine {
-						dataEngine = append(dataEngine, i)
-					}
-				}
-				PrintTable(dataEngine, header, "RDS")
-			}
-		} else {
-			if engine == "all" {
-				//region all,specifiedDBInstanceID single,engine all
-				var dataSpecifiedDBInstanceID [][]string
-				for _, i := range data {
-					if i[1] == specifiedDBInstanceID {
-						dataSpecifiedDBInstanceID = append(dataSpecifiedDBInstanceID, i)
-					}
-				}
-				PrintTable(dataSpecifiedDBInstanceID, header, "RDS")
-			} else {
-				//region all,specifiedDBInstanceID single,engine single
-				var dataEngine [][]string
-				for _, i := range data {
-					if i[2] == engine {
-						dataEngine = append(dataEngine, i)
-					}
-				}
-				var dataSpecifiedDBInstanceID [][]string
-				for _, i := range dataEngine {
-					if i[1] == specifiedDBInstanceID {
-						dataSpecifiedDBInstanceID = append(dataSpecifiedDBInstanceID, i)
-					}
-				}
-				PrintTable(dataSpecifiedDBInstanceID, header, "RDS")
+	switch {
+	case region == "all" && specifiedDBInstanceID == "all" && engine == "all":
+		PrintTable(data, header, "RDS")
+	case region == "all" && specifiedDBInstanceID == "all" && engine != "all":
+		var dataEngine [][]string
+		for _, i := range data {
+			if i[2] == engine {
+				dataEngine = append(dataEngine, i)
 			}
 		}
-	} else {
-		if specifiedDBInstanceID == "all" {
-			if engine == "all" {
-				//region single,specifiedDBInstanceID all,engine all
-				var dataRegion [][]string
-				for _, i := range data {
-					if i[5] == region {
-						dataRegion = append(dataRegion, i)
-					}
-				}
-				PrintTable(dataRegion, header, "RDS")
-			} else {
-				//region single,specifiedDBInstanceID all,engine single
-				var dataEngine [][]string
-				for _, i := range data {
-					if i[2] == engine {
-						dataEngine = append(dataEngine, i)
-					}
-				}
-				var dataRegion [][]string
-				for _, i := range dataEngine {
-					if i[5] == region {
-						dataRegion = append(dataRegion, i)
-					}
-				}
-				PrintTable(dataRegion, header, "RDS")
-			}
-		} else {
-			if engine == "all" {
-				//region single,specifiedDBInstanceID single,engine all
-				var dataSpecifiedDBInstanceID [][]string
-				for _, i := range data {
-					if i[1] == specifiedDBInstanceID {
-						dataSpecifiedDBInstanceID = append(dataSpecifiedDBInstanceID, i)
-					}
-				}
-				var dataRegion [][]string
-				for _, i := range dataSpecifiedDBInstanceID {
-					if i[5] == region {
-						dataRegion = append(dataRegion, i)
-					}
-				}
-				PrintTable(dataRegion, header, "RDS")
-			} else {
-				//region single,specifiedDBInstanceID single,engine single
-				var dataEngine [][]string
-				for _, i := range data {
-					if i[2] == engine {
-						dataEngine = append(dataEngine, i)
-					}
-				}
-				var dataSpecifiedDBInstanceID [][]string
-				for _, i := range dataEngine {
-					if i[1] == specifiedDBInstanceID {
-						dataSpecifiedDBInstanceID = append(dataSpecifiedDBInstanceID, i)
-					}
-				}
-				var dataRegion [][]string
-				for _, i := range dataSpecifiedDBInstanceID {
-					if i[5] == region {
-						dataRegion = append(dataRegion, i)
-					}
-				}
-				PrintTable(dataRegion, header, "RDS")
+		PrintTable(dataEngine, header, "RDS")
+	case region == "all" && specifiedDBInstanceID != "all" && engine == "all":
+		var dataSpecifiedDBInstanceID [][]string
+		for _, i := range data {
+			if i[1] == specifiedDBInstanceID {
+				dataSpecifiedDBInstanceID = append(dataSpecifiedDBInstanceID, i)
 			}
 		}
+		PrintTable(dataSpecifiedDBInstanceID, header, "RDS")
+	case region == "all" && specifiedDBInstanceID != "all" && engine != "all":
+		var dataEngine [][]string
+		for _, i := range data {
+			if i[2] == engine {
+				dataEngine = append(dataEngine, i)
+			}
+		}
+		var dataSpecifiedDBInstanceID [][]string
+		for _, i := range dataEngine {
+			if i[1] == specifiedDBInstanceID {
+				dataSpecifiedDBInstanceID = append(dataSpecifiedDBInstanceID, i)
+			}
+		}
+		PrintTable(dataSpecifiedDBInstanceID, header, "RDS")
+	case region != "all" && specifiedDBInstanceID == "all" && engine == "all":
+		var dataRegion [][]string
+		for _, i := range data {
+			if i[5] == region {
+				dataRegion = append(dataRegion, i)
+			}
+		}
+		PrintTable(dataRegion, header, "RDS")
+	case region != "all" && specifiedDBInstanceID == "all" && engine != "all":
+		var dataEngine [][]string
+		for _, i := range data {
+			if i[2] == engine {
+				dataEngine = append(dataEngine, i)
+			}
+		}
+		var dataRegion [][]string
+		for _, i := range dataEngine {
+			if i[5] == region {
+				dataRegion = append(dataRegion, i)
+			}
+		}
+		PrintTable(dataRegion, header, "RDS")
+	case region != "all" && specifiedDBInstanceID != "all" && engine == "all":
+		var dataSpecifiedDBInstanceID [][]string
+		for _, i := range data {
+			if i[1] == specifiedDBInstanceID {
+				dataSpecifiedDBInstanceID = append(dataSpecifiedDBInstanceID, i)
+			}
+		}
+		var dataRegion [][]string
+		for _, i := range dataSpecifiedDBInstanceID {
+			if i[5] == region {
+				dataRegion = append(dataRegion, i)
+			}
+		}
+		PrintTable(dataRegion, header, "RDS")
+	case region != "all" && specifiedDBInstanceID != "all" && engine != "all":
+		var dataEngine [][]string
+		for _, i := range data {
+			if i[2] == engine {
+				dataEngine = append(dataEngine, i)
+			}
+		}
+		var dataSpecifiedDBInstanceID [][]string
+		for _, i := range dataEngine {
+			if i[1] == specifiedDBInstanceID {
+				dataSpecifiedDBInstanceID = append(dataSpecifiedDBInstanceID, i)
+			}
+		}
+		var dataRegion [][]string
+		for _, i := range dataSpecifiedDBInstanceID {
+			if i[5] == region {
+				dataRegion = append(dataRegion, i)
+			}
+		}
+		PrintTable(dataRegion, header, "RDS")
 	}
 }
 
