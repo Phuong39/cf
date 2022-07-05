@@ -10,10 +10,6 @@
 <a href="https://github.com/teamssix"><img alt="Github" src="https://img.shields.io/github/followers/TeamsSix?style=social" /></a><br></br>
 <a href="README.md">中文</a> | English
 </p>
-
-
-
-
 ---
 
 CF is a cloud exploitation framework, It can facilitate the work of the red team after obtaining access key.
@@ -33,10 +29,10 @@ Currently CF has these functions as follows:
   - [x] Get intances reverse shell
   - [x] Support alibaba cloud
   - [x] List RDS
+  - [x] Takeover console
   - [x] ......
 * Features intended to be supported in the short term
   - [ ] Attack trail removal
-  - [ ] Takeover console
   - [ ] View permissions for access key
   - [ ] ......
 * Features intended to be supported in the long term
@@ -52,11 +48,11 @@ For detailed manuals, please visit: [wiki.teamssix.com/cf](https://wiki.teamssix
 
 > The manual currently supports Chinese only
 
-[![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207040116875.png)](https://wiki.teamssix.com/cf)
+[![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207052324971.png)](https://wiki.teamssix.com/cf)
 
 ## Easy to start
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207040107887.png)
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207052307021.png)
 
 Configuration
 
@@ -73,6 +69,14 @@ cf ls
 ```
 
 ![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207040107386.png)
+
+takeover console
+
+```bash
+cf console
+```
+
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207052308228.png)
 
 View help information for ecs exec commands
 

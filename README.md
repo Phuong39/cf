@@ -10,10 +10,6 @@
 <a href="https://github.com/teamssix"><img alt="Github" src="https://img.shields.io/github/followers/TeamsSix?style=social" /></a><br></br>
 中文 | <a href="README_EN.md">English</a>
 </p>
-
-
-
-
 ---
 
 CF 是一个云环境利用框架，主要用来方便红队人员在获得云服务的访问凭证即 Access Key 的后续工作。
@@ -33,11 +29,11 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
   - [x] 一键为实例反弹 Shell
   - [x] 支持阿里云
   - [x] 列出 RDS 云数据库实例
+  - [x] 一键接管控制台
   - [x] ……
 * 预计短期内实现
 
   - [ ] 云上痕迹清除
-  - [ ] 一键接管控制台
   - [ ] 一键查看当前访问凭证所拥有的权限
   - [ ] ……
 * 预计长期内实现
@@ -51,11 +47,11 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 
 使用手册请参见：[wiki.teamssix.com/cf](https://wiki.teamssix.com/cf)
 
-[![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207040116875.png)](https://wiki.teamssix.com/cf)
+[![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207052324971.png)](https://wiki.teamssix.com/cf)
 
 ## 简单上手
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207040107887.png)
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207052307021.png)
 
 配置 CF
 
@@ -72,6 +68,14 @@ cf ls
 ```
 
 ![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207040107386.png)
+
+一键接管控制台
+
+```bash
+cf console
+```
+
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207052308228.png)
 
 查看 CF 为实例执行命令的操作的帮助信息
 
@@ -108,9 +112,7 @@ cf ecs exec -m
 
 如果你对云安全比较感兴趣，可以看我的另外一个项目 [Awesome Cloud Security](https://github.com/teamssix/awesome-cloud-security)，这里收录了很多国内外的云安全资源。
 
-如果这些云安全资源感觉还是不过瘾，则可以看我的[云安全文库](https://wiki.teamssix.com/)，这里有大量的我在云安全方向的笔记和文章。
-
-最后，下面这个是我的个人微信公众号，欢迎关注 ~
+另外在我的[云安全文库](https://wiki.teamssix.com/)里有大量的云安全方向的笔记和文章，最后，下面这个是我的个人微信公众号，欢迎关注 ~
 
 <div align=center><img width="700" src="https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202204152148071.png" div align=center/></div>
 
