@@ -11,10 +11,9 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/teamssix/cf/pkg/util"
-
 	"github.com/schollz/progressbar/v3"
 	log "github.com/sirupsen/logrus"
+	"github.com/teamssix/cf/pkg/util"
 )
 
 func Upgrade(version string) {
@@ -47,10 +46,23 @@ func downloadFile(downloadURL string, fileName string) {
 	defer resp.Body.Close()
 	f, _ := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY, 0644)
 	defer f.Close()
-	bar := progressbar.DefaultBytes(
-		resp.ContentLength,
-		"下载中 (downloading)",
-	)
+	bar := progressbar.NewOptions64(resp.ContentLength,
+		progressbar.OptionSetWriter(os.Stderr),
+		progressbar.OptionEnableColorCodes(true),
+		progressbar.OptionShowBytes(true),
+		progressbar.OptionShowCount(),
+		progressbar.OptionSetWidth(50),
+		progressbar.OptionSetDescription("Downloading..."),
+		progressbar.OptionOnCompletion(func() {
+			fmt.Println()
+		}),
+		progressbar.OptionSetTheme(progressbar.Theme{
+			Saucer:        "[green]=[reset]",
+			SaucerHead:    "[green]>[reset]",
+			SaucerPadding: " ",
+			BarStart:      "[",
+			BarEnd:        "]",
+		}))
 	io.Copy(io.MultiWriter(f, bar), resp.Body)
 	log.Debugln("下载完成 (Download completed)")
 }

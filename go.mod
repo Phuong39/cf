@@ -8,7 +8,9 @@ require (
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.4+incompatible
 	github.com/gookit/color v1.5.1
 	github.com/ivanpirog/coloredcobra v1.0.1
+	github.com/k0kubun/go-ansi v0.0.0-20180517002512-3bf9e2903213
 	github.com/olekukonko/tablewriter v0.0.5
+	github.com/schollz/progressbar/v3 v3.8.6
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.4.0
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
@@ -33,17 +35,14 @@ require (
 	github.com/onsi/gomega v1.19.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect
-	github.com/schollz/progressbar/v3 v3.8.6 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/xo/terminfo v0.0.0-20210125001918-ca9a967f8778 // indirect
 	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
-	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
 	golang.org/x/net v0.0.0-20220615171555-694bf12d69de // indirect
 	golang.org/x/sys v0.0.0-20220627191245-f75cf1eec38b // indirect
 	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20220609170525-579cf78fd858 // indirect
-	golang.org/x/tools v0.1.11 // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/ini.v1 v1.66.6 // indirect
 )
