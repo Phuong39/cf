@@ -24,7 +24,7 @@ type Instances struct {
 
 var (
 	ECSCacheFilePath = cmdutil.ReturnECSCacheFile()
-	header           = []string{"序号 (SN)", "实例 ID (Instance ID)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "云助手状态 (Cloud Assistant Status)", "私有 IP (Private Ip Address)", "公网 IP (Public Ip Address)", "区域 ID (Region ID)"}
+	header           = []string{"序号 (SN)", "实例 ID (Instance ID)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private Ip Address)", "公网 IP (Public Ip Address)", "区域 ID (Region ID)"}
 )
 
 func DescribeInstances(region string, running bool, SpecifiedInstanceID string) []Instances {
@@ -102,23 +102,12 @@ func ReturnInstancesList(region string, running bool, specifiedInstanceID string
 	return InstancesList
 }
 
-func DescribeCloudAssistantStatus(region string, InstanceID string) string {
-	request := ecs.CreateDescribeCloudAssistantStatusRequest()
-	request.Scheme = "https"
-	request.InstanceId = &[]string{InstanceID}
-	response, err := ECSClient(region).DescribeCloudAssistantStatus(request)
-	util.HandleErr(err)
-	CloudAssistantStatus := response.InstanceCloudAssistantStatusSet.InstanceCloudAssistantStatus[0].CloudAssistantStatus
-	return CloudAssistantStatus
-}
-
 func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID string) {
 	InstancesList := ReturnInstancesList(region, running, specifiedInstanceID)
 	var data = make([][]string, len(InstancesList))
 	for i, o := range InstancesList {
 		SN := strconv.Itoa(i + 1)
-		CloudAssistantStatus := DescribeCloudAssistantStatus(o.RegionId, o.InstanceId)
-		data[i] = []string{SN, o.InstanceId, o.OSName, o.OSType, o.Status, CloudAssistantStatus, o.PrivateIpAddress, o.PublicIpAddress, o.RegionId}
+		data[i] = []string{SN, o.InstanceId, o.OSName, o.OSType, o.Status, o.PrivateIpAddress, o.PublicIpAddress, o.RegionId}
 	}
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {

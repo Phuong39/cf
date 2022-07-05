@@ -108,9 +108,9 @@ func ECSExec(command string, commandFile string, scriptType string, specifiedIns
 						OSName:           i[2],
 						OSType:           i[3],
 						Status:           i[4],
-						PrivateIpAddress: i[6],
-						PublicIpAddress:  i[7],
-						RegionId:         i[8],
+						PrivateIpAddress: i[5],
+						PublicIpAddress:  i[6],
+						RegionId:         i[7],
 					}
 					InstancesList = append(InstancesList, obj)
 				}
@@ -120,9 +120,9 @@ func ECSExec(command string, commandFile string, scriptType string, specifiedIns
 					OSName:           i[2],
 					OSType:           i[3],
 					Status:           i[4],
-					PrivateIpAddress: i[6],
-					PublicIpAddress:  i[7],
-					RegionId:         i[8],
+					PrivateIpAddress: i[5],
+					PublicIpAddress:  i[6],
+					RegionId:         i[7],
 				}
 				InstancesList = append(InstancesList, obj)
 			}

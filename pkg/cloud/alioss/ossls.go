@@ -2,9 +2,7 @@ package alioss
 
 import (
 	"fmt"
-	"os"
 	"strconv"
-	"strings"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	log "github.com/sirupsen/logrus"
@@ -35,7 +33,7 @@ var (
 	header           = []string{"序号 (SN)", "名称 (Name)", "存储桶 ACL (Bucket ACL)", "对象数量 (Object Number)", "存储桶大小 (Bucket Size)", "区域 (Region)", "存储桶地址 (Bucket URL)"}
 )
 
-func (o *OSSCollector) ListBuckets() ([]Bucket, error) {
+func (o *OSSCollector) ListBuckets() []Bucket {
 	region := cloud.GetGlobalRegions()[0]
 	o.OSSClient(region)
 	var size = 10
@@ -56,7 +54,8 @@ func (o *OSSCollector) ListBuckets() ([]Bucket, error) {
 			break
 		}
 	}
-	return out, err
+	util.HandleErrNoExit(err)
+	return out
 }
 
 func (o *OSSCollector) ListObjects() []Object {
@@ -65,8 +64,7 @@ func (o *OSSCollector) ListObjects() []Object {
 	marker := oss.Marker("")
 
 	OSSCollector := &OSSCollector{}
-	Buckets, err := OSSCollector.ListBuckets()
-	util.HandleErr(err)
+	Buckets := OSSCollector.ListBuckets()
 
 	for _, j := range Buckets {
 		BucketName := j.Name
@@ -96,8 +94,7 @@ func (o *OSSCollector) ListObjects() []Object {
 
 func (o *OSSCollector) GetBucketACL() []Acl {
 	OSSCollector := &OSSCollector{}
-	Buckets, err := OSSCollector.ListBuckets()
-	util.HandleErr(err)
+	Buckets := OSSCollector.ListBuckets()
 
 	var out []Acl
 	for _, j := range Buckets {
@@ -128,16 +125,7 @@ func (o *OSSCollector) GetBucketACL() []Acl {
 func PrintBucketsListRealTime(region string) {
 	OSSCollector := &OSSCollector{}
 
-	Buckets, err := OSSCollector.ListBuckets()
-	if err != nil {
-		if strings.Contains(err.Error(), "You are forbidden to list buckets.") {
-			log.Errorln("当前凭证不具备 OSS 的读取权限，无法获取 OSS 数据。 (OSS data is not available because the current credential does not have read access to OSS.)")
-			os.Exit(0)
-		} else {
-			util.HandleErr(err)
-		}
-	}
-
+	Buckets := OSSCollector.ListBuckets()
 	log.Debugf("获取到 %d 条 OSS Bucket 信息 (Obtained %d OSS Bucket information)", len(Buckets), len(Buckets))
 
 	Objects := OSSCollector.ListObjects()

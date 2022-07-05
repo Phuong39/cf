@@ -37,7 +37,7 @@ func DescribeDBInstances(region string, running bool, specifiedDBInstanceID stri
 		request.Engine = engine
 	}
 	response, err := RDSClient(region).DescribeDBInstances(request)
-	util.HandleErr(err)
+	util.HandleErrNoExit(err)
 	DBInstancesList := response.Items.DBInstance
 	log.Tracef("正在 %s 区域中查找数据库实例 (Looking for DBInstances in the %s region)", region, region)
 	if len(DBInstancesList) != 0 {
