@@ -34,8 +34,7 @@ var getconfigCmd = &cobra.Command{
 		if AccessKeyId == "" {
 			log.Infoln("当前未配置访问密钥 (No access key configured)")
 		} else {
-			color.Printf(`
-<lightGreen>访问凭证 ID (Access key id):</> %s
+			color.Printf(`<lightGreen>访问凭证 ID (Access key id):</> %s
 <lightGreen>访问凭证密钥 (Access key secret):</> %s
 <lightGreen>临时访问凭证令牌 (STS token):</> %s
 <lightGreen>配置文件路径 (Configuration file path):</> %s

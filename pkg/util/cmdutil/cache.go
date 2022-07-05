@@ -117,7 +117,7 @@ func PrintECSCacheFile(filePath string, header []string, region string, specifie
 	case region != "all" && specifiedInstanceID == "all":
 		var dataRegion [][]string
 		for _, i := range data {
-			if i[8] == region {
+			if i[7] == region {
 				dataRegion = append(dataRegion, i)
 			}
 		}
@@ -133,7 +133,7 @@ func PrintECSCacheFile(filePath string, header []string, region string, specifie
 	case region != "all" && specifiedInstanceID != "all":
 		var dataRegion [][]string
 		for _, i := range data {
-			if i[8] == region {
+			if i[7] == region {
 				dataRegion = append(dataRegion, i)
 			}
 		}
