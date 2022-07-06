@@ -31,7 +31,7 @@ func Upgrade(version string) {
 		unzipFile(fileName)
 		err = os.Remove(fileName)
 		util.HandleErr(err)
-		log.Infof("更新完成，历史版本已被重命名为 %s (The update is complete and the previous version has been renamed to %s)\n", oldBakFileName, oldBakFileName)
+		log.Infof("更新完成，历史版本已被重命名为 %s (The update is complete and the previous version has been renamed to %s)", oldBakFileName, oldBakFileName)
 	} else {
 		log.Infof("当前 %s 版本为最新版本，无需升级 (The current %s version is the latest version, no need to upgrade)", version, version)
 	}
