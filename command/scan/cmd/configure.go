@@ -15,8 +15,8 @@ func init() {
 
 var configureCmd = &cobra.Command{
 	Use:   "configure",
-	Short: "配置云服务商的访问密钥 (Configure cloud service providers access key)",
-	Long:  `配置云服务商的访问密钥 (Configure cloud service providers access key)`,
+	Short: "配置云服务商的访问密钥 (Configure cloud provider access key)",
+	Long:  `配置云服务商的访问密钥 (Configure cloud provider access key)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmdutil.ConfigureAccessKey()
 	},
