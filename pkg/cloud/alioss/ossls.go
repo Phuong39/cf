@@ -33,7 +33,7 @@ var (
 	header           = []string{"序号 (SN)", "名称 (Name)", "存储桶 ACL (Bucket ACL)", "对象数量 (Object Number)", "存储桶大小 (Bucket Size)", "区域 (Region)", "存储桶地址 (Bucket URL)"}
 )
 
-func (o *OSSCollector) ListBuckets() []Bucket {
+func (o *OSSCollector) ListBuckets() ([]Bucket, error) {
 	region := cloud.GetGlobalRegions()[0]
 	o.OSSClient(region)
 	var size = 10
@@ -55,7 +55,7 @@ func (o *OSSCollector) ListBuckets() []Bucket {
 		}
 	}
 	util.HandleErrNoExit(err)
-	return out
+	return out, err
 }
 
 func (o *OSSCollector) ListObjects() []Object {
@@ -64,7 +64,7 @@ func (o *OSSCollector) ListObjects() []Object {
 	marker := oss.Marker("")
 
 	OSSCollector := &OSSCollector{}
-	Buckets := OSSCollector.ListBuckets()
+	Buckets, _ := OSSCollector.ListBuckets()
 
 	for _, j := range Buckets {
 		BucketName := j.Name
@@ -94,7 +94,7 @@ func (o *OSSCollector) ListObjects() []Object {
 
 func (o *OSSCollector) GetBucketACL() []Acl {
 	OSSCollector := &OSSCollector{}
-	Buckets := OSSCollector.ListBuckets()
+	Buckets, _ := OSSCollector.ListBuckets()
 
 	var out []Acl
 	for _, j := range Buckets {
@@ -125,7 +125,7 @@ func (o *OSSCollector) GetBucketACL() []Acl {
 func PrintBucketsListRealTime(region string) {
 	OSSCollector := &OSSCollector{}
 
-	Buckets := OSSCollector.ListBuckets()
+	Buckets, _ := OSSCollector.ListBuckets()
 	log.Debugf("获取到 %d 条 OSS Bucket 信息 (Obtained %d OSS Bucket information)", len(Buckets), len(Buckets))
 
 	Objects := OSSCollector.ListObjects()

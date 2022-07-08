@@ -31,10 +31,10 @@ Currently CF has these functions as follows:
   - [x] Support alibaba cloud
   - [x] List RDS
   - [x] Takeover console
+  - [x] View permissions for access key
   - [x] ......
 * Features intended to be supported in the short term
   - [ ] Attack trail removal
-  - [ ] View permissions for access key
   - [ ] ......
 * Features intended to be supported in the long term
 
@@ -71,13 +71,21 @@ cf ls
 
 ![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207040107386.png)
 
+ls permissions
+
+```bash
+cf ls permissions
+```
+
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207082108875.png)
+
 takeover console
 
 ```bash
 cf console
 ```
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207052308228.png)
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207082104422.png)
 
 View help information for ecs exec commands
 

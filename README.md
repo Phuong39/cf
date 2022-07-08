@@ -31,11 +31,11 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
   - [x] 支持阿里云
   - [x] 列出 RDS 云数据库实例
   - [x] 一键接管控制台
+  - [x] 一键查看当前访问凭证所拥有的权限
   - [x] ……
 * 预计短期内实现
 
   - [ ] 云上痕迹清除
-  - [ ] 一键查看当前访问凭证所拥有的权限
   - [ ] ……
 * 预计长期内实现
 
@@ -70,13 +70,21 @@ cf ls
 
 ![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207040107386.png)
 
+一键列出当前访问凭证的权限
+
+```bash
+cf ls permissions
+```
+
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207082108875.png)
+
 一键接管控制台
 
 ```bash
 cf console
 ```
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207052308228.png)
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207082104422.png)
 
 查看 CF 为实例执行命令的操作的帮助信息
 
