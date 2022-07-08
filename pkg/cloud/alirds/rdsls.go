@@ -23,7 +23,7 @@ type DBInstances struct {
 	RegionId         string
 }
 
-func DescribeDBInstances(region string, running bool, specifiedDBInstanceID string, engine string) []DBInstances {
+func DescribeDBInstances(region string, running bool, specifiedDBInstanceID string, engine string) ([]DBInstances, error) {
 	var out []DBInstances
 	request := rds.CreateDescribeDBInstancesRequest()
 	request.Scheme = "https"
@@ -53,7 +53,7 @@ func DescribeDBInstances(region string, running bool, specifiedDBInstanceID stri
 			out = append(out, obj)
 		}
 	}
-	return out
+	return out, err
 }
 
 func ReturnDBInstancesList(region string, running bool, specifiedDBInstanceID string, engine string) []DBInstances {
@@ -66,13 +66,13 @@ func ReturnDBInstancesList(region string, running bool, specifiedDBInstanceID st
 		}
 		RegionsList = RemoveRepeatedElement(RegionsList)
 		for _, j := range RegionsList {
-			DBInstance = DescribeDBInstances(j, running, specifiedDBInstanceID, engine)
+			DBInstance, _ = DescribeDBInstances(j, running, specifiedDBInstanceID, engine)
 			for _, i := range DBInstance {
 				DBInstancesList = append(DBInstancesList, i)
 			}
 		}
 	} else {
-		DBInstancesList = DescribeDBInstances(region, running, specifiedDBInstanceID, engine)
+		DBInstancesList, _ = DescribeDBInstances(region, running, specifiedDBInstanceID, engine)
 	}
 	return DBInstancesList
 }

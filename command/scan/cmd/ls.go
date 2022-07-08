@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/teamssix/cf/pkg/cloud/aliecs"
 	"github.com/teamssix/cf/pkg/cloud/alioss"
+	"github.com/teamssix/cf/pkg/cloud/aliram"
 	"github.com/teamssix/cf/pkg/cloud/alirds"
 )
 
@@ -16,6 +17,7 @@ var (
 
 func init() {
 	RootCmd.AddCommand(lsCmd)
+	lsCmd.AddCommand(permissionsCmd)
 	lsCmd.Flags().StringVarP(&lsRegion, "region", "r", "all", "指定区域 ID (Set Region ID)")
 	lsCmd.PersistentFlags().BoolVar(&lsFlushCache, "flushCache", false, "刷新缓存，不使用缓存数据 (Refresh the cache without using cached data)")
 }
@@ -30,5 +32,14 @@ var lsCmd = &cobra.Command{
 		aliecs.PrintInstancesList(lsRegion, false, "all", lsFlushCache)
 		fmt.Println("")
 		alirds.PrintDBInstancesList(lsRegion, false, "all", "all", lsFlushCache)
+	},
+}
+
+var permissionsCmd = &cobra.Command{
+	Use:   "permissions",
+	Short: "列出当前凭证下所拥有的权限 (List access key permissions)",
+	Long:  `列出当前凭证下所拥有的权限 (List access key permissions)`,
+	Run: func(cmd *cobra.Command, args []string) {
+		aliram.ListPermissions()
 	},
 }
