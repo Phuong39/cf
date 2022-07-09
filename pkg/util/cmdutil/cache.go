@@ -64,7 +64,7 @@ func createCacheDict() {
 }
 
 func WriteCacheFile(td cloud.TableData, filePath string) {
-	log.Debugln("写入数据到文件 (Write data to a file): " + filePath)
+	log.Debugln("写入数据到缓存文件 (Write data to a cache file): " + filePath)
 	filePtr, err := os.Create(filePath)
 	util.HandleErr(err)
 	defer filePtr.Close()
