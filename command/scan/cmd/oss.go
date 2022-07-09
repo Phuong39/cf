@@ -6,14 +6,16 @@ import (
 )
 
 var (
-	osslsregion     string
+	osslsRegion     string
+	osslsBucket     string
 	osslsFlushCache bool
 )
 
 func init() {
 	RootCmd.AddCommand(ossCmd)
 	ossCmd.AddCommand(osslsCmd)
-	osslsCmd.Flags().StringVarP(&osslsregion, "region", "r", "all", "指定区域 ID (Set Region ID)")
+	osslsCmd.Flags().StringVarP(&osslsRegion, "region", "r", "all", "指定区域 ID (Set Region ID)")
+	osslsCmd.Flags().StringVarP(&osslsBucket, "bucket", "b", "all", "列出指定 Bucket 下的对象 (List objects in Bucket)")
 	ossCmd.PersistentFlags().BoolVar(&osslsFlushCache, "flushCache", false, "刷新缓存，不使用缓存数据 (Refresh the cache without using cached data)")
 }
 
@@ -28,6 +30,10 @@ var osslsCmd = &cobra.Command{
 	Short: "列出所有的存储桶 (List all buckets)",
 	Long:  "列出所有的存储桶 (List all buckets)",
 	Run: func(cmd *cobra.Command, args []string) {
-		alioss.PrintBucketsList(osslsregion, osslsFlushCache)
+		if osslsBucket == "all" {
+			alioss.PrintBucketsList(osslsRegion, osslsFlushCache)
+		} else {
+			alioss.PrintObjectsList(osslsBucket)
+		}
 	},
 }

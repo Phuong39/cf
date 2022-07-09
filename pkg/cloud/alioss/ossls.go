@@ -24,6 +24,12 @@ type Acl struct {
 	Acl        string
 }
 
+type objectContents struct {
+	Key          string
+	Size         int64
+	LastModified string
+}
+
 type error interface {
 	Error() string
 }
@@ -58,21 +64,29 @@ func (o *OSSCollector) ListBuckets() ([]Bucket, error) {
 	return out, err
 }
 
-func (o *OSSCollector) ListObjects() []Object {
+func (o *OSSCollector) ListObjects(bucketName string) ([]Object, []objectContents) {
 	var size = 10
 	var out []Object
+	var objects []objectContents
+	var Buckets []Bucket
 	marker := oss.Marker("")
 
 	OSSCollector := &OSSCollector{}
-	Buckets, _ := OSSCollector.ListBuckets()
-
+	Buckets, _ = OSSCollector.ListBuckets()
+	if bucketName != "all" {
+		for _, obj := range Buckets {
+			if obj.Name == bucketName {
+				Buckets = nil
+				Buckets = append(Buckets, obj)
+			}
+		}
+	}
 	for _, j := range Buckets {
 		BucketName := j.Name
 		region := j.Region
 		o.OSSClient(region)
 		bucket, err := o.Client.Bucket(BucketName)
 		util.HandleErr(err)
-
 		lor, err := bucket.ListObjects(oss.MaxKeys(size), marker)
 		util.HandleErr(err)
 		marker = oss.Marker(lor.NextMarker)
@@ -80,6 +94,12 @@ func (o *OSSCollector) ListObjects() []Object {
 		var ObjectSize int64
 		for _, k := range lor.Objects {
 			ObjectSize = ObjectSize + k.Size
+			obj := objectContents{
+				Key:          k.Key,
+				Size:         k.Size,
+				LastModified: k.LastModified.Format("2006-01-02 15:04:05"),
+			}
+			objects = append(objects, obj)
 		}
 		log.Debugf("在 %s 存储桶中找到了 %d 个对象 (Found %d Objects in %s Bucket)", BucketName, num, num, BucketName)
 		obj := Object{
@@ -89,13 +109,12 @@ func (o *OSSCollector) ListObjects() []Object {
 		}
 		out = append(out, obj)
 	}
-	return out
+	return out, objects
 }
 
 func (o *OSSCollector) GetBucketACL() []Acl {
 	OSSCollector := &OSSCollector{}
 	Buckets, _ := OSSCollector.ListBuckets()
-
 	var out []Acl
 	for _, j := range Buckets {
 		BucketName := j.Name
@@ -128,7 +147,7 @@ func PrintBucketsListRealTime(region string) {
 	Buckets, _ := OSSCollector.ListBuckets()
 	log.Debugf("获取到 %d 条 OSS Bucket 信息 (Obtained %d OSS Bucket information)", len(Buckets), len(Buckets))
 
-	Objects := OSSCollector.ListObjects()
+	Objects, _ := OSSCollector.ListObjects("all")
 	ACL := OSSCollector.GetBucketACL()
 
 	var num = 0
