@@ -118,6 +118,7 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 		cloud.PrintTable(td, Caption)
 		cmdutil.WriteCacheFile(td, ECSCacheFilePath)
 	}
+	util.WriteTimeStamp(util.ReturnECSTimeStampFile())
 }
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {
@@ -132,6 +133,14 @@ func PrintInstancesList(region string, running bool, specifiedInstanceID string,
 	if ecsFlushCache {
 		PrintInstancesListRealTime(region, running, specifiedInstanceID)
 	} else {
-		PrintInstancesListHistory(region, running, specifiedInstanceID)
+		oldTimeStamp := util.ReadTimeStamp(util.ReturnECSTimeStampFile())
+		if oldTimeStamp == 0 {
+			PrintInstancesListRealTime(region, running, specifiedInstanceID)
+		} else if util.IsFlushCache(oldTimeStamp) {
+			PrintInstancesListRealTime(region, running, specifiedInstanceID)
+		} else {
+			util.TimeDifference(oldTimeStamp)
+			PrintInstancesListHistory(region, running, specifiedInstanceID)
+		}
 	}
 }

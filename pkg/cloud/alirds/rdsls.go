@@ -110,6 +110,7 @@ func PrintDBInstancesListRealTime(region string, running bool, specifiedDBInstan
 		cloud.PrintTable(td, Caption)
 		cmdutil.WriteCacheFile(td, RDSCacheFilePath)
 	}
+	util.WriteTimeStamp(util.ReturnRDSTimeStampFile())
 }
 
 func PrintDBInstancesListHistory(region string, running bool, specifiedDBInstanceID string, engine string) {
@@ -124,6 +125,14 @@ func PrintDBInstancesList(region string, running bool, specifiedDBInstanceID str
 	if lsFlushCache {
 		PrintDBInstancesListRealTime(region, running, specifiedDBInstanceID, engine)
 	} else {
-		PrintDBInstancesListHistory(region, running, specifiedDBInstanceID, engine)
+		oldTimeStamp := util.ReadTimeStamp(util.ReturnRDSTimeStampFile())
+		if oldTimeStamp == 0 {
+			PrintDBInstancesListRealTime(region, running, specifiedDBInstanceID, engine)
+		} else if util.IsFlushCache(oldTimeStamp) {
+			PrintDBInstancesListRealTime(region, running, specifiedDBInstanceID, engine)
+		} else {
+			util.TimeDifference(oldTimeStamp)
+			PrintDBInstancesListHistory(region, running, specifiedDBInstanceID, engine)
+		}
 	}
 }

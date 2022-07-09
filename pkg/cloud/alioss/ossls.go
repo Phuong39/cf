@@ -190,6 +190,7 @@ func PrintBucketsListRealTime(region string) {
 		cloud.PrintTable(td, Caption)
 		cmdutil.WriteCacheFile(td, OSSCacheFilePath)
 	}
+	util.WriteTimeStamp(util.ReturnOSSTimeStampFile())
 }
 
 func PrintBucketsListHistory(region string) {
@@ -204,6 +205,14 @@ func PrintBucketsList(region string, lsFlushCache bool) {
 	if lsFlushCache {
 		PrintBucketsListRealTime(region)
 	} else {
-		PrintBucketsListHistory(region)
+		oldTimeStamp := util.ReadTimeStamp(util.ReturnOSSTimeStampFile())
+		if oldTimeStamp == 0 {
+			PrintBucketsListRealTime(region)
+		} else if util.IsFlushCache(oldTimeStamp) {
+			PrintBucketsListRealTime(region)
+		} else {
+			util.TimeDifference(oldTimeStamp)
+			PrintBucketsListHistory(region)
+		}
 	}
 }
