@@ -35,14 +35,12 @@ func ConfigureAccessKey() {
 	}
 	var qs = []*survey.Question{
 		{
-			Name:     "AccessKeyId",
-			Prompt:   &survey.Input{Message: "Access Key Id (必须 Required)" + OldAccessKeyId + ":"},
-			Validate: survey.Required,
+			Name:   "AccessKeyId",
+			Prompt: &survey.Input{Message: "Access Key Id (必须 Required)" + OldAccessKeyId + ":"},
 		},
 		{
-			Name:     "AccessKeySecret",
-			Prompt:   &survey.Password{Message: "Access Key Secret (必须 Required)" + OldAccessKeySecret + ":"},
-			Validate: survey.Required,
+			Name:   "AccessKeySecret",
+			Prompt: &survey.Password{Message: "Access Key Secret (必须 Required)" + OldAccessKeySecret + ":"},
 		},
 		{
 			Name:   "STSToken",
@@ -51,6 +49,15 @@ func ConfigureAccessKey() {
 	}
 	cred := cloud.Credential{}
 	err := survey.Ask(qs, &cred)
+	if cred.AccessKeyId == "" {
+		cred.AccessKeyId = AccessKeyId
+	}
+	if cred.AccessKeySecret == "" {
+		cred.AccessKeySecret = AccessKeySecret
+	}
+	if cred.STSToken == "" {
+		cred.STSToken = STSToken
+	}
 	util.HandleErr(err)
 	SaveAccessKey(cred)
 }
