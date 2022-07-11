@@ -25,6 +25,7 @@ var errorMessages = map[string]string{
 	"Message: The Access Key is disabled.":                                     "当前访问凭证已被禁用 (The Access Key is disabled)",
 	"ErrorCode: Forbidden.RAM":                                                 "当前访问凭证没有执行命令的权限 (Current Access Key do not have permission to execute commands)",
 	"ErrorCode: NoPermission":                                                  "当前访问凭证没有接管控制台的权限 (Current Access Key do not have permission to take over the console)",
+	"ErrorCode=NoSuchKey":                                                      "存储桶中没有这个对象 (There is no such key in the bucket)",
 }
 
 var errorMessagesNoExit = map[string]string{

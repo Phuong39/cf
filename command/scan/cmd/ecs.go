@@ -76,7 +76,7 @@ var ecsExecCmd = &cobra.Command{
 			log.Warnln("未指定反弹 shell 的主机 IP (The ip of the listening host is not set)")
 			cmd.Help()
 		} else if command == "" && batchCommand == false && userData == false && metaDataSTSToken == false && commandFile == "" && lhost == "" && lport == "" {
-			log.Warnln("还未指定要执行的命令 (The command to be executed has not been specified yet)\n")
+			log.Warnf("还未指定要执行的命令 (The command to be executed has not been specified yet)\n")
 			cmd.Help()
 		} else {
 			aliecs.ECSExec(command, commandFile, scriptType, ecsExecSpecifiedInstanceID, ecsExecRegion, batchCommand, userData, metaDataSTSToken, ecsFlushCache, lhost, lport, timeOut)
