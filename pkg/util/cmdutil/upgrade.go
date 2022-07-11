@@ -16,6 +16,8 @@ import (
 	"github.com/teamssix/cf/pkg/util"
 )
 
+var cfWorkDir, _ = filepath.Abs(filepath.Dir(os.Args[0]))
+
 func Upgrade(version string) {
 	check, newVersion := util.CheckVersion(version)
 	if check {
@@ -24,14 +26,14 @@ func Upgrade(version string) {
 		downloadURL := fmt.Sprintf("https://ghproxy.com/github.com/teamssix/cf/releases/download/%s/%s", newVersion, fileName)
 		path, _ := os.Executable()
 		_, oldFileName := filepath.Split(path)
-		oldBakFileName := oldFileName + ".bak"
+		oldBakFileName := cfWorkDir + "/" + oldFileName + ".bak"
 		downloadFile(downloadURL, fileName)
-		err := os.Rename(oldFileName, oldBakFileName)
+		err := os.Rename(cfWorkDir+"/"+oldFileName, oldBakFileName)
 		util.HandleErr(err)
 		unzipFile(fileName)
 		err = os.Remove(fileName)
 		util.HandleErr(err)
-		log.Infof("更新完成，历史版本已被重命名为 %s (The update is complete and the previous version has been renamed to %s)", oldBakFileName, oldBakFileName)
+		log.Infof("更新完成，历史版本已被重命名为 %s (The update is complete and the previous version has been renamed to %s)", oldFileName+".bak", oldFileName+".bak")
 	} else {
 		log.Infof("当前 %s 版本为最新版本，无需升级 (The current %s version is the latest version, no need to upgrade)", version, version)
 	}
@@ -92,14 +94,15 @@ func unzipFile(fileName string) {
 		util.HandleErr(err)
 		io.Copy(file, tarReader)
 	}
+	newCfPath := cfWorkDir + "/cf"
 	log.Debugln("解压完成 (Unzip completed)")
-	log.Traceln("将 ./cfcache/cf 文件移动到 ./cf (Move the ./cfcache/cf file to ./cf)")
-	os.Rename("./cfcache/cf", "./cf")
+	log.Tracef("将 ./cfcache/cf 文件移动到 %s (Move the ./cfcache/cf file to %s)", newCfPath, newCfPath)
+	os.Rename("./cfcache/cf", newCfPath)
 	log.Traceln("删除 ./cfcache/ 文件夹 (Delete ./cfcache/ folder)")
 	err = os.RemoveAll("./cfcache/")
 	util.HandleErr(err)
 	log.Traceln("为 ./cf 文件赋予可执行权限 (Grant execute permission to ./cf file)")
-	f, err := os.Open("./cf")
+	f, err := os.Open(newCfPath)
 	util.HandleErr(err)
 	defer f.Close()
 	err = f.Chmod(0755)

@@ -14,6 +14,7 @@ import (
 
 type Instances struct {
 	InstanceId       string
+	InstanceName     string
 	OSName           string
 	OSType           string
 	Status           string
@@ -24,7 +25,7 @@ type Instances struct {
 
 var (
 	ECSCacheFilePath = cmdutil.ReturnECSCacheFile()
-	header           = []string{"序号 (SN)", "实例 ID (Instance ID)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private Ip Address)", "公网 IP (Public Ip Address)", "区域 ID (Region ID)"}
+	header           = []string{"序号 (SN)", "实例 ID (Instance ID)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private Ip Address)", "公网 IP (Public Ip Address)", "区域 ID (Region ID)"}
 )
 
 func DescribeInstances(region string, running bool, SpecifiedInstanceID string) []Instances {
@@ -72,6 +73,7 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 			}
 			obj := Instances{
 				InstanceId:       i.InstanceId,
+				InstanceName:     i.InstanceName,
 				OSName:           i.OSName,
 				OSType:           i.OSType,
 				Status:           i.Status,
@@ -107,7 +109,7 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 	var data = make([][]string, len(InstancesList))
 	for i, o := range InstancesList {
 		SN := strconv.Itoa(i + 1)
-		data[i] = []string{SN, o.InstanceId, o.OSName, o.OSType, o.Status, o.PrivateIpAddress, o.PublicIpAddress, o.RegionId}
+		data[i] = []string{SN, o.InstanceId, o.InstanceName, o.OSName, o.OSType, o.Status, o.PrivateIpAddress, o.PublicIpAddress, o.RegionId}
 	}
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {

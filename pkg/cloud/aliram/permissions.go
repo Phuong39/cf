@@ -44,8 +44,8 @@ const (
 func ListPermissions() {
 	userName := getCallerIdentity()
 	log.Infof("当前用户名为 %s (Current username is %s)", userName, userName)
+	var data [][]string
 	if userName == "root" {
-		var data [][]string
 		data = append(data, []string{"1", "AdministratorAccess", "管理所有阿里云资源的权限"})
 		var td = cloud.TableData{Header: header, Body: data}
 		Caption := "当前凭证具备的权限 (Permissions owned)"
@@ -69,7 +69,6 @@ func ListPermissions() {
 				Caption := "当前凭证具备的权限 (Permissions owned)"
 				cloud.PrintTable(td, Caption)
 				fmt.Println()
-				var data2 [][]string
 				for _, o := range data {
 					switch {
 					case strings.Contains(o[1], "AdministratorAccess"):
