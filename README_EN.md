@@ -51,7 +51,7 @@ For detailed manuals, please visit: [wiki.teamssix.com/cf](https://wiki.teamssix
 
 > The manual currently supports Chinese only
 
-[![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207052324971.png)](https://wiki.teamssix.com/cf)
+[![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207112152449.png)](https://wiki.teamssix.com/cf)
 
 ## Easy to start
 
