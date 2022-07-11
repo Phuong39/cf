@@ -35,11 +35,10 @@ Currently CF has these functions as follows:
   - [x] Takeover console
   - [x] View permissions for access key
   - [x] ......
-* Features intended to be supported in the short term
+  
+* Functions to be implemented in the future
   - [ ] Attack trail removal
-  - [ ] ......
-* Features intended to be supported in the long term
-
+  
   - [ ] Automatically detect if the current running environment is an instance, and if so, scan the local instance for credential information
   - [ ] Add the resulting credentials to the CF
   - [ ] Support other cloud providers such as Tencent Cloud
