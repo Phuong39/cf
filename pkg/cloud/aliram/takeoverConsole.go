@@ -24,7 +24,7 @@ func CreateLoginProfile() {
 	request := ram.CreateCreateLoginProfileRequest()
 	request.Scheme = "https"
 	request.UserName = "crossfire"
-	request.Password = "TeamsSix@666"
+	request.Password = "TeamsSix_CF@666"
 	_, err := RAMClient().CreateLoginProfile(request)
 	util.HandleErrNoExit(err)
 	if err == nil {
@@ -61,7 +61,7 @@ func TakeoverConsole() {
 	accountAlias := GetAccountAlias()
 	username := fmt.Sprintf("crossfire@%s", accountAlias)
 	data := [][]string{
-		{username, "TeamsSix@666", "https://signin.aliyun.com"},
+		{username, "TeamsSix_CF@666", "https://signin.aliyun.com"},
 	}
 	var header = []string{"用户名", "密码", "控制台登录地址"}
 	var td = cloud.TableData{Header: header, Body: data}
