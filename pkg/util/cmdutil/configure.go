@@ -55,7 +55,7 @@ func ConfigureAccessKey() {
 	if cred.AccessKeySecret == "" {
 		cred.AccessKeySecret = AccessKeySecret
 	}
-	if cred.STSToken == "" {
+	if cred.STSToken == "" && strings.Contains(cred.AccessKeyId, "STS.") {
 		cred.STSToken = STSToken
 	}
 	util.HandleErr(err)

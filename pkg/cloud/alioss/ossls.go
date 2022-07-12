@@ -42,7 +42,7 @@ var (
 func (o *OSSCollector) ListBuckets() ([]Bucket, error) {
 	region := cloud.GetGlobalRegions()[0]
 	o.OSSClient(region)
-	var size = 10
+	var size = 1000
 	var out []Bucket
 	marker := oss.Marker("")
 	var err error
@@ -65,7 +65,7 @@ func (o *OSSCollector) ListBuckets() ([]Bucket, error) {
 }
 
 func (o *OSSCollector) ListObjects(bucketName string) ([]Object, []objectContents) {
-	var size = 10
+	var size = 1000
 	var out []Object
 	var objects []objectContents
 	var Buckets []Bucket

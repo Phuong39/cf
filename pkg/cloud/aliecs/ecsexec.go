@@ -105,24 +105,26 @@ func ECSExec(command string, commandFile string, scriptType string, specifiedIns
 				if specifiedInstanceID == i[1] {
 					obj := Instances{
 						InstanceId:       i[1],
-						OSName:           i[2],
-						OSType:           i[3],
-						Status:           i[4],
-						PrivateIpAddress: i[5],
-						PublicIpAddress:  i[6],
-						RegionId:         i[7],
+						InstanceName:     i[2],
+						OSName:           i[3],
+						OSType:           i[4],
+						Status:           i[5],
+						PrivateIpAddress: i[6],
+						PublicIpAddress:  i[7],
+						RegionId:         i[8],
 					}
 					InstancesList = append(InstancesList, obj)
 				}
 			} else {
 				obj := Instances{
 					InstanceId:       i[1],
-					OSName:           i[2],
-					OSType:           i[3],
-					Status:           i[4],
-					PrivateIpAddress: i[5],
-					PublicIpAddress:  i[6],
-					RegionId:         i[7],
+					InstanceName:     i[2],
+					OSName:           i[3],
+					OSType:           i[4],
+					Status:           i[5],
+					PrivateIpAddress: i[6],
+					PublicIpAddress:  i[7],
+					RegionId:         i[8],
 				}
 				InstancesList = append(InstancesList, obj)
 			}
