@@ -6,21 +6,16 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/teamssix/cf/pkg/cloud/alirds"
-
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
-	"github.com/teamssix/cf/pkg/cloud/aliecs"
-
-	"github.com/teamssix/cf/pkg/cloud/alioss"
-
-	"github.com/teamssix/cf/pkg/util"
-
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/ram"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/sts"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/teamssix/cf/pkg/cloud"
-
-	"github.com/aliyun/alibaba-cloud-sdk-go/services/ram"
-	log "github.com/sirupsen/logrus"
+	"github.com/teamssix/cf/pkg/cloud/aliecs"
+	"github.com/teamssix/cf/pkg/cloud/alioss"
+	"github.com/teamssix/cf/pkg/cloud/alirds"
+	"github.com/teamssix/cf/pkg/util"
 )
 
 var header = []string{"序号 (SN)", "策略名称 (PolicyName)", "描述 (Description)"}
@@ -31,6 +26,8 @@ var data2 [][]string
 const (
 	osslsAction        = "cf oss ls"
 	osslsDescription   = "列出 OSS 资源"
+	ossgetAction       = "cf oss get"
+	ossgetDescription  = "下载 OSS 资源"
 	ecslsAction        = "cf ecs ls"
 	ecslsDescription   = "列出 ECS 资源"
 	ecsexecAction      = "cf ecs exec"
@@ -81,11 +78,14 @@ func ListPermissions() {
 						data2 = appendData(osslsAction, osslsDescription)
 						data2 = appendData(ecslsAction, ecslsDescription)
 						data2 = appendData(rdslsAction, rdslsDescription)
+					case strings.Contains(o[1], "AliyunOSSFullAccess"):
+						data2 = appendData(osslsAction, osslsDescription)
+						data2 = appendData(ossgetAction, ossgetDescription)
+					case strings.Contains(o[1], "AliyunOSSReadOnlyAccess"):
+						data2 = appendData(osslsAction, osslsDescription)
 					case strings.Contains(o[1], "AliyunECSFullAccess"):
 						data2 = appendData(ecslsAction, ecslsDescription)
 						data2 = appendData(ecsexecAction, ecsexecDescription)
-					case strings.Contains(o[1], "AliyunOSSReadOnlyAccess"):
-						data2 = appendData(osslsAction, osslsDescription)
 					case strings.Contains(o[1], "AliyunECSReadOnlyAccess"):
 						data2 = appendData(ecslsAction, ecslsDescription)
 					case strings.Contains(o[1], "AliyunECSAssistantFullAccess"):
@@ -169,26 +169,44 @@ func listPoliciesForUser(userName string) ([][]string, error) {
 func traversalPermissions() ([][]string, [][]string) {
 	var obj1 [][]string
 	var obj2 [][]string
-	// 1. cf oss ls
+	// 1. cf oss get && cf oss ls
+	log.Debugln("正在判断 oss get 权限 (Determining the permission of oss get)")
 	OSSCollector := &alioss.OSSCollector{}
-	_, err1 := OSSCollector.ListBuckets()
+	OSSCollector.OSSClient("cn-hangzhou")
+	tempBucketName := "teamssix-e2mxrjpkwadnybqzzzihlmxnsowmcpakshhakq2anj6j8ez"
+	err1 := OSSCollector.Client.CreateBucket(tempBucketName)
 	if err1 == nil {
-		obj1 = append(obj1, []string{"AliyunOSSReadOnlyAccess", "只读访问对象存储服务(OSS)的权限"})
-		obj2 = append(obj2, []string{"cf oss ls", "列出 OSS 资源"})
+		obj1 = append(obj1, []string{"AliyunOSSFullAccess", "管理对象存储服务(OSS)权限"})
+		obj2 = append(obj2, []string{osslsAction, osslsDescription})
+		obj2 = append(obj2, []string{ossgetAction, ossgetDescription})
+		err1_2 := OSSCollector.Client.DeleteBucket(tempBucketName)
+		if err1_2 != nil {
+			log.Traceln(err1_2.Error())
+		}
 	} else {
 		log.Traceln(err1.Error())
+		log.Debugln("正在判断 oss ls 权限 (Determining the permission of oss ls)")
+		_, err11 := OSSCollector.ListBuckets()
+		if err11 == nil {
+			obj1 = append(obj1, []string{"AliyunOSSReadOnlyAccess", "只读访问对象存储服务(OSS)的权限"})
+			obj2 = append(obj2, []string{osslsAction, osslsDescription})
+		} else {
+			log.Traceln(err11.Error())
+		}
 	}
 	// 2. cf ecs ls
+	log.Debugln("正在判断 ecs ls 权限 (Determining the permission of ecs ls)")
 	request := ecs.CreateDescribeVpcsRequest()
 	request.Scheme = "https"
 	_, err2 := aliecs.ECSClient("cn-beijing").DescribeVpcs(request)
 	if err2 == nil {
 		obj1 = append(obj1, []string{"AliyunECSReadOnlyAccess", "只读访问云服务器服务(ECS)的权限"})
-		obj2 = append(obj2, []string{"cf ecs ls", "列出 ECS 资源"})
+		obj2 = append(obj2, []string{ecslsAction, ecslsDescription})
 	} else {
 		log.Traceln(err2.Error())
 	}
 	// 3. cf ecs exec
+	log.Debugln("正在判断 ecs exec 权限 (Determining the permission of ecs exec)")
 	request3 := ecs.CreateInvokeCommandRequest()
 	request3.Scheme = "https"
 	request3.CommandId = "abcdefghijklmn"
@@ -196,19 +214,21 @@ func traversalPermissions() ([][]string, [][]string) {
 	_, err3 := aliecs.ECSClient("cn-beijing").InvokeCommand(request3)
 	if !strings.Contains(err3.Error(), "ErrorCode: Forbidden.RAM") {
 		obj1 = append(obj1, []string{"AliyunECSAssistantFullAccess", "管理 ECS 云助手服务的权限"})
-		obj2 = append(obj2, []string{"cf ecs exec", "在 ECS 上执行命令"})
+		obj2 = append(obj2, []string{ecsexecAction, ecsexecDescription})
 	} else {
 		log.Traceln(err3.Error())
 	}
 	// 4. cf rds ls
+	log.Debugln("正在判断 rds ls 权限 (Determining the permission of rds ls)")
 	_, err4 := alirds.DescribeDBInstances("cn-beijing", true, "all", "all")
 	if err4 == nil {
 		obj1 = append(obj1, []string{"AliyunRDSReadOnlyAccess", "只读访问云数据库服务(RDS)的权限"})
-		obj2 = append(obj2, []string{"cf rds ls", "列出 RDS 资源"})
+		obj2 = append(obj2, []string{rdslsAction, rdslsDescription})
 	} else {
 		log.Traceln(err4.Error())
 	}
 	// 5. cf console
+	log.Debugln("正在判断 console 权限 (Determining the permission of console)")
 	request5 := ram.CreateDetachPolicyFromUserRequest()
 	request5.Scheme = "https"
 	request5.PolicyType = "System"
@@ -217,7 +237,7 @@ func traversalPermissions() ([][]string, [][]string) {
 	_, err5 := RAMClient().DetachPolicyFromUser(request5)
 	if !strings.Contains(err5.Error(), "ErrorCode: NoPermission") {
 		obj1 = append(obj1, []string{"AliyunRAMFullAccess", "管理访问控制(RAM)的权限，即管理用户以及授权的权限"})
-		obj2 = append(obj2, []string{"cf console", "接管控制台"})
+		obj2 = append(obj2, []string{consoleAction, consoleDescription})
 	} else {
 		log.Traceln(err5.Error())
 	}
