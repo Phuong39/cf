@@ -29,7 +29,7 @@ type error interface {
 }
 
 var (
-	OSSCacheFilePath = cmdutil.ReturnOSSCacheFile()
+	OSSCacheFilePath = cmdutil.ReturnOSSCacheFile("alibaba")
 	header           = []string{"序号 (SN)", "名称 (Name)", "存储桶 ACL (Bucket ACL)", "对象数量 (Object Number)", "存储桶大小 (Bucket Size)", "区域 (Region)", "存储桶地址 (Bucket URL)"}
 )
 
@@ -175,7 +175,7 @@ func PrintBucketsListRealTime(region string) {
 
 func PrintBucketsListHistory(region string) {
 	if cmdutil.FileExists(OSSCacheFilePath) {
-		cmdutil.PrintOSSCacheFile(OSSCacheFilePath, header, region)
+		cmdutil.PrintOSSCacheFile(OSSCacheFilePath, header, region, "alibaba")
 	} else {
 		PrintBucketsListRealTime(region)
 	}

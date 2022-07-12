@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-
 	"github.com/spf13/cobra"
 	"github.com/teamssix/cf/pkg/cloud/aliecs"
 	"github.com/teamssix/cf/pkg/cloud/alioss"

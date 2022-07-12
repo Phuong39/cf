@@ -6,10 +6,26 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
+//type Credential struct {
+//	AccessKeyId     string `json:"AccessKeyId"`
+//	AccessKeySecret string `json:"AccessKeySecret"`
+//	STSToken        string `json:"STSToken"`
+//}
+
+//增加腾讯云厂商结构支持，未来方便拓展
 type Credential struct {
-	AccessKeyId     string `json:"AccessKeyId"`
-	AccessKeySecret string `json:"AccessKeySecret"`
-	STSToken        string `json:"STSToken"`
+	Tencent struct {
+		SecretId     string `json:"SecretId"`
+		SecretKey    string `json:"SecretKey"`
+		Token        string `json:"Token"`
+		TmpSecretId  string `json:"TmpSecretId"`
+		TmpSecretKey string `json:"TmpSecretKey"`
+	} `json:"tencent"`
+	Alibaba struct {
+		AccessKeyId     string `json:"AccessKeyId"`
+		AccessKeySecret string `json:"AccessKeySecret"`
+		STSToken        string `json:"STSToken"`
+	} `json:"alibaba"`
 }
 
 type Bucket = Resource
