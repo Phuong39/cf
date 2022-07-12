@@ -49,6 +49,9 @@ func ConfigureAccessKey() {
 	}
 	cred := cloud.Credential{}
 	err := survey.Ask(qs, &cred)
+	cred.AccessKeyId = strings.TrimSpace(cred.AccessKeyId)
+	cred.AccessKeySecret = strings.TrimSpace(cred.AccessKeySecret)
+	cred.STSToken = strings.TrimSpace(cred.STSToken)
 	if cred.AccessKeyId == "" {
 		cred.AccessKeyId = AccessKeyId
 	}

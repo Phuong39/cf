@@ -57,7 +57,7 @@ func ListPermissions() {
 		Caption2 := "当前凭证可以执行的操作 (Available actions)"
 		cloud.PrintTable(td2, Caption2)
 	} else {
-		data, err := listPoliciesForUser(userName)
+		data, err := listAllPoliciesForUser(userName)
 		if err == nil {
 			if len(data) == 0 {
 				log.Infoln("当前凭证没有任何权限 (The current access key does not have any permissions)")
@@ -150,20 +150,66 @@ func getCallerIdentity() string {
 	return userName
 }
 
+func listAllPoliciesForUser(userName string) ([][]string, error) {
+	data, err := listPoliciesForUser(userName)
+	if err != nil {
+		return nil, err
+	} else {
+		groups := listGroupsForUser(userName)
+		if len(groups) > 0 {
+			for _, g := range groups {
+				for _, i := range listPoliciesForGroup(g) {
+					data = append(data, i)
+				}
+			}
+		}
+		return data, err
+	}
+}
+
 func listPoliciesForUser(userName string) ([][]string, error) {
 	request := ram.CreateListPoliciesForUserRequest()
 	request.Scheme = "https"
 	request.UserName = userName
 	response, err := RAMClient().ListPoliciesForUser(request)
 	if err == nil {
-		log.Debugf("成功获取 crossfire 用户的权限信息 (Successfully obtained permission information for crossfire user)")
+		log.Debugf("成功获取到 %s 用户的权限信息 (Successfully obtained permission information for %s user)", userName, userName)
+		var data [][]string
+		for n, i := range response.Policies.Policy {
+			SN := strconv.Itoa(n + 1)
+			data = append(data, []string{SN, i.PolicyName, i.Description})
+		}
+		return data, err
+	} else {
+		return nil, err
 	}
+}
+
+func listPoliciesForGroup(groupName string) [][]string {
+	request := ram.CreateListPoliciesForGroupRequest()
+	request.Scheme = "https"
+	request.GroupName = groupName
+	response, err := RAMClient().ListPoliciesForGroup(request)
+	util.HandleErr(err)
 	var data [][]string
 	for n, i := range response.Policies.Policy {
 		SN := strconv.Itoa(n + 1)
 		data = append(data, []string{SN, i.PolicyName, i.Description})
 	}
-	return data, err
+	return data
+}
+
+func listGroupsForUser(userName string) []string {
+	request := ram.CreateListGroupsForUserRequest()
+	request.Scheme = "https"
+	request.UserName = userName
+	response, err := RAMClient().ListGroupsForUser(request)
+	util.HandleErr(err)
+	var groups []string
+	for _, g := range response.Groups.Group {
+		groups = append(groups, g.GroupName)
+	}
+	return groups
 }
 
 func traversalPermissions() ([][]string, [][]string) {
