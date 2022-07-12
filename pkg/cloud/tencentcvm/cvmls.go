@@ -6,6 +6,7 @@ import (
 	"github.com/teamssix/cf/pkg/cloud"
 	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
+	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	cvm "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm/v20170312"
 	"strconv"
 )
@@ -19,9 +20,16 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 	var out []Instances
 	request := cvm.NewDescribeInstancesRequest()
 	request.SetScheme("https")
+	if running {
+		request.Filters = []*cvm.Filter{
+			&cvm.Filter{
+				Name:   common.StringPtr("instance-state"),
+				Values: common.StringPtrs([]string{"RUNNING"}),
+			},
+		}
+	}
 	if region != "all" {
-		//
-		//log.Info("spid:", SpecifiedInstanceID)
+		request.InstanceIds = common.StringPtrs([]string{SpecifiedInstanceID})
 	}
 	response, err := CVMClient(region).DescribeInstances(request)
 	util.HandleErr(err)

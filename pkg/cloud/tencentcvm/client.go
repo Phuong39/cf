@@ -37,7 +37,7 @@ func CVMClient(region string) *cvm.Client {
 		client, err := cvm.NewClient(credential, region, cpf)
 		util.HandleErr(err)
 		if err == nil {
-			log.Traceln("ECS Client 连接成功 (ECS Client connection successful)")
+			log.Traceln("CVM Client 连接成功 (CVM Client connection successful)")
 		}
 		return client
 	} else {
@@ -48,7 +48,7 @@ func CVMClient(region string) *cvm.Client {
 		client, err := cvm.NewClient(credential, region, cpf)
 		util.HandleErr(err)
 		if err == nil {
-			log.Traceln("ECS Client 连接成功 (ECS Client connection successful)")
+			log.Traceln("CVM Client 连接成功 (CVM Client connection successful)")
 		}
 		return client
 	}
@@ -69,7 +69,7 @@ func TATClient(region string) *tat.Client {
 		client, err := tat.NewClient(credential, region, cpf)
 		util.HandleErr(err)
 		if err == nil {
-			log.Traceln("ECS Client 连接成功 (ECS Client connection successful)")
+			log.Traceln("TAT Client 连接成功 (TAT Client connection successful)")
 		}
 		return client
 	} else {
@@ -80,7 +80,7 @@ func TATClient(region string) *tat.Client {
 		client, err := tat.NewClient(credential, region, cpf)
 		util.HandleErr(err)
 		if err == nil {
-			log.Traceln("ECS Client 连接成功 (ECS Client connection successful)")
+			log.Traceln("TAT Client 连接成功 (TAT Client connection successful)")
 		}
 		return client
 	}
