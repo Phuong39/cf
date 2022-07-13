@@ -67,6 +67,23 @@ func ReturnCVMCacheFile() string {
 	return cvmCacheFile
 }
 
+func ReturnVPCCacheFile(cloud string) string {
+	config := GetAllCredential()
+	var vpcCacheFile string
+	if cloud == "alibaba" {
+		//阿里vpc
+	} else if cloud == "tencent" {
+		SecretId := config.Tencent.SecretId
+		if SecretId == "" {
+			vpcCacheFile = ""
+		} else {
+			vpcCacheFile = ReturnCacheDict() + "/" + SecretId[len(SecretId)-6:] + "_tencent_vpc.json"
+		}
+		return vpcCacheFile
+	}
+	return ""
+}
+
 func ReturnRDSCacheFile(cloud string) string {
 	//config := GetAliCredential()
 	config := GetAllCredential()

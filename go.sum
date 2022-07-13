@@ -245,6 +245,8 @@ github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.436 h1:5QMT
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.436/go.mod h1:7sCQWVkxcsR38nffDW057DRGk8mUjK1Ing/EFOK8s8Y=
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.437 h1:Qa0q6mhOkQ/0RoAqOheJAzPFksAf3jsjOZVt4FGcvyQ=
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.437/go.mod h1:7sCQWVkxcsR38nffDW057DRGk8mUjK1Ing/EFOK8s8Y=
+github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.441 h1:VirNGWmw+T9TUCTUwDwNjPxDAUJMCwE5nKCtGxBbi1U=
+github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.441/go.mod h1:7sCQWVkxcsR38nffDW057DRGk8mUjK1Ing/EFOK8s8Y=
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cpdp v1.0.436 h1:5mBaqupwntmCvX70fvOEKHkeAkj0MpBBE7cgN5GWfxw=
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cpdp v1.0.436/go.mod h1:ohF8+5OaOzWxba75BGJZukpNFZ60i9Qdnn6tp+K2Z6A=
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cr v1.0.436 h1:1piZ5K8eDevcfkGC7bogysm16VtJyG/E1lGQPT7KdUM=
@@ -535,6 +537,8 @@ github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vod v1.0.436 h1:UQ41oy9
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vod v1.0.436/go.mod h1:nVIdd4R5AhFpwC/gt0Zg3aeBroEZbUhoqN5In3g3yvc=
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vpc v1.0.436 h1:rei3IApZf88uFFDsd2bsgwxxI711ldrG3PVNmLuSI3s=
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vpc v1.0.436/go.mod h1:rrBXTck5GgZ5R49AbQKHwMTnoRLoSE5+kwKsLz00aIw=
+github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vpc v1.0.441 h1:zRwt+Yi9cg/aFaGvinVpvhEKp5EL0dle13VBZ+eVcAM=
+github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vpc v1.0.441/go.mod h1:FcSh6uInPcqGFSDbAf5Ba601ZQ9AGe59HYmYZLKRvSw=
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/waf v1.0.436 h1:uGGnJF5XBEN7XZ9RpY/h4UXzI4V4FFRv3USIAnyU41M=
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/waf v1.0.436/go.mod h1:KI5TTTUtpmtWVlypvXJwqJkDgEJgp60xfG5hXyPjPJw=
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/wav v1.0.436 h1:rFKrEj5kuYvnAj+d0Hy9uwrobW9GDOob4lc3Vo0LJHk=
