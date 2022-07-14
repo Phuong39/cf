@@ -2,10 +2,9 @@ package cmd
 
 import (
 	"github.com/gookit/color"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
-
-	log "github.com/sirupsen/logrus"
 )
 
 func init() {
@@ -18,7 +17,8 @@ var configureCmd = &cobra.Command{
 	Short: "配置云服务商的访问密钥 (Configure cloud provider access key)",
 	Long:  `配置云服务商的访问密钥 (Configure cloud provider access key)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmdutil.ConfigureAccessKey()
+		cmdutil.ConfigureAccessKey(args[0])
+		//cmdutil.ConfigureAccessKey()
 	},
 }
 
@@ -28,9 +28,9 @@ var getconfigCmd = &cobra.Command{
 	Long:  `获取当前配置的访问凭证 (Get the currently configured access key)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		config := cmdutil.GetAliCredential()
-		AccessKeyId := config.AccessKeyId
-		AccessKeySecret := config.AccessKeySecret
-		STSToken := config.STSToken
+		AccessKeyId := config.Alibaba.AccessKeyId
+		AccessKeySecret := config.Alibaba.AccessKeySecret
+		STSToken := config.Alibaba.STSToken
 		if AccessKeyId == "" {
 			log.Infoln("当前未配置访问密钥 (No access key configured)")
 		} else {

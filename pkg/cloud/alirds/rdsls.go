@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	RDSCacheFilePath = cmdutil.ReturnRDSCacheFile()
+	RDSCacheFilePath = cmdutil.ReturnRDSCacheFile("alibaba")
 	header           = []string{"序号 (SN)", "数据库 ID (DB ID)", "数据库类型 (DB Engine)", "数据库版本 (DB Engine Version)", "数据库状态 (DB Staus)", "区域 ID (Region ID)"}
 )
 
@@ -115,7 +115,7 @@ func PrintDBInstancesListRealTime(region string, running bool, specifiedDBInstan
 
 func PrintDBInstancesListHistory(region string, running bool, specifiedDBInstanceID string, engine string) {
 	if cmdutil.FileExists(RDSCacheFilePath) {
-		cmdutil.PrintRDSCacheFile(RDSCacheFilePath, header, region, specifiedDBInstanceID, engine)
+		cmdutil.PrintRDSCacheFile(RDSCacheFilePath, header, region, specifiedDBInstanceID, engine, "alibaba")
 	} else {
 		PrintDBInstancesListRealTime(region, running, specifiedDBInstanceID, engine)
 	}

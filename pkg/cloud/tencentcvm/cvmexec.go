@@ -1,70 +1,80 @@
-package aliecs
+package tencentcvm
 
 import (
 	"encoding/base64"
 	"fmt"
+	"github.com/AlecAivazis/survey/v2"
+	"github.com/gookit/color"
+	log "github.com/sirupsen/logrus"
+	"github.com/teamssix/cf/pkg/util"
+	"github.com/teamssix/cf/pkg/util/cmdutil"
+	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
+	tat "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tat/v20201028"
 	"io/ioutil"
 	"os"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/AlecAivazis/survey/v2"
-
-	"github.com/teamssix/cf/pkg/util/cmdutil"
-
-	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
-	"github.com/gookit/color"
-	log "github.com/sirupsen/logrus"
-	"github.com/teamssix/cf/pkg/util"
 )
 
 var timeSleepSum int
 
+var linuxSet = []string{"CentOS", "Ubuntu", "Debian", "OpenSUSE", "SUSE", "CoreOS", "FreeBSD", "Kylin", "UnionTech", "TencentOS", "Other Linux"}
+
+//var winSet = []string{"Windows Server 2008", "Windows Server 2012", "Windows Server 2016"}
+
+func find(slice []string, val string) bool {
+	for _, item := range slice {
+		if item == val {
+			return true
+		}
+	}
+	return false
+}
+
 func CreateCommand(region string, OSType string, command string, scriptType string) string {
-	request := ecs.CreateCreateCommandRequest()
-	request.Scheme = "https"
-	request.Name = strconv.FormatInt(time.Now().Unix(), 10)
+	request := tat.NewCreateCommandRequest()
+	request.SetScheme("https")
+	cmdName := strconv.FormatInt(time.Now().Unix(), 10)
+	request.CommandName = &cmdName
 	if scriptType == "auto" {
 		if OSType == "linux" {
-			request.Type = "RunShellScript"
+			request.CommandType = common.StringPtr("SHELL")
 		} else {
-			request.Type = "RunBatScript"
+			request.CommandType = common.StringPtr("POWERSHELL")
 		}
 	} else if scriptType == "sh" {
-		request.Type = "RunShellScript"
-	} else if scriptType == "bat" {
-		request.Type = "RunBatScript"
+		request.CommandType = common.StringPtr("SHELL")
 	} else if scriptType == "ps" {
-		request.Type = "RunPowerShellScript"
+		request.CommandType = common.StringPtr("POWERSHELL")
 	}
 	log.Debugln("执行命令 (Execute command): \n" + command)
-	request.CommandContent = base64.StdEncoding.EncodeToString([]byte(command))
-	response, err := ECSClient(region).CreateCommand(request)
+	request.Content = common.StringPtr(base64.StdEncoding.EncodeToString([]byte(command)))
+	respone, err := TATClient(region).CreateCommand(request)
 	util.HandleErr(err)
-	CommandId := response.CommandId
+	CommandId := *respone.Response.CommandId
 	log.Debugln("得到 CommandId 为 (CommandId value): " + CommandId)
 	return CommandId
 }
 
 func DeleteCommand(region string, CommandId string) {
-	request := ecs.CreateDeleteCommandRequest()
-	request.Scheme = "https"
-	request.CommandId = CommandId
-	_, err := ECSClient(region).DeleteCommand(request)
+	request := tat.NewDeleteCommandRequest()
+	request.SetScheme("https")
+	request.CommandId = common.StringPtr(CommandId)
+	_, err := TATClient(region).DeleteCommand(request)
 	util.HandleErr(err)
 	log.Debugln("删除 CommandId (Delete CommandId): " + CommandId)
 }
 
 func InvokeCommand(region string, OSType string, command string, scriptType string, specifiedInstanceID string) (string, string) {
 	CommandId := CreateCommand(region, OSType, command, scriptType)
-	request := ecs.CreateInvokeCommandRequest()
-	request.Scheme = "https"
-	request.CommandId = CommandId
-	request.InstanceId = &[]string{specifiedInstanceID}
-	response, err := ECSClient(region).InvokeCommand(request)
+	request := tat.NewInvokeCommandRequest()
+	request.SetScheme("https")
+	request.CommandId = &CommandId
+	request.InstanceIds = common.StringPtrs([]string{specifiedInstanceID})
+	response, err := TATClient(region).InvokeCommand(request)
 	util.HandleErr(err)
-	InvokeId := response.InvokeId
+	InvokeId := *response.Response.InvocationId
 	log.Debugln("得到 InvokeId 为 (InvokeId value): " + InvokeId)
 	return CommandId, InvokeId
 }
@@ -74,14 +84,15 @@ func DescribeInvocationResults(region string, CommandId string, InvokeId string,
 	timeSleep := 2
 	timeSleepSum = timeSleepSum + timeSleep
 	time.Sleep(time.Duration(timeSleep) * time.Second)
-	request := ecs.CreateDescribeInvocationResultsRequest()
-	request.Scheme = "https"
-	request.InvokeId = InvokeId
-	response, err := ECSClient(region).DescribeInvocationResults(request)
+	request := tat.NewDescribeInvocationTasksRequest()
+	request.SetScheme("https")
+	request.HideOutput = common.BoolPtr(false)
+	response, err := TATClient(region).DescribeInvocationTasks(request)
 	util.HandleErr(err)
-	InvokeRecordStatus := response.Invocation.InvocationResults.InvocationResult[0].InvokeRecordStatus
-	if InvokeRecordStatus == "Finished" {
-		output = response.Invocation.InvocationResults.InvocationResult[0].Output
+	InvokeRecordStatus := response.Response.InvocationTaskSet[0].TaskStatus
+	CommandId = *response.Response.InvocationTaskSet[0].CommandId
+	if *InvokeRecordStatus == "SUCCESS" {
+		output = *response.Response.InvocationTaskSet[0].TaskResult.Output
 		log.Debugln("命令执行结果 base64 编码值为 (The base64 encoded value of the command execution result is):\n" + output)
 		DeleteCommand(region, CommandId)
 	} else {
@@ -96,35 +107,33 @@ func DescribeInvocationResults(region string, CommandId string, InvokeId string,
 	return output
 }
 
-func ECSExec(command string, commandFile string, scriptType string, specifiedInstanceID string, region string, batchCommand bool, userData bool, metaDataSTSToken bool, ecsFlushCache bool, lhost string, lport string, timeOut int) {
+func CVMExec(command string, commandFile string, scriptType string, specifiedInstanceID string, region string, batchCommand bool, userData bool, metaDataSTSToken bool, cvmFlushCache bool, lhost string, lport string, timeOut int) {
 	var InstancesList []Instances
-	if ecsFlushCache == false {
-		data := cmdutil.ReadCacheFile(ECSCacheFilePath, "alibaba")
+	if cvmFlushCache == false {
+		data := cmdutil.ReadCacheFile(CVMCacheFilePath, "tencent")
 		for _, i := range data {
 			if specifiedInstanceID != "all" {
 				if specifiedInstanceID == i[1] {
 					obj := Instances{
 						InstanceId:       i[1],
-						InstanceName:     i[2],
-						OSName:           i[3],
-						OSType:           i[4],
-						Status:           i[5],
-						PrivateIpAddress: i[6],
-						PublicIpAddress:  i[7],
-						RegionId:         i[8],
+						OSName:           i[2],
+						InstanceType:     i[3],
+						InstanceState:    i[4],
+						PrivateIpAddress: i[5],
+						PublicIpAddress:  i[6],
+						Zone:             i[7],
 					}
 					InstancesList = append(InstancesList, obj)
 				}
 			} else {
 				obj := Instances{
 					InstanceId:       i[1],
-					InstanceName:     i[2],
-					OSName:           i[3],
-					OSType:           i[4],
-					Status:           i[5],
-					PrivateIpAddress: i[6],
-					PublicIpAddress:  i[7],
-					RegionId:         i[8],
+					OSName:           i[2],
+					InstanceType:     i[3],
+					InstanceState:    i[4],
+					PrivateIpAddress: i[5],
+					PublicIpAddress:  i[6],
+					Zone:             i[7],
 				}
 				InstancesList = append(InstancesList, obj)
 			}
@@ -163,8 +172,13 @@ func ECSExec(command string, commandFile string, scriptType string, specifiedIns
 			}
 		}
 		for _, i := range InstancesList {
-			region := i.RegionId
-			OSType := i.OSType
+			regions := strings.Split(i.Zone, "-")
+			region = regions[0] + "-" + regions[1]
+			var OSType string
+			newOSname := strings.Split(i.OSName, " ")[0]
+			if find(linuxSet, newOSname) {
+				OSType = "linux"
+			}
 			specifiedInstanceID := i.InstanceId
 			if userData == true {
 				commandResult := getUserData(region, OSType, scriptType, specifiedInstanceID, timeOut)
@@ -231,18 +245,18 @@ func getExecResult(region string, command string, OSType string, scriptType stri
 func getUserData(region string, OSType string, scriptType string, specifiedInstanceID string, timeOut int) string {
 	var command string
 	if OSType == "linux" {
-		command = "curl -s http://100.100.100.200/latest/user-data/"
+		command = "curl -s http://metadata.tencentyun.com/latest/meta-data/"
 	} else {
-		command = "Invoke-RestMethod http://100.100.100.200/latest/user-data/"
+		command = "Invoke-RestMethod http://metadata.tencentyun.com/latest/meta-data/"
 		scriptType = "ps"
 	}
 	commandResult := getExecResult(region, command, OSType, scriptType, specifiedInstanceID, timeOut)
 	if strings.Contains(commandResult, "403 - Forbidden") {
 		log.Debugln("元数据访问模式可能被设置成了加固模式，尝试获取 Token 访问 (The metadata access mode may have been set to hardened mode and is trying to get Token access)")
 		if OSType == "linux" {
-			command = "TOKEN=`curl -s -X PUT \"http://100.100.100.200/latest/api/token\" -H \"X-aliyun-ecs-metadata-token-ttl-seconds: 21600\"` && curl -s -H \"X-aliyun-ecs-metadata-token: $TOKEN\" http://100.100.100.200/latest/user-data/"
+			command = "curl http://metadata.tencentyun.com/latest/meta-data/"
 		} else {
-			command = "$token = Invoke-RestMethod -Headers @{\"X-aliyun-ecs-metadata-token-ttl-seconds\" = \"21600\"} -Method PUT –Uri http://100.100.100.200/latest/api/token\nInvoke-RestMethod -Headers @{\"X-aliyun-ecs-metadata-token\" = $token} -Method GET -Uri http://100.100.100.200/latest/user-data/"
+			command = "Invoke-RestMethod -Method GET -Uri http://metadata.tencentyun.com/latest/meta-data/"
 			scriptType = "ps"
 		}
 		commandResult = getExecResult(region, command, OSType, scriptType, specifiedInstanceID, timeOut)
@@ -263,47 +277,11 @@ func getMetaDataSTSToken(region string, OSType string, scriptType string, specif
 	var command string
 	var commandResult string
 	if OSType == "linux" {
-		command = "curl -s http://100.100.100.200/latest/meta-data/ram/security-credentials/"
+		command = "curl -s http://metadata.tencentyun.com/latest/meta-data/cam/security-credentials/CVMas"
 	} else {
-		command = "Invoke-RestMethod http://100.100.100.200/latest/meta-data/ram/security-credentials/"
+		command = "Invoke-RestMethod http://metadata.tencentyun.com/latest/meta-data/cam/security-credentials/CVMas"
 		scriptType = "ps"
 	}
-	roleName := getExecResult(region, command, OSType, scriptType, specifiedInstanceID, timeOut)
-
-	if strings.Contains(roleName, "403 - Forbidden") {
-		log.Debugln("元数据访问模式可能被设置成了加固模式，尝试获取 Token 访问 (The metadata access mode may have been set to hardened mode and is trying to get Token access)")
-		if OSType == "linux" {
-			command = "TOKEN=`curl -s -X PUT \"http://100.100.100.200/latest/api/token\" -H \"X-aliyun-ecs-metadata-token-ttl-seconds: 21600\"` && curl -s -H \"X-aliyun-ecs-metadata-token: $TOKEN\" http://100.100.100.200/latest/meta-data/ram/security-credentials/"
-		} else {
-			command = "$token = Invoke-RestMethod -Headers @{\"X-aliyun-ecs-metadata-token-ttl-seconds\" = \"21600\"} -Method PUT –Uri http://100.100.100.200/latest/api/token\nInvoke-RestMethod -Headers @{\"X-aliyun-ecs-metadata-token\" = $token} -Method GET -Uri http://100.100.100.200/latest/meta-data/ram/security-credentials/"
-			scriptType = "ps"
-		}
-		roleName = getExecResult(region, command, OSType, scriptType, specifiedInstanceID, timeOut)
-		if strings.Contains(roleName, "404 - Not Found") || strings.Contains(roleName, "403 - Forbidden") {
-			color.Printf("\n<lightGreen>%s ></> %s\n\n", specifiedInstanceID, command)
-			commandResult = "disabled"
-		} else {
-			if OSType == "linux" {
-				command = "curl -s -H \"X-aliyun-ecs-metadata-token: $TOKEN\" http://100.100.100.200/latest/meta-data/ram/security-credentials/" + roleName
-			} else {
-				command = "Invoke-RestMethod -Headers @{\"X-aliyun-ecs-metadata-token\" = $token} -Method GET -Uri http://100.100.100.200/latest/meta-data/ram/security-credentials/" + roleName
-				scriptType = "ps"
-			}
-			color.Printf("\n<lightGreen>%s ></> %s\n\n", specifiedInstanceID, command)
-			commandResult = getExecResult(region, command, OSType, scriptType, specifiedInstanceID, timeOut)
-		}
-	} else if strings.Contains(roleName, "404 - Not Found") {
-		color.Printf("\n<lightGreen>%s ></> %s\n\n", specifiedInstanceID, command)
-		commandResult = ""
-	} else {
-		if OSType == "linux" {
-			command = "curl -s http://100.100.100.200/latest/meta-data/ram/security-credentials/" + roleName
-		} else {
-			command = "Invoke-RestMethod http://100.100.100.200/latest/meta-data/ram/security-credentials/" + roleName
-			scriptType = "ps"
-		}
-		color.Printf("\n<lightGreen>%s ></> %s\n\n", specifiedInstanceID, command)
-		commandResult = getExecResult(region, command, OSType, scriptType, specifiedInstanceID, timeOut)
-	}
+	commandResult = getExecResult(region, command, OSType, scriptType, specifiedInstanceID, timeOut)
 	return commandResult
 }
