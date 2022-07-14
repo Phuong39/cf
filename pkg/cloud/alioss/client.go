@@ -24,25 +24,25 @@ func CreateOSSEndpoint(region string) string {
 
 func (o *OSSCollector) OSSClient(region string) *OSSCollector {
 	config := cmdutil.GetAliCredential()
-	if config.AccessKeyId == "" {
+	if config.Alibaba.AccessKeyId == "" {
 		log.Warnln("需要先配置访问凭证 (Access Key need to be configured first)")
 		os.Exit(0)
 		return nil
 	} else {
-		if config.STSToken == "" {
-			client, err := oss.New(CreateOSSEndpoint(region), config.AccessKeyId, config.AccessKeySecret)
+		if config.Alibaba.STSToken == "" {
+			client, err := oss.New(CreateOSSEndpoint(region), config.Alibaba.AccessKeyId, config.Alibaba.AccessKeySecret)
 			util.HandleErr(err)
 			if err == nil {
 				log.Traceln("OSS Client 连接成功 (OSS Client connection successful)")
 			}
 			o.Client = client
 		} else {
-			client, err := oss.New(CreateOSSEndpoint(region), config.AccessKeyId, config.AccessKeySecret)
+			client, err := oss.New(CreateOSSEndpoint(region), config.Alibaba.AccessKeyId, config.Alibaba.AccessKeySecret)
 			util.HandleErr(err)
 			if err == nil {
 				log.Traceln("OSS Client 连接成功 (OSS Client connection successful)")
 			}
-			client.Config.SecurityToken = strings.TrimSpace(config.STSToken)
+			client.Config.SecurityToken = strings.TrimSpace(config.Alibaba.STSToken)
 			o.Client = client
 		}
 		return o

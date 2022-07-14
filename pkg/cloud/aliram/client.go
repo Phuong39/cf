@@ -15,14 +15,14 @@ import (
 
 func RAMClient() *ram.Client {
 	aliconfig := cmdutil.GetAliCredential()
-	if aliconfig.AccessKeyId == "" {
+	if aliconfig.Alibaba.AccessKeyId == "" {
 		log.Warnln("需要先配置访问凭证 (Access Key need to be configured first)")
 		os.Exit(0)
 		return nil
 	} else {
 		config := sdk.NewConfig()
-		if aliconfig.STSToken == "" {
-			credential := credentials.NewAccessKeyCredential(aliconfig.AccessKeyId, aliconfig.AccessKeySecret)
+		if aliconfig.Alibaba.STSToken == "" {
+			credential := credentials.NewAccessKeyCredential(aliconfig.Alibaba.AccessKeyId, aliconfig.Alibaba.AccessKeySecret)
 			client, err := ram.NewClientWithOptions("cn-beijing", config, credential)
 			util.HandleErr(err)
 			if err == nil {
@@ -30,7 +30,7 @@ func RAMClient() *ram.Client {
 			}
 			return client
 		} else {
-			credential := credentials.NewStsTokenCredential(aliconfig.AccessKeyId, aliconfig.AccessKeySecret, aliconfig.STSToken)
+			credential := credentials.NewStsTokenCredential(aliconfig.Alibaba.AccessKeyId, aliconfig.Alibaba.AccessKeySecret, aliconfig.Alibaba.STSToken)
 			client, err := ram.NewClientWithOptions("cn-beijing", config, credential)
 			util.HandleErr(err)
 			if err == nil {
