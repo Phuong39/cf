@@ -26,13 +26,13 @@ func ConfigureAccessKey(cf string) {
 	OldTmpSecretId := ""
 	OldTmpSecretKey := ""
 	if cf == "tencent" {
-		SecretId := config.Tencent.SecretId
-		SecretKey := config.Tencent.SecretKey
-		if SecretId != "" {
-			OldAccessKeyId = fmt.Sprintf(" [%s] ", maskAK(SecretId))
+		AccessKeyId := config.Tencent.SecretId
+		AccessKeySecret := config.Tencent.SecretKey
+		if AccessKeyId != "" {
+			OldAccessKeyId = fmt.Sprintf(" [%s] ", maskAK(AccessKeyId))
 		}
-		if SecretKey != "" {
-			OldAccessKeySecret = fmt.Sprintf(" [%s] ", maskAK(SecretKey))
+		if AccessKeySecret != "" {
+			OldAccessKeySecret = fmt.Sprintf(" [%s] ", maskAK(AccessKeySecret))
 		}
 		var qs = []*survey.Question{
 			{
@@ -60,6 +60,18 @@ func ConfigureAccessKey(cf string) {
 		}
 		cred := cloud.Credential{}
 		err := survey.Ask(qs, &cred.Tencent)
+		cred.AccessKeyId = strings.TrimSpace(cred.AccessKeyId)
+		cred.AccessKeySecret = strings.TrimSpace(cred.AccessKeySecret)
+		cred.STSToken = strings.TrimSpace(cred.STSToken)
+		if cred.AccessKeyId == "" {
+			cred.AccessKeyId = AccessKeyId
+		}
+		if cred.AccessKeySecret == "" {
+			cred.AccessKeySecret = AccessKeySecret
+		}
+		if cred.STSToken == "" && strings.Contains(cred.AccessKeyId, "STS.") {
+			cred.STSToken = STSToken
+		}
 		util.HandleErr(err)
 		SaveAccessKey(cred)
 	} else if cf == "alibaba" {
@@ -93,6 +105,18 @@ func ConfigureAccessKey(cf string) {
 		}
 		cred := cloud.Credential{}
 		err := survey.Ask(qs, &cred.Alibaba)
+		cred.AccessKeyId = strings.TrimSpace(cred.AccessKeyId)
+		cred.AccessKeySecret = strings.TrimSpace(cred.AccessKeySecret)
+		cred.STSToken = strings.TrimSpace(cred.STSToken)
+		if cred.AccessKeyId == "" {
+			cred.AccessKeyId = AccessKeyId
+		}
+		if cred.AccessKeySecret == "" {
+			cred.AccessKeySecret = AccessKeySecret
+		}
+		if cred.STSToken == "" && strings.Contains(cred.AccessKeyId, "STS.") {
+			cred.STSToken = STSToken
+		}
 		util.HandleErr(err)
 		SaveAccessKey(cred)
 	} else {
