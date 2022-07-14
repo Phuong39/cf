@@ -51,6 +51,10 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 
 [![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207112152449.png)](https://wiki.teamssix.com/cf)
 
+## 使用案例
+
+[《我用 CF 打穿了他的云上内网》](https://zone.huoxian.cn/d/1341-cf)
+
 ## 简单上手
 
 ![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207052307021.png)

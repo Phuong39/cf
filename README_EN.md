@@ -53,6 +53,10 @@ For detailed manuals, please visit: [wiki.teamssix.com/cf](https://wiki.teamssix
 
 [![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207112152449.png)](https://wiki.teamssix.com/cf)
 
+## Case
+
+[《我用 CF 打穿了他的云上内网》](https://zone.huoxian.cn/d/1341-cf)
+
 ## Easy to start
 
 ![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207052307021.png)
