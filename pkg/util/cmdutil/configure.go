@@ -9,15 +9,44 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/AlecAivazis/survey/v2"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
 	"github.com/teamssix/cf/pkg/util"
-
-	"github.com/AlecAivazis/survey/v2"
 )
 
 func ConfigureAccessKey() {
-	config := GetAliCredential()
+	var cloudProvider string
+	cloudConfigList, cloudProviderList := ReturnCloudProviderList()
+	prompt := &survey.Select{
+		Message: "选择你要配置的云服务商 (Select a cloud provider): ",
+		Options: cloudProviderList,
+	}
+	err := survey.AskOne(prompt, &cloudProvider)
+	util.HandleErr(err)
+	for i, j := range cloudProviderList {
+		if j == cloudProvider {
+			config := GetConfig(cloudConfigList[i])
+			inputAccessKey(config, cloudConfigList[i])
+		}
+	}
+}
+
+func ReturnCloudProviderList() ([]string, []string) {
+	var (
+		cloudConfigList   []string
+		cloudProviderList []string
+		CloudProviderMap  = map[string]string{"alibaba": "阿里云 (Alibaba Cloud)", "tencent": "腾讯云 (Tencent Cloud)"}
+	)
+	for k, v := range CloudProviderMap {
+		cloudConfigList = append(cloudConfigList, k)
+		cloudProviderList = append(cloudProviderList, v)
+	}
+	return cloudConfigList, cloudProviderList
+}
+
+func inputAccessKey(config cloud.Config, provider string) {
 	OldAccessKeyId := ""
 	OldAccessKeySecret := ""
 	OldSTSToken := ""
@@ -47,7 +76,7 @@ func ConfigureAccessKey() {
 			Prompt: &survey.Input{Message: "STS Token (可选 Optional)" + OldSTSToken + ":"},
 		},
 	}
-	cred := cloud.Credential{}
+	cred := cloud.Config{}
 	err := survey.Ask(qs, &cred)
 	cred.AccessKeyId = strings.TrimSpace(cred.AccessKeyId)
 	cred.AccessKeySecret = strings.TrimSpace(cred.AccessKeySecret)
@@ -62,10 +91,10 @@ func ConfigureAccessKey() {
 		cred.STSToken = STSToken
 	}
 	util.HandleErr(err)
-	SaveAccessKey(cred)
+	SaveAccessKey(cred, provider)
 }
 
-func SaveAccessKey(config cloud.Credential) {
+func SaveAccessKey(config cloud.Config, provider string) {
 	home, err := GetCFHomeDir()
 	util.HandleErr(err)
 	if FileExists(home) == false {
@@ -74,35 +103,40 @@ func SaveAccessKey(config cloud.Credential) {
 	util.HandleErr(err)
 	configJSON, err := json.MarshalIndent(config, "", "    ")
 	util.HandleErr(err)
-	AliCredentialFilePath := GetAliCredentialFilePath()
-	err = ioutil.WriteFile(AliCredentialFilePath, configJSON, 0600)
+	configFilePath := GetConfigFilePath(provider)
+	err = ioutil.WriteFile(configFilePath, configJSON, 0600)
 	util.HandleErr(err)
-	log.Infof("配置完成，配置文件路径 (Configure done, Configuration file path): %s ", AliCredentialFilePath)
+	log.Infof("配置文件路径 (Configuration file path): %s ", configFilePath)
 	createCacheDict()
 }
 
-func GetAliCredentialFilePath() string {
+func GetConfigFilePath(provider string) string {
 	home, err := GetCFHomeDir()
 	util.HandleErr(err)
-	AliCredential := filepath.Join(home, "config.json")
-	return AliCredential
+	configHomeFile := filepath.Join(home, "config")
+	if FileExists(configHomeFile) == false {
+		err = os.MkdirAll(configHomeFile, 0700)
+		util.HandleErr(err)
+	}
+	configFilePath := filepath.Join(configHomeFile, provider+"Config.json")
+	return configFilePath
 }
 
-func GetAliCredential() cloud.Credential {
-	AliCredentialFilePath := GetAliCredentialFilePath()
-	var credentials cloud.Credential
-	if _, err := os.Stat(AliCredentialFilePath); errors.Is(err, os.ErrNotExist) {
-		return credentials
+func GetConfig(provider string) cloud.Config {
+	configFilePath := GetConfigFilePath(provider)
+	var config cloud.Config
+	if _, err := os.Stat(configFilePath); errors.Is(err, os.ErrNotExist) {
+		return config
 	} else {
-		file, err := ioutil.ReadFile(AliCredentialFilePath)
+		file, err := ioutil.ReadFile(configFilePath)
 		if err != nil {
 			util.HandleErr(err)
 		}
-		err = json.Unmarshal(file, &credentials)
+		err = json.Unmarshal(file, &config)
 		if err != nil {
 			util.HandleErr(err)
 		}
-		return credentials
+		return config
 	}
 }
 

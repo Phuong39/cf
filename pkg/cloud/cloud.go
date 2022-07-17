@@ -6,7 +6,7 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
-type Credential struct {
+type Config struct {
 	AccessKeyId     string `json:"AccessKeyId"`
 	AccessKeySecret string `json:"AccessKeySecret"`
 	STSToken        string `json:"STSToken"`

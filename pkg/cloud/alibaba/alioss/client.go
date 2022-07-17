@@ -14,7 +14,7 @@ import (
 )
 
 type OSSCollector struct {
-	Conf   cloud.Credential
+	Conf   cloud.Config
 	Client *oss.Client
 }
 
@@ -23,7 +23,7 @@ func CreateOSSEndpoint(region string) string {
 }
 
 func (o *OSSCollector) OSSClient(region string) *OSSCollector {
-	config := cmdutil.GetAliCredential()
+	config := cmdutil.GetConfig("alibaba")
 	if config.AccessKeyId == "" {
 		log.Warnln("需要先配置访问凭证 (Access Key need to be configured first)")
 		os.Exit(0)

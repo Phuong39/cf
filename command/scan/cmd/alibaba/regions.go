@@ -1,35 +1,27 @@
-package cmd
+package alibaba
 
 import (
 	"strconv"
 
-	"github.com/teamssix/cf/pkg/cloud/alirds"
-
 	"github.com/spf13/cobra"
 	"github.com/teamssix/cf/pkg/cloud"
-	"github.com/teamssix/cf/pkg/cloud/aliecs"
+	"github.com/teamssix/cf/pkg/cloud/alibaba/aliecs"
+	"github.com/teamssix/cf/pkg/cloud/alibaba/alirds"
 )
 
 func init() {
-	RootCmd.AddCommand(regionsCmd)
-	regionsCmd.AddCommand(aliyunRegionsCmd)
-	aliyunRegionsCmd.AddCommand(aliyunECSRegionsCmd)
-	aliyunRegionsCmd.AddCommand(aliyunRDSRegionsCmd)
+	alibabaCmd.AddCommand(regionsCmd)
+	regionsCmd.AddCommand(ECSRegionsCmd)
+	regionsCmd.AddCommand(RDSRegionsCmd)
 }
 
 var regionsCmd = &cobra.Command{
 	Use:   "regions",
-	Short: "列出所有的区域 (List all regions)",
-	Long:  "列出所有的区域 (List all regions)",
+	Short: "列出可用区域 (List available regions)",
+	Long:  "列出可用区域 (List available regions)",
 }
 
-var aliyunRegionsCmd = &cobra.Command{
-	Use:   "aliyun",
-	Short: "列出阿里云的区域 (List the regions of alibaba cloud)",
-	Long:  "列出阿里云的区域 (List the regions of alibaba cloud)",
-}
-
-var aliyunECSRegionsCmd = &cobra.Command{
+var ECSRegionsCmd = &cobra.Command{
 	Use:   "ecs",
 	Short: "列出阿里云 ECS 的区域 (List the regions of alibaba cloud ECS)",
 	Long:  "列出阿里云 ECS 的区域 (List the regions of alibaba cloud ECS)",
@@ -46,7 +38,7 @@ var aliyunECSRegionsCmd = &cobra.Command{
 	},
 }
 
-var aliyunRDSRegionsCmd = &cobra.Command{
+var RDSRegionsCmd = &cobra.Command{
 	Use:   "rds",
 	Short: "列出阿里云 RDS 的区域 (List the regions of alibaba cloud RDS)",
 	Long:  "列出阿里云 RDS 的区域 (List the regions of alibaba cloud RDS)",
