@@ -1,8 +1,8 @@
-package cmd
+package alibaba
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/teamssix/cf/pkg/cloud/alirds"
+	"github.com/teamssix/cf/pkg/cloud/alibaba/alirds"
 )
 
 var (
@@ -13,7 +13,7 @@ var (
 )
 
 func init() {
-	RootCmd.AddCommand(rdsCmd)
+	alibabaCmd.AddCommand(rdsCmd)
 	rdsCmd.AddCommand(rdslsCmd)
 	rdsCmd.PersistentFlags().BoolVar(&rdslsFlushCache, "flushCache", false, "刷新缓存，不使用缓存数据 (Refresh the cache without using cached data)")
 	rdslsCmd.Flags().StringVarP(&rdslsRegion, "region", "r", "all", "指定区域 ID (Set Region ID)")

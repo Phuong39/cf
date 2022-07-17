@@ -2,10 +2,9 @@ package cmd
 
 import (
 	"github.com/gookit/color"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
-
-	log "github.com/sirupsen/logrus"
 )
 
 func init() {
@@ -27,18 +26,21 @@ var getconfigCmd = &cobra.Command{
 	Short: "获取当前配置的访问凭证 (Get the currently configured access key)",
 	Long:  `获取当前配置的访问凭证 (Get the currently configured access key)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		config := cmdutil.GetAliCredential()
-		AccessKeyId := config.AccessKeyId
-		AccessKeySecret := config.AccessKeySecret
-		STSToken := config.STSToken
-		if AccessKeyId == "" {
-			log.Infoln("当前未配置访问密钥 (No access key configured)")
-		} else {
-			color.Printf(`<lightGreen>访问凭证 ID (Access key id):</> %s
+		_, cloudProviderList := cmdutil.ReturnCloudProviderList()
+		for _, provider := range cloudProviderList {
+			config := cmdutil.GetConfig(provider)
+			AccessKeyId := config.AccessKeyId
+			AccessKeySecret := config.AccessKeySecret
+			STSToken := config.STSToken
+			if AccessKeyId == "" {
+				log.Infoln("当前未配置访问密钥 (No access key configured)")
+			} else {
+				color.Printf(`<lightGreen>访问凭证 ID (Access key id):</> %s
 <lightGreen>访问凭证密钥 (Access key secret):</> %s
 <lightGreen>临时访问凭证令牌 (STS token):</> %s
 <lightGreen>配置文件路径 (Configuration file path):</> %s
-`, AccessKeyId, AccessKeySecret, STSToken, cmdutil.GetAliCredentialFilePath())
+`, AccessKeyId, AccessKeySecret, STSToken, cmdutil.GetConfigFilePath(provider))
+			}
 		}
 	},
 }
