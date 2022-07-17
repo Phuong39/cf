@@ -34,6 +34,7 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
   - [x] 列出 RDS 云数据库实例
   - [x] 一键接管控制台
   - [x] 一键查看当前访问凭证所拥有的权限
+  - [x] 支持腾讯云
   - [x] ……
   
 * 预计实现
@@ -42,7 +43,7 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
   
   - [ ] 自动检测当前运行环境是不是实例，如果是则一键扫描本地实例的凭证信息
   - [ ] 一键将获取到的临时凭证添加到工具中
-  - [ ] 支持腾讯云等其他云厂商
+  - [ ] 支持其他云厂商
   - [ ] ……
 
 ## 使用手册
@@ -57,7 +58,7 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 
 ## 简单上手
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207052307021.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207180028840.png)
 
 配置 CF
 
@@ -65,55 +66,47 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 cf configure
 ```
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022241064.png)
-
 一键列出当前访问凭证的云服务资源
 
 ```bash
-cf ls
+cf alibaba ls
 ```
-
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207040107386.png)
 
 一键列出当前访问凭证的权限
 
 ```bash
-cf ls permissions
+cf alibaba permissions
 ```
-
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207082108875.png)
 
 一键接管控制台
 
 ```bash
-cf console
+cf alibaba console
 ```
-
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207082104422.png)
 
 查看 CF 为实例执行命令的操作的帮助信息
 
 ```bash
-cf ecs exec -h
+cf alibaba ecs exec -h
 ```
-
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022215293.png)
 
 一键为所有实例执行三要素，方便 HVV
 
 ```
-cf ecs exec -b
+cf alibaba ecs exec -b
 ```
-
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022241381.png)
 
 一键获取实例中的临时访问凭证数据
 
 ```bash
-cf ecs exec -m
+cf alibaba ecs exec -m
 ```
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022241672.png)
+一键查看 VPC 安全组规则
+
+```bash
+cf tencent vpc ls
+```
 
 如果感觉还不错的话，师傅记得给个 Star 呀 ~，另外 CF 的更多使用方法可以参见使用文档：[wiki.teamssix.com/cf](https://wiki.teamssix.com/cf)
 
