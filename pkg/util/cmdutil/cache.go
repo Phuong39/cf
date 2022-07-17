@@ -18,94 +18,16 @@ func ReturnCacheDict() string {
 	return cacheDict
 }
 
-func ReturnOSSCacheFile(cloud string) string {
-	//config := GetAliCredential()
-	config := GetAllCredential()
+func ReturnCacheFile(provider string, resourceType string) string {
+	config := GetConfig(provider)
 	var ossCacheFile string
-	if cloud == "alibaba" {
-		AccessKeyId := config.Alibaba.AccessKeyId
-		if AccessKeyId == "" {
-			ossCacheFile = ""
-		} else {
-			ossCacheFile = ReturnCacheDict() + "/" + AccessKeyId[len(AccessKeyId)-6:] + "_ali_oss.json"
-		}
-		return ossCacheFile
-	} else if cloud == "tencent" {
-		SecretId := config.Tencent.SecretId
-		if SecretId == "" {
-			ossCacheFile = ""
-		} else {
-			ossCacheFile = ReturnCacheDict() + "/" + SecretId[len(SecretId)-6:] + "_tencent_oss.json"
-		}
-		return ossCacheFile
-	}
-	return ""
-}
-
-func ReturnECSCacheFile() string {
-	//config := GetAliCredential()
-	config := GetAllCredential()
-	var ecsCacheFile string
-	AccessKeyId := config.Alibaba.AccessKeyId
+	AccessKeyId := config.AccessKeyId
 	if AccessKeyId == "" {
-		ecsCacheFile = ""
+		ossCacheFile = ""
 	} else {
-		ecsCacheFile = ReturnCacheDict() + "/" + AccessKeyId[len(AccessKeyId)-6:] + "_ecs.json"
+		ossCacheFile = ReturnCacheDict() + "/" + AccessKeyId[len(AccessKeyId)-6:] + "_" + resourceType + ".json"
 	}
-	return ecsCacheFile
-}
-
-func ReturnCVMCacheFile() string {
-	config := GetAllCredential()
-	var cvmCacheFile string
-	SecretId := config.Tencent.SecretId
-	if SecretId == "" {
-		cvmCacheFile = ""
-	} else {
-		cvmCacheFile = ReturnCacheDict() + "/" + SecretId[len(SecretId)-6:] + "_cvm.json"
-	}
-	return cvmCacheFile
-}
-
-func ReturnVPCCacheFile(cloud string) string {
-	config := GetAllCredential()
-	var vpcCacheFile string
-	if cloud == "alibaba" {
-		//阿里vpc
-	} else if cloud == "tencent" {
-		SecretId := config.Tencent.SecretId
-		if SecretId == "" {
-			vpcCacheFile = ""
-		} else {
-			vpcCacheFile = ReturnCacheDict() + "/" + SecretId[len(SecretId)-6:] + "_tencent_vpc.json"
-		}
-		return vpcCacheFile
-	}
-	return ""
-}
-
-func ReturnRDSCacheFile(cloud string) string {
-	//config := GetAliCredential()
-	config := GetAllCredential()
-	var rdsCacheFile string
-	if cloud == "alibaba" {
-		AccessKeyId := config.Alibaba.AccessKeyId
-		if AccessKeyId == "" {
-			rdsCacheFile = ""
-		} else {
-			rdsCacheFile = ReturnCacheDict() + "/" + AccessKeyId[len(AccessKeyId)-6:] + "_ali_rds.json"
-		}
-		return rdsCacheFile
-	} else if cloud == "tencent" {
-		SecretId := config.Tencent.SecretId
-		if SecretId == "" {
-			rdsCacheFile = ""
-		} else {
-			rdsCacheFile = ReturnCacheDict() + "/" + SecretId[len(SecretId)-6:] + "_tencent_rds.json"
-		}
-		return rdsCacheFile
-	}
-	return ""
+	return ossCacheFile
 }
 
 func createCacheDict() {
@@ -127,13 +49,11 @@ func WriteCacheFile(td cloud.TableData, filePath string) {
 	util.HandleErr(err)
 }
 
-func ReadCacheFile(filePath string, cloud string) [][]string {
+func ReadCacheFile(filePath string, provider string, resourceType string) [][]string {
 	if !FileExists(filePath) {
 		log.Debugf("%s 文件不存在 (%s file does not exist)", filePath, filePath)
-		if filePath == ReturnOSSCacheFile(cloud) {
-			log.Warnln("需要先使用 [cf oss ls] 命令获取 OSS 资源 (You need to use the [cf oss ls] command to get the OSS resources first)")
-		} else if filePath == ReturnECSCacheFile() {
-			log.Warnln("需要先使用 [cf ecs ls] 命令获取 ECS 资源 (You need to use the [cf ecs ls] command to get the ECS resources first)")
+		if filePath == ReturnCacheFile(provider, resourceType) {
+			log.Warnf("需要先使用 cf 获取 %s 资源 (You need to use the cf to get the %s resources first)", resourceType, resourceType)
 		}
 		os.Exit(0)
 	}
@@ -148,10 +68,10 @@ func ReadCacheFile(filePath string, cloud string) [][]string {
 	return data
 }
 
-func PrintOSSCacheFile(filePath string, header []string, region string, cloud string) {
-	data := ReadCacheFile(filePath, cloud)
+func PrintOSSCacheFile(filePath string, header []string, region string, provider string, resourceType string) {
+	data := ReadCacheFile(filePath, provider, resourceType)
 	if region == "all" {
-		PrintTable(data, header, "OSS")
+		PrintTable(data, header, resourceType)
 	} else {
 		var dataRegion [][]string
 		for _, i := range data {
@@ -159,15 +79,15 @@ func PrintOSSCacheFile(filePath string, header []string, region string, cloud st
 				dataRegion = append(dataRegion, i)
 			}
 		}
-		PrintTable(dataRegion, header, "OSS")
+		PrintTable(dataRegion, header, resourceType)
 	}
 }
 
-func PrintECSCacheFile(filePath string, header []string, region string, specifiedInstanceID string) {
-	data := ReadCacheFile(filePath, "alibaba")
+func PrintECSCacheFile(filePath string, header []string, region string, specifiedInstanceID string, provider string, resourceType string) {
+	data := ReadCacheFile(filePath, provider, resourceType)
 	switch {
 	case region == "all" && specifiedInstanceID == "all":
-		PrintTable(data, header, "ECS")
+		PrintTable(data, header, resourceType)
 	case region != "all" && specifiedInstanceID == "all":
 		var dataRegion [][]string
 		for _, i := range data {
@@ -175,7 +95,7 @@ func PrintECSCacheFile(filePath string, header []string, region string, specifie
 				dataRegion = append(dataRegion, i)
 			}
 		}
-		PrintTable(dataRegion, header, "ECS")
+		PrintTable(dataRegion, header, resourceType)
 	case region == "all" && specifiedInstanceID != "all":
 		var dataSpecifiedInstanceID [][]string
 		for _, i := range data {
@@ -183,7 +103,7 @@ func PrintECSCacheFile(filePath string, header []string, region string, specifie
 				dataSpecifiedInstanceID = append(dataSpecifiedInstanceID, i)
 			}
 		}
-		PrintTable(dataSpecifiedInstanceID, header, "ECS")
+		PrintTable(dataSpecifiedInstanceID, header, resourceType)
 	case region != "all" && specifiedInstanceID != "all":
 		var dataRegion [][]string
 		for _, i := range data {
@@ -197,53 +117,15 @@ func PrintECSCacheFile(filePath string, header []string, region string, specifie
 				dataSpecifiedInstanceID = append(dataSpecifiedInstanceID, i)
 			}
 		}
-		PrintTable(dataSpecifiedInstanceID, header, "ECS")
+		PrintTable(dataSpecifiedInstanceID, header, resourceType)
 	}
 }
 
-func PrintCFCacheFile(filePath string, header []string, region string, specifiedInstanceID string, cloud string) {
-	data := ReadCacheFile(filePath, cloud)
-	switch {
-	case region == "all" && specifiedInstanceID == "all":
-		PrintTable(data, header, cloud)
-	case region != "all" && specifiedInstanceID == "all":
-		var dataRegion [][]string
-		for _, i := range data {
-			if i[7] == region {
-				dataRegion = append(dataRegion, i)
-			}
-		}
-		PrintTable(dataRegion, header, cloud)
-	case region == "all" && specifiedInstanceID != "all":
-		var dataSpecifiedInstanceID [][]string
-		for _, i := range data {
-			if i[1] == specifiedInstanceID {
-				dataSpecifiedInstanceID = append(dataSpecifiedInstanceID, i)
-			}
-		}
-		PrintTable(dataSpecifiedInstanceID, header, cloud)
-	case region != "all" && specifiedInstanceID != "all":
-		var dataRegion [][]string
-		for _, i := range data {
-			if i[7] == region {
-				dataRegion = append(dataRegion, i)
-			}
-		}
-		var dataSpecifiedInstanceID [][]string
-		for _, i := range dataRegion {
-			if i[1] == specifiedInstanceID {
-				dataSpecifiedInstanceID = append(dataSpecifiedInstanceID, i)
-			}
-		}
-		PrintTable(dataSpecifiedInstanceID, header, cloud)
-	}
-}
-
-func PrintRDSCacheFile(filePath string, header []string, region string, specifiedDBInstanceID string, engine string, cloud string) {
-	data := ReadCacheFile(filePath, cloud)
+func PrintRDSCacheFile(filePath string, header []string, region string, specifiedDBInstanceID string, engine string, provider string, resourceType string) {
+	data := ReadCacheFile(filePath, provider, resourceType)
 	switch {
 	case region == "all" && specifiedDBInstanceID == "all" && engine == "all":
-		PrintTable(data, header, "RDS")
+		PrintTable(data, header, resourceType)
 	case region == "all" && specifiedDBInstanceID == "all" && engine != "all":
 		var dataEngine [][]string
 		for _, i := range data {
@@ -251,7 +133,7 @@ func PrintRDSCacheFile(filePath string, header []string, region string, specifie
 				dataEngine = append(dataEngine, i)
 			}
 		}
-		PrintTable(dataEngine, header, "RDS")
+		PrintTable(dataEngine, header, resourceType)
 	case region == "all" && specifiedDBInstanceID != "all" && engine == "all":
 		var dataSpecifiedDBInstanceID [][]string
 		for _, i := range data {
@@ -259,7 +141,7 @@ func PrintRDSCacheFile(filePath string, header []string, region string, specifie
 				dataSpecifiedDBInstanceID = append(dataSpecifiedDBInstanceID, i)
 			}
 		}
-		PrintTable(dataSpecifiedDBInstanceID, header, "RDS")
+		PrintTable(dataSpecifiedDBInstanceID, header, resourceType)
 	case region == "all" && specifiedDBInstanceID != "all" && engine != "all":
 		var dataEngine [][]string
 		for _, i := range data {
@@ -273,7 +155,7 @@ func PrintRDSCacheFile(filePath string, header []string, region string, specifie
 				dataSpecifiedDBInstanceID = append(dataSpecifiedDBInstanceID, i)
 			}
 		}
-		PrintTable(dataSpecifiedDBInstanceID, header, "RDS")
+		PrintTable(dataSpecifiedDBInstanceID, header, resourceType)
 	case region != "all" && specifiedDBInstanceID == "all" && engine == "all":
 		var dataRegion [][]string
 		for _, i := range data {
@@ -281,7 +163,7 @@ func PrintRDSCacheFile(filePath string, header []string, region string, specifie
 				dataRegion = append(dataRegion, i)
 			}
 		}
-		PrintTable(dataRegion, header, "RDS")
+		PrintTable(dataRegion, header, resourceType)
 	case region != "all" && specifiedDBInstanceID == "all" && engine != "all":
 		var dataEngine [][]string
 		for _, i := range data {
@@ -295,7 +177,7 @@ func PrintRDSCacheFile(filePath string, header []string, region string, specifie
 				dataRegion = append(dataRegion, i)
 			}
 		}
-		PrintTable(dataRegion, header, "RDS")
+		PrintTable(dataRegion, header, resourceType)
 	case region != "all" && specifiedDBInstanceID != "all" && engine == "all":
 		var dataSpecifiedDBInstanceID [][]string
 		for _, i := range data {
@@ -309,7 +191,7 @@ func PrintRDSCacheFile(filePath string, header []string, region string, specifie
 				dataRegion = append(dataRegion, i)
 			}
 		}
-		PrintTable(dataRegion, header, "RDS")
+		PrintTable(dataRegion, header, resourceType)
 	case region != "all" && specifiedDBInstanceID != "all" && engine != "all":
 		var dataEngine [][]string
 		for _, i := range data {
@@ -329,7 +211,7 @@ func PrintRDSCacheFile(filePath string, header []string, region string, specifie
 				dataRegion = append(dataRegion, i)
 			}
 		}
-		PrintTable(dataRegion, header, "RDS")
+		PrintTable(dataRegion, header, resourceType)
 	}
 }
 
