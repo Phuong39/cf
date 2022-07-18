@@ -1,3 +1,7 @@
+## [v0.3.0](https://github.com/teamssix/cf/releases/tag/v0.3.0) 2022.7.17
+
+- [`cabf3d4`](https://github.com/teamssix/cf/commit/cabf3d432606a8a575825d615f47e12a079d28fe) feat: 支持腾讯云 CVM 的相关功能 (support tencent cloud cvm)
+
 ## [v0.2.4](https://github.com/teamssix/cf/releases/tag/v0.2.4) 2022.7.12
 
 - [`b702e63`](https://github.com/teamssix/cf/commit/b702e6363642ef24582118dd14f18128a13108a3) feat: 增加 OSS 下载对象功能权限的检测 (support oss get function for permission detection)
