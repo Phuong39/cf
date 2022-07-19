@@ -35,6 +35,7 @@ Currently CF has these functions as follows:
   - [x] List RDS
   - [x] Takeover console
   - [x] View permissions for access key
+  - [x] Support Tencent Cloud
   - [x] ......
   
 * Functions to be implemented in the future
@@ -42,7 +43,7 @@ Currently CF has these functions as follows:
   
   - [ ] Automatically detect if the current running environment is an instance, and if so, scan the local instance for credential information
   - [ ] Add the resulting credentials to the CF
-  - [ ] Support other cloud providers such as Tencent Cloud
+  - [ ] Support other cloud providers
   - [ ] ......
 
 ## Manual
@@ -59,7 +60,7 @@ For detailed manuals, please visit: [wiki.teamssix.com/cf](https://wiki.teamssix
 
 ## Easy to start
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207052307021.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207180028840.png)
 
 Configuration
 
@@ -67,55 +68,47 @@ Configuration
 cf configure
 ```
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022241064.png)
-
 One step lists the cloud service resources with current access key
 
 ```bash
-cf ls
+cf alibaba ls
 ```
-
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207040107386.png)
 
 ls permissions
 
 ```bash
-cf ls permissions
+cf alibaba permissions
 ```
-
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207082108875.png)
 
 takeover console
 
 ```bash
-cf console
+cf alibaba console
 ```
-
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207082104422.png)
 
 View help information for ecs exec commands
 
 ```bash
-cf ecs exec -h
+cf alibaba ecs exec -h
 ```
-
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022215293.png)
 
 Batch execution of multiple commands used to prove permission acquisition
 
 ```
-cf ecs exec -b
+cf alibaba ecs exec -b
 ```
-
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022241381.png)
 
 Get the STS Token in the instance metadata
 
 ```bash
-cf ecs exec -m
+cf alibaba ecs exec -m
 ```
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207022241672.png)
+View security group policy
+
+```bash
+cf tencent vpc ls
+```
 
 If it feels good, maybe you can give me a Star ~
 

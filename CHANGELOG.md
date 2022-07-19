@@ -1,0 +1,65 @@
+## [v0.2.4](https://github.com/teamssix/cf/releases/tag/v0.2.4) 2022.7.12
+
+- [`b702e63`](https://github.com/teamssix/cf/commit/b702e6363642ef24582118dd14f18128a13108a3) feat: 增加 OSS 下载对象功能权限的检测 (support oss get function for permission detection)
+- [`eda092a`](https://github.com/teamssix/cf/commit/eda092ae7636bac734be1a8362d1e8968394daac) fix: 修复了一个在 ECS 实例上执行命令时的 bug (fixed a bug when ecs exec)
+- [`75a1b4e`](https://github.com/teamssix/cf/commit/75a1b4e9494145558e6aeedfb15799a2b1097c1c) fix: 修复了一个在获取当前凭证权限时的 bug (fixed a bug in getting permission)
+
+## [v0.2.3](https://github.com/teamssix/cf/releases/tag/v0.2.3) 2022.7.11
+
+- [`71536bc`](https://github.com/teamssix/cf/commit/71536bcc17692cea5cbc68c9ac05b9bfd2e95a99) feat: 增加对象存储中对象的下载功能 (add object download function)
+- [`579bcb6`](https://github.com/teamssix/cf/commit/579bcb60a7c8f73ae1b778869e0fe4b4b1df9982) perf: 在列出实例时展示实例的名称 (add the instance name to the output)
+- [`7de034f`](https://github.com/teamssix/cf/commit/7de034fabe183fd66babda39981e510214391b0d) fix: 修复了一个更新功能的 bug (fixed a bug in the upgrade)
+
+## [v0.2.2](https://github.com/teamssix/cf/releases/tag/v0.2.2) 2022.7.10
+
+- [`b0ee137`](https://github.com/teamssix/cf/commit/b0ee137755ca3e775669f871c60cac8c4decda23) feat: 增加 OSS 对象列出功能 (add ls objects function)
+- [`c0044c9`](https://github.com/teamssix/cf/commit/c0044c930c133cfb92f8649c5dea3c76357215b8) perf: 资源缓存修改为超过 24 小时就自动刷新 (maximum cache validity changed to 24 hours)
+- [`2a4691c`](https://github.com/teamssix/cf/commit/2a4691c1851e7f4e0561c1e2e13d690f6395d6f6) perf: 在配置 AK 的时候，如果直接回车则使用原来的 AK (optimize the experience when configuring the access key)
+
+## [v0.2.1](https://github.com/teamssix/cf/releases/tag/v0.2.1) 2022.7.8
+
+- [`eb496bb`](https://github.com/teamssix/cf/commit/eb496bbafb68ff576a06e24cc8ca72eb17919fb3) feat: 增加查看当前凭证权限的功能 (add view permissions function)
+
+## [v0.2.0](https://github.com/teamssix/cf/releases/tag/v0.2.0) 2022.7.5
+
+- [`b4ba960`](https://github.com/teamssix/cf/commit/b4ba960c4f0d056eb728fd774b34547aeaef8fd7) feat: 增加控制台接管功能 (add takeover console function)
+- [`1022d49`](https://github.com/teamssix/cf/commit/1022d49f64f01740428dbfc2b06fb4ffa7469bd2) perf: 增加权限不足时的提示，优化使用体验 (add a prompt if no permission)
+- [`a20f58e`](https://github.com/teamssix/cf/commit/a20f58e72e214e62aa5a868d11b637741a16e3bb) perf: 美化更新程序时的进度条显示 (optimize the display of update progress bar)
+
+## [v0.1.1](https://github.com/teamssix/cf/releases/tag/v0.1.1) 2022.7.4
+
+- [`c00029d`](https://github.com/teamssix/cf/commit/c00029d964f94c676aaacc166c9f44810ab679a4) perf: 优化了两处程序逻辑处理问题 (optimize program logic processing)
+
+## [v0.1.0](https://github.com/teamssix/cf/releases/tag/v0.1.0) 2022.7.3
+
+- [`826b981`](https://github.com/teamssix/cf/commit/826b9818dfe6f147b4649e1021844426ca9617e2) feat: 增加 RDS 云数据库的列出功能 (add rds ls command)
+
+## [v0.0.5](https://github.com/teamssix/cf/releases/tag/v0.0.5) 2022.7.3
+
+- [`0c46427`](https://github.com/teamssix/cf/commit/0c464272eb74e9b3f78bd9a65215fdadaf160fe4) perf: 增加了在执行命令的时候选择实例的功能，提升使用体验 (add the function of selecting instances)
+
+## [v0.0.4](https://github.com/teamssix/cf/releases/tag/v0.0.4) 2022.7.2
+
+- [`d3db762`](https://github.com/teamssix/cf/commit/d3db762c2e2ef0d76278b920c2c782a1bd3aafda) fix: 修复了一个自动更新的 bug (fix a bug of automatic update failure)
+- [`bcadc33`](https://github.com/teamssix/cf/commit/bcadc33d1683a45519bca66706222055a1d2a017) fix: 修复了一个缓存文件的 bug (fixed a bug in the cache file)
+- [`00a85cb`](https://github.com/teamssix/cf/commit/00a85cb3f09bce8bf1ec905d711afb4a3591bc78) perf: 增加了操作提示，优化使用体验 (add tips to improve the experience of using)
+- [`387b73f`](https://github.com/teamssix/cf/commit/387b73f619d146991b6893a1be9ebb214f13fb34) perf: 优化代码 (optimized a miss)
+
+## [v0.0.3](https://github.com/teamssix/cf/releases/tag/v0.0.3) 2022.7.1
+
+* [`cef7914`](https://github.com/teamssix/cf/commit/cef7914e401f3c1883f68d59070b4edb77ade15f) fix: 修复了一个自动更新的 bug
+
+## [v0.0.2](https://github.com/teamssix/cf/releases/tag/v0.0.2) 2022.7.1
+
+- [`5be633`](https://github.com/teamssix/cf/commit/b5be6332d67a16c1c667e2c183371fa1640c8e16) feat: 增加自动更新功能
+- [`44111b6`](https://github.com/teamssix/cf/commit/44111b69a0040230d8df7562fc18729348d35684) perf: 优化、规范代码
+
+## [v0.0.1](https://github.com/teamssix/cf/releases/tag/v0.0.1) 2022.7.1
+
+- 列出对象存储（包括存储桶大小和文件数量信息）
+- 列出实例
+- 一键获得实例上的临时访问凭证
+- 一键为所有实例执行三要素，方便 HVV
+- 一键为实例反弹 Shell
+- 支持阿里云
+- ……
