@@ -1,8 +1,10 @@
 package util
 
 import (
+	"math/rand"
 	"os"
 	"strings"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -35,6 +37,7 @@ var errorMessagesNoExit = map[string]string{
 	"ErrorCode: EntityAlreadyExists.User.Policy": "已接管过控制台，无需重复接管 (Console has been taken over)",
 	"ErrorCode: EntityAlreadyExists.User":        "已接管过控制台，无需重复接管 (Console has been taken over)",
 	"ErrorCode: EntityNotExist.User":             "已取消接管控制台，无需重复取消 (Console has been de-taken over)",
+	"Code=ResourceNotFound, Message=指定资源":        "指定资源不存在 (ResourceNotFound)",
 }
 
 var errorMessagesExit = map[string]string{
@@ -68,4 +71,37 @@ func HandleErrNoExit(e error) {
 			}
 		}
 	}
+}
+
+//去除重复字符串和空格
+func RemoveDuplicatesAndEmpty(a []string) (ret []string) {
+	a_len := len(a)
+	for i := 0; i < a_len; i++ {
+		if (i > 0 && a[i-1] == a[i]) || len(a[i]) == 0 {
+			continue
+		}
+		ret = append(ret, a[i])
+	}
+	return
+}
+
+func GenerateRandomPasswords() string {
+	rand.Seed(time.Now().UnixNano())
+	digits := "0123456789"
+	specials := "%@#$"
+	all := "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+		"abcdefghijklmnopqrstuvwxyz" +
+		digits + specials
+	length := 16
+	buf := make([]byte, length)
+	buf[0] = digits[rand.Intn(len(digits))]
+	buf[1] = specials[rand.Intn(len(specials))]
+	for i := 2; i < length; i++ {
+		buf[i] = all[rand.Intn(len(all))]
+	}
+	rand.Shuffle(len(buf), func(i, j int) {
+		buf[i], buf[j] = buf[j], buf[i]
+	})
+	str := string(buf)
+	return str
 }

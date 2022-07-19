@@ -104,11 +104,11 @@ func PrintDBInstancesListRealTime(region string, running bool, specifiedDBInstan
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {
 		log.Info("未发现 RDS (No RDS found)")
-		cmdutil.WriteCacheFile(td, RDSCacheFilePath)
+		cmdutil.WriteCacheFile(td, RDSCacheFilePath, region, specifiedDBInstanceID)
 	} else {
 		Caption := "RDS 资源 (RDS resources)"
 		cloud.PrintTable(td, Caption)
-		cmdutil.WriteCacheFile(td, RDSCacheFilePath)
+		cmdutil.WriteCacheFile(td, RDSCacheFilePath, region, specifiedDBInstanceID)
 	}
 	util.WriteTimeStamp(util.ReturnRDSTimeStampFile())
 }

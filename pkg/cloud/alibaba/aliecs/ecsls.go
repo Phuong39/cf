@@ -114,11 +114,11 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {
 		log.Info("未发现 ECS，可能是因为当前访问凭证权限不够 (No ECS found, Probably because the current Access Key do not have enough permissions)")
-		cmdutil.WriteCacheFile(td, ECSCacheFilePath)
+		cmdutil.WriteCacheFile(td, ECSCacheFilePath, region, specifiedInstanceID)
 	} else {
 		Caption := "ECS 资源 (ECS resources)"
 		cloud.PrintTable(td, Caption)
-		cmdutil.WriteCacheFile(td, ECSCacheFilePath)
+		cmdutil.WriteCacheFile(td, ECSCacheFilePath, region, specifiedInstanceID)
 	}
 	util.WriteTimeStamp(util.ReturnECSTimeStampFile())
 }

@@ -39,14 +39,18 @@ func createCacheDict() {
 	}
 }
 
-func WriteCacheFile(td cloud.TableData, filePath string) {
-	log.Debugln("写入数据到缓存文件 (Write data to a cache file): " + filePath)
-	filePtr, err := os.Create(filePath)
-	util.HandleErr(err)
-	defer filePtr.Close()
-	encoder := json.NewEncoder(filePtr)
-	err = encoder.Encode(td.Body)
-	util.HandleErr(err)
+func WriteCacheFile(td cloud.TableData, filePath string, region string, id string) {
+	if region == "all" && id == "all" {
+		log.Debugln("写入数据到缓存文件 (Write data to a cache file): " + filePath)
+		filePtr, err := os.Create(filePath)
+		util.HandleErr(err)
+		defer filePtr.Close()
+		encoder := json.NewEncoder(filePtr)
+		err = encoder.Encode(td.Body)
+		util.HandleErr(err)
+	} else {
+		log.Debugln("由于数据不是全部数据，所以不写入缓存文件 (Since the data is not all data, it is not written to the cache file)")
+	}
 }
 
 func ReadCacheFile(filePath string, provider string, resourceType string) [][]string {
