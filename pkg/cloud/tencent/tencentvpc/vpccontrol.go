@@ -1,6 +1,7 @@
 package tencentvpc
 
 import (
+	"fmt"
 	"github.com/AlecAivazis/survey/v2"
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud/tencent/tencentcvm"
@@ -9,6 +10,7 @@ import (
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	cvm "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm/v20170312"
 	vpc "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vpc/v20170312"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -37,7 +39,7 @@ func CreateSecurityGroup(region string) *string {
 	response, err := VPCClient(region).CreateSecurityGroup(request)
 	util.HandleErr(err)
 	securityGroupId := response.Response.SecurityGroup.SecurityGroupId
-	log.Infof("得到VPC安全组 id 为 %s 地区为 %s (Vpc security group id %s region %s ):", *securityGroupId, region, *securityGroupId, region)
+	log.Debugf("得到 VPC 安全组 id 为 %s ，区域为 %s (Vpc security group id %s ,region %s ):", *securityGroupId, region, *securityGroupId, region)
 	return securityGroupId
 }
 
@@ -57,25 +59,35 @@ func CreateSecurityGroupPolicies(region string, securityGroupId *string) {
 	var qs = []*survey.Question{
 		{
 			Name:   "Protocol",
-			Prompt: &survey.Input{Message: "Protocol (必须 Required) (TCP,UDP,ICMP,ICMPv6,ALL)" + ":"},
+			Prompt: &survey.Input{Message: "Protocol (必须 Required) ([TCP],UDP,ICMP,ICMPv6,ALL)" + ":"},
 		},
 		{
 			Name:   "Port",
-			Prompt: &survey.Input{Message: "Port (必须 Required) (ALL, (1,65535))" + ":"},
+			Prompt: &survey.Input{Message: "Port (必须 Required) ([ALL], (1,65535))" + ":"},
 		},
 		{
 			Name:   "CidrBlock",
-			Prompt: &survey.Input{Message: "CidrBlock (必须 Required) (0.0.0.0/0)" + ":"},
+			Prompt: &survey.Input{Message: "CidrBlock (必须 Required) ([0.0.0.0/0])" + ":"},
 		},
 		{
 			Name:   "Action",
-			Prompt: &survey.Input{Message: "Action (必须 Required) (ACCEPT/DROP)" + ":"},
+			Prompt: &survey.Input{Message: "Action (必须 Required) ([ACCEPT]/DROP)" + ":"},
 		},
 	}
 	secGP := securityGroupPolicySet{}
+	err1 := survey.Ask(qs, &secGP)
+	util.HandleErr(err1)
+	switch {
+	case secGP.Protocol == "":
+		secGP.Protocol = "TCP"
+	case secGP.Port == "":
+		secGP.Port = "ALL"
+	case secGP.CidrBlock == "":
+		secGP.CidrBlock = "0.0.0.0/0"
+	case secGP.Action == "":
+		secGP.Action = "ACCEPT"
+	}
 	if rule == "出站规则 (Egress)" {
-		err1 := survey.Ask(qs, &secGP)
-		util.HandleErr(err1)
 		request.SecurityGroupPolicySet = &vpc.SecurityGroupPolicySet{
 			Egress: []*vpc.SecurityGroupPolicy{
 				{
@@ -89,8 +101,6 @@ func CreateSecurityGroupPolicies(region string, securityGroupId *string) {
 		_, err2 := VPCClient(region).CreateSecurityGroupPolicies(request)
 		util.HandleErr(err2)
 	} else {
-		err1 := survey.Ask(qs, &secGP)
-		util.HandleErr(err1)
 		request.SecurityGroupPolicySet = &vpc.SecurityGroupPolicySet{
 			Ingress: []*vpc.SecurityGroupPolicy{
 				{
@@ -123,7 +133,9 @@ func DeleteSecurityGroup(region string, securityGroupId *string) {
 	request.SecurityGroupId = securityGroupId
 	_, err := VPCClient(region).DeleteSecurityGroup(request)
 	util.HandleErr(err)
-	log.Debugf("区域 %s 下的安全组 id 为 %s 已删除 (Region %s Security group id %s is deleted)", region, *securityGroupId, region, *securityGroupId)
+	if err == nil {
+		log.Infof("%s 安全组已删除 (%s Security group is deleted)", region, region)
+	}
 }
 
 //绑定安全组规则->CVM
@@ -170,40 +182,120 @@ func VPCAdd(regionList []string, instancesMap map[string]string) {
 	AssociateSecurityGroups(region, newRegion, securityGroupId, instancesMap)
 }
 
-func VPCDel(instancesList []string, instancesMap map[string]string, securityGroupId *string) {
-	//先解绑 再删除
-	var InstanceId string
-	prompt := &survey.Select{
-		Message: "选择你要解绑的腾讯云实例 (Select the tencent cloud instance you want to unbind): ",
-		Options: instancesList,
+func VPCDel(instancesMap map[string]string, CVMCacheData [][]string) {
+	var (
+		securityGroupIdString string
+		securityGroupId       *string
+		vpcList               []string
+		InstanceId            string
+		InstanceIdList        []string
+	)
+	if len(getVPCCacheData()) == 0 {
+		log.Infoln("正在查询 VPC 信息 (Searching for VPC information)")
+		*securityGroupId = "all"
+		PrintVPCSecurityGroupPoliciesListRealTime("all", securityGroupId)
+		if len(getVPCCacheData()) != 0 {
+			fmt.Println("")
+		}
 	}
-	err := survey.AskOne(prompt, &InstanceId)
+	cacheData := getVPCCacheData()
+	for _, j := range cacheData {
+		vpcList = append(vpcList, j[1])
+	}
+	vpcList = RemoveRepByLoop(vpcList)
+
+	prompt1 := &survey.Select{
+		Message: "选择你要删除的 VPC ID (Select the VPC ID you want to delete):",
+		Options: vpcList,
+	}
+	err := survey.AskOne(prompt1, &securityGroupIdString)
 	util.HandleErr(err)
-	str := strings.Split(instancesMap[InstanceId], "-")
-	region := str[0] + "-" + str[1]
-	DisassociateSecurityGroups(region, securityGroupId, InstanceId)
-	DeleteSecurityGroup(region, securityGroupId)
+	securityGroupId = &securityGroupIdString
+	for _, i := range CVMCacheData {
+		if strings.Contains(i[9], *securityGroupId) {
+			InstanceIdList = append(InstanceIdList, i[1])
+		}
+	}
+
+	//先解绑 再删除
+	if len(InstanceIdList) == 0 {
+		str := strings.Split(instancesMap[InstanceId], "-")
+		region := str[0] + "-" + str[1]
+		DeleteSecurityGroup(region, securityGroupId)
+	} else {
+		var region string
+		for _, i := range InstanceIdList {
+			str := strings.Split(instancesMap[i], "-")
+			region = str[0] + "-" + str[1]
+			DisassociateSecurityGroups(region, securityGroupId, i)
+		}
+		DeleteSecurityGroup(region, securityGroupId)
+	}
 }
 
-func VPCControl(op string, securityGroupId *string) {
-	cacheData := cmdutil.ReadCacheFile(CVMCacheFilePath, "tencent", "CVM")
-	var InstancesList []string
-	var InstancesMap map[string]string
-	var regionList []string
+func RemoveRepByLoop(slc []string) []string {
+	result := []string{}
+	for i := range slc {
+		flag := true
+		for j := range result {
+			if slc[i] == result[j] {
+				flag = false
+				break
+			}
+		}
+		if flag {
+			result = append(result, slc[i])
+		}
+	}
+	return result
+}
+
+func VPCControl() {
+	var (
+		InstancesList []string
+		InstancesMap  map[string]string
+		regionList    []string
+		op            string
+		opList        = []string{"新增 (add)", "删除 (del)"}
+	)
+	if len(getCVMCacheData()) == 0 {
+		log.Infoln("正在查询 CVM 实例信息 (Searching for CVM instance information)")
+		tencentcvm.PrintInstancesListRealTime("all", false, "all")
+		if len(getCVMCacheData()) == 0 {
+			os.Exit(0)
+		}
+	}
+	cacheData := getCVMCacheData()
 	InstancesMap = make(map[string]string)
 	for _, i := range cacheData {
 		InstancesList = append(InstancesList, i[1])
 		InstancesMap[i[1]] = i[8]
 		regionList = append(regionList, i[8])
 	}
+	prompt := &survey.Select{
+		Message: "选择你要执行的操作 (Select your action): ",
+		Options: opList,
+	}
+	err := survey.AskOne(prompt, &op)
+	util.HandleErr(err)
 	switch op {
-	case "add":
+	case "新增 (add)":
 		{
 			VPCAdd(regionList, InstancesMap)
 		}
-	case "del":
+	case "删除 (del)":
 		{
-			VPCDel(InstancesList, InstancesMap, securityGroupId)
+			VPCDel(InstancesMap, cacheData)
 		}
 	}
+}
+
+func getCVMCacheData() [][]string {
+	cacheData := cmdutil.ReadCacheFile(CVMCacheFilePath, "tencent", "CVM")
+	return cacheData
+}
+
+func getVPCCacheData() [][]string {
+	cacheData := cmdutil.ReadCacheFile(VPCCacheFilePath, "tencent", "VPC")
+	return cacheData
 }

@@ -46,39 +46,72 @@ func DescribeSecurityGroups(region string) ([]*string, []string) {
 }
 
 //查看安全组的规则
-func DescribeSecurityGroupPolicies(region string, securityGroupId *string) *vpc.SecurityGroupPolicySet {
+func DescribeSecurityGroupPolicies(region string, securityGroupId *string) (*vpc.SecurityGroupPolicySet, error) {
 	request := vpc.NewDescribeSecurityGroupPoliciesRequest()
 	request.SetScheme("https")
 	request.SecurityGroupId = securityGroupId
 	response, err := VPCClient(region).DescribeSecurityGroupPolicies(request)
 	util.HandleErr(err)
-	return response.Response.SecurityGroupPolicySet
+	return response.Response.SecurityGroupPolicySet, err
 }
 
 //处理全部或指定地区的安全组规则
 func ReturnVPCSecurityGroupPoliciesList(region string, securityGroupId *string) []securityGroupPolicyList {
 	var (
+		secGroupPolicy     securityGroupPolicyList
 		secGroupPolicyList []securityGroupPolicyList
 		secGPList          []*vpc.SecurityGroupPolicySet
 	)
-	if region == "all" && *securityGroupId == "all" {
+	switch {
+	case region == "all" && *securityGroupId == "all":
 		for _, j := range tencentcvm.GetCVMRegions() {
-			region := *j.Region
-			vpcSecG, _ := DescribeSecurityGroups(region)
+			specifiedRegion := *j.Region
+			vpcSecG, _ := DescribeSecurityGroups(specifiedRegion)
 			if vpcSecG != nil {
 				for _, i := range vpcSecG {
-					vpcSecGP := DescribeSecurityGroupPolicies(region, i)
-					secGroupPolicy := securityGroupPolicyList{
+					vpcSecGP, _ := DescribeSecurityGroupPolicies(specifiedRegion, i)
+					secGroupPolicy = securityGroupPolicyList{
 						securityGroupId: i,
-						region:          region,
+						region:          specifiedRegion,
 						secGPList:       vpcSecGP,
 					}
 					secGroupPolicyList = append(secGroupPolicyList, secGroupPolicy)
 				}
 			}
 		}
-	} else {
-		vpcSecGP := DescribeSecurityGroupPolicies(region, securityGroupId)
+	case region == "all" && *securityGroupId != "all":
+		for _, j := range tencentcvm.GetCVMRegions() {
+			specifiedRegion := *j.Region
+			vpcSecG, _ := DescribeSecurityGroups(specifiedRegion)
+			if vpcSecG != nil {
+				for _, i := range vpcSecG {
+					vpcSecGP, _ := DescribeSecurityGroupPolicies(specifiedRegion, i)
+					if *i == *securityGroupId {
+						secGroupPolicy = securityGroupPolicyList{
+							securityGroupId: i,
+							region:          specifiedRegion,
+							secGPList:       vpcSecGP,
+						}
+						secGroupPolicyList = append(secGroupPolicyList, secGroupPolicy)
+					}
+				}
+			}
+		}
+	case region != "all" && *securityGroupId == "all":
+		vpcSecG, _ := DescribeSecurityGroups(region)
+		if vpcSecG != nil {
+			for _, i := range vpcSecG {
+				vpcSecGP, _ := DescribeSecurityGroupPolicies(region, i)
+				secGroupPolicy := securityGroupPolicyList{
+					securityGroupId: i,
+					region:          region,
+					secGPList:       vpcSecGP,
+				}
+				secGroupPolicyList = append(secGroupPolicyList, secGroupPolicy)
+			}
+		}
+	default:
+		vpcSecGP, _ := DescribeSecurityGroupPolicies(region, securityGroupId)
 		secGPList = append(secGPList, vpcSecGP)
 		secGroupPolicy := securityGroupPolicyList{
 			securityGroupId: securityGroupId,
@@ -121,17 +154,17 @@ func PrintVPCSecurityGroupPoliciesListRealTime(region string, securityGroupId *s
 	var td = cloud.TableData{Header: vpcHeader, Body: data}
 	if len(data) == 0 {
 		log.Info("未发现 VPC 安全组规则 (Can not find vpc security group egress)")
-		cmdutil.WriteCacheFile(td, VPCCacheFilePath)
+		cmdutil.WriteCacheFile(td, VPCCacheFilePath, region, *securityGroupId)
 	} else {
-		eCaption := "VPC安全组规则 (vpc security group egress)"
+		eCaption := "VPC 安全组规则 (vpc security group egress)"
 		cloud.PrintTable(td, eCaption)
-		cmdutil.WriteCacheFile(td, VPCCacheFilePath)
+		cmdutil.WriteCacheFile(td, VPCCacheFilePath, region, *securityGroupId)
 	}
 }
 
 func PrintVPCSecurityGroupPoliciesListHistory(region string, securityGroupId *string) {
 	if cmdutil.FileExists(VPCCacheFilePath) {
-		cmdutil.PrintECSCacheFile(VPCCacheFilePath, vpcHeader, region, *securityGroupId, "tencent", "ECS")
+		cmdutil.PrintECSCacheFile(VPCCacheFilePath, vpcHeader, region, *securityGroupId, "tencent", "VPC")
 	} else {
 		PrintVPCSecurityGroupPoliciesListRealTime(region, securityGroupId)
 	}

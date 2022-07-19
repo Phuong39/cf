@@ -184,11 +184,11 @@ func PrintBucketsListRealTime(region string) {
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {
 		log.Info("没发现存储桶 (No Buckets Found)")
-		cmdutil.WriteCacheFile(td, OSSCacheFilePath)
+		cmdutil.WriteCacheFile(td, OSSCacheFilePath, region, "all")
 	} else {
 		Caption := "OSS 资源 (OSS resources)"
 		cloud.PrintTable(td, Caption)
-		cmdutil.WriteCacheFile(td, OSSCacheFilePath)
+		cmdutil.WriteCacheFile(td, OSSCacheFilePath, region, "all")
 	}
 	util.WriteTimeStamp(util.ReturnOSSTimeStampFile())
 }

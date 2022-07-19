@@ -16,6 +16,8 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+tmp
+test
 
 # Go workspace file
 go.work
@@ -23,4 +25,3 @@ go.work
 .idea
 cf
 cf.bak
-tmp

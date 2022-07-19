@@ -6,21 +6,21 @@ import (
 )
 
 var (
-	vpcRegion       string
-	vpclsFlushCache bool
-	securityGroupId string
-	op              string
+	vpcRegion                 string
+	vpclsFlushCache           bool
+	op                        string
+	vpclsSecurityGroupId      string
+	vpccontrolSecurityGroupId string
 )
 
 func init() {
 	tencentCmd.AddCommand(vpcCmd)
 	vpcCmd.AddCommand(vpclsCmd)
 	vpcCmd.AddCommand(vpccontrolCmd)
+	vpcCmd.PersistentFlags().BoolVar(&vpclsFlushCache, "flushCache", false, "刷新缓存，不使用缓存数据 (Refresh the cache without using cached data)")
+
 	vpclsCmd.Flags().StringVarP(&vpcRegion, "region", "r", "all", "指定区域 ID (Set Region ID)")
-	vpclsCmd.Flags().StringVarP(&securityGroupId, "securityGroupId", "g", "all", "指定安全组实例 ID (Set Security Group Id)")
-	vpclsCmd.PersistentFlags().BoolVar(&vpclsFlushCache, "flushCache", false, "刷新缓存，不使用缓存数据 (Refresh the cache without using cached data)")
-	vpccontrolCmd.Flags().StringVarP(&op, "op", "o", "add", "添加或删除安全组 (Add/Del security group)")
-	vpccontrolCmd.Flags().StringVarP(&securityGroupId, "securityGroupId", "g", "", "指定安全组实例 ID (Set Security Group Id)")
+	vpclsCmd.Flags().StringVarP(&vpclsSecurityGroupId, "securityGroupId", "i", "all", "指定安全组 ID (Set Security Group Id)")
 }
 
 var vpcCmd = &cobra.Command{
@@ -34,7 +34,7 @@ var vpclsCmd = &cobra.Command{
 	Short: "列出当前凭证下的VPC安全组策略 (List all vpc security group policy)",
 	Long:  `列出当前凭证下的VPC安全组策略 (List all vpc security group policy)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		tencentvpc.PrintVPCSecurityGroupPoliciesList(vpcRegion, &securityGroupId, vpclsFlushCache)
+		tencentvpc.PrintVPCSecurityGroupPoliciesList(vpcRegion, &vpclsSecurityGroupId, vpclsFlushCache)
 	},
 }
 
@@ -43,6 +43,6 @@ var vpccontrolCmd = &cobra.Command{
 	Short: "添加或删除当前凭证下的VPC安全组策略 (Add/Del current vpc security group policy rule)",
 	Long:  "添加或删除当前凭证下的VPC安全组策略 (Add/Del current vpc security group policy rule)",
 	Run: func(cmd *cobra.Command, args []string) {
-		tencentvpc.VPCControl(op, &securityGroupId)
+		tencentvpc.VPCControl()
 	},
 }
