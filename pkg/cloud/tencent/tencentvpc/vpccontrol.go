@@ -139,7 +139,6 @@ func AssociateSecurityGroups(oldregion string, region string, securityGroupId *s
 		}
 	}
 	//选择实例机器
-	log.Warnln(InstancesList)
 	var InstanceId string
 	prompt := &survey.Select{
 		Message: "选择你要绑定的腾讯云实例 (Select the tencent cloud instance you want to bind): ",
