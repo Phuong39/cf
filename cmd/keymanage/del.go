@@ -1,4 +1,4 @@
-package keyop
+package keymanage
 
 import "github.com/spf13/cobra"
 

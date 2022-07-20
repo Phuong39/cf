@@ -3,7 +3,6 @@ package keymanage
 import (
 	"github.com/spf13/cobra"
 	"github.com/teamssix/cf/cmd"
-	"github.com/teamssix/cf/cmd/keymanage/keyop"
 	"github.com/teamssix/cf/cmd/keymanage/keystore"
 )
 
@@ -11,12 +10,14 @@ func init() {
 	// init keyStore Service
 	keystore.Init()
 	// init Commands
-	KeyManagerRoot.AddCommand(keyop.AddKeyCmd)
-	KeyManagerRoot.AddCommand(keyop.DelKeyCmd)
-	KeyManagerRoot.AddCommand(keyop.HeadKeyCmd)
-	KeyManagerRoot.AddCommand(keyop.ListKeyCmd)
-	KeyManagerRoot.AddCommand(keyop.SwitchKeyCmd)
+	KeyManagerRoot.AddCommand(AddKeyCmd)
+	KeyManagerRoot.AddCommand(DelKeyCmd)
+	KeyManagerRoot.AddCommand(HeadKeyCmd)
+	KeyManagerRoot.AddCommand(ListKeyCmd)
+	KeyManagerRoot.AddCommand(SwitchKeyCmd)
+	// add to root command
 	cmd.RootCmd.AddCommand(KeyManagerRoot)
+	LoadKeys()
 }
 
 var KeyManagerRoot = &cobra.Command{

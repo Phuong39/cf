@@ -1,8 +1,8 @@
-package keyop
+package keymanage
 
 import "github.com/spf13/cobra"
 
 var AddKeyCmd = &cobra.Command{
 	Use: "add",
-	// Todo: add Keys
+	// ToDo: Add keys
 }
