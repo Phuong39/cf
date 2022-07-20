@@ -19,6 +19,8 @@ require (
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tat v1.0.437
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vpc v1.0.441
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
+	gorm.io/driver/sqlite v1.3.6
+	gorm.io/gorm v1.23.8
 )
 
 require (
@@ -26,6 +28,8 @@ require (
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
@@ -33,6 +37,7 @@ require (
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
+	github.com/mattn/go-sqlite3 v1.14.12 // indirect
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d // indirect
 	github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect

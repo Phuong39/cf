@@ -2,7 +2,6 @@ package keymanage
 
 import (
 	log "github.com/sirupsen/logrus"
-	"github.com/teamssix/cf/cmd/keymanage/keystore"
 	"github.com/teamssix/cf/pkg/cloud"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
 )
@@ -15,17 +14,12 @@ type Key struct {
 	Remark        string // remarks.
 }
 
-var KeyChain = []Key{}
-
 var HeaderKey = []Key{}
 
-func LoadKeys() error {
-	// ToDo: read cf key storage file.
-	err := keystore.KeyConfig.UnmarshalKey("keys", &KeyChain)
-	if err != nil {
-		log.Error("加载密钥配置出错 (Loading Key Config Error)", err)
-	}
-	return err
+var CommonTableHeader = []string{
+	"名称 (Name)", "所属平台 (Platform)",
+	"AccessKeyId", "AccessKeySecret",
+	"STSToken", "备注 (Remark)",
 }
 
 func GetHeader() {
@@ -44,13 +38,4 @@ func GetHeader() {
 			}
 		}
 	}
-}
-
-func SaveKeys() error {
-	// ToDo: Set cf key storage file.
-	err := keystore.KeyConfig.SafeWriteConfig()
-	if err != nil {
-		log.Error("写入密钥配置出错 (Writing Key Config Error)", err)
-	}
-	return err
 }
