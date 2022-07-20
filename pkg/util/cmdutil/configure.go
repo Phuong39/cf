@@ -54,13 +54,13 @@ func inputAccessKey(config cloud.Config, provider string) {
 	AccessKeySecret := config.AccessKeySecret
 	STSToken := config.STSToken
 	if AccessKeyId != "" {
-		OldAccessKeyId = fmt.Sprintf(" [%s] ", maskAK(AccessKeyId))
+		OldAccessKeyId = fmt.Sprintf(" [%s] ", MaskAK(AccessKeyId))
 	}
 	if AccessKeySecret != "" {
-		OldAccessKeySecret = fmt.Sprintf(" [%s] ", maskAK(AccessKeySecret))
+		OldAccessKeySecret = fmt.Sprintf(" [%s] ", MaskAK(AccessKeySecret))
 	}
 	if STSToken != "" {
-		OldSTSToken = fmt.Sprintf(" [%s] ", maskAK(STSToken))
+		OldSTSToken = fmt.Sprintf(" [%s] ", MaskAK(STSToken))
 	}
 	var qs = []*survey.Question{
 		{
@@ -140,7 +140,7 @@ func GetConfig(provider string) cloud.Config {
 	}
 }
 
-func maskAK(ak string) string {
+func MaskAK(ak string) string {
 	prefix := ak[:2]
 	suffix := ak[len(ak)-6:]
 	return prefix + strings.Repeat("*", 18) + suffix
