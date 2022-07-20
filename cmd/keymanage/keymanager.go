@@ -18,6 +18,7 @@ func init() {
 	// add to root command
 	cmd.RootCmd.AddCommand(KeyManagerRoot)
 	LoadKeys()
+	GetHeader()
 }
 
 var KeyManagerRoot = &cobra.Command{

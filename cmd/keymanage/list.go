@@ -15,13 +15,13 @@ var ListKeyCmd = &cobra.Command{
 		Data := cloud.TableData{
 			Header: []string{"Name", "Platform", "AK", "SK", "STS", "Remark"},
 		}
-		for i, key := range KeyChain {
-			Data.Body[i] = []string{key.Name, key.Platform,
+		for _, key := range KeyChain {
+			Data.Body = append(Data.Body, []string{key.Name, key.Platform,
 				cmdutil.MaskAK(key.AccessKeyId),
 				cmdutil.MaskAK(key.AccessKeySecret),
 				cmdutil.MaskAK(key.STSToken),
 				key.Remark,
-			}
+			})
 		}
 		cloud.PrintTable(Data, "")
 	},
