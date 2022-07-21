@@ -118,13 +118,13 @@ Thank you for your contributions to CF ~
 
 <table>
     <tr>
-        <td align="center"><a herf="https://github.com/teamssix"><img alt="TeamsSix"
+        <td align="center"><a href="https://github.com/teamssix"><img alt="TeamsSix"
                                 src="https://avatars.githubusercontent.com/u/49087564?v=4" style="width: 100px;"/><br />TeamsSix</a></td>
-        <td align="center"><a herf="https://github.com/Amzza0x00"><img alt="Amzza0x00"
+        <td align="center"><a href="https://github.com/Amzza0x00"><img alt="Amzza0x00"
                                 src="https://avatars.githubusercontent.com/u/32904523?v=4"  style="width: 100px;" /><br />Amzza0x00</a></td>
-        <td align="center"><a herf="https://github.com/Esonhugh"><img alt="Esonhugh"
+        <td align="center"><a href="https://github.com/Esonhugh"><img alt="Esonhugh"
                                 src="https://avatars.githubusercontent.com/u/32677240?v=4"  style="width: 100px;" /><br />Esonhugh</a></td>
-        <td align="center"><a herf="https://github.com/Dawnnnnnn"><img alt="Dawnnnnnn"
+        <td align="center"><a href="https://github.com/Dawnnnnnn"><img alt="Dawnnnnnn"
                                 src="https://avatars.githubusercontent.com/u/24506421?v=4"  style="width: 100px;" /><br />Dawnnnnnn</a></td>
 </table>
 
