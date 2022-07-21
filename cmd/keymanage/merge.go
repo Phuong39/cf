@@ -7,6 +7,7 @@ import (
 	"github.com/teamssix/cf/pkg/util/cmdutil"
 )
 
+// MergeKey 将当前 configure 的 key 存入数据库。 迁移性功能
 var MergeKeyCmd = &cobra.Command{
 	Use:   "merge",
 	Short: "保存当前所使用的 Key 对 (Save current using key in Local DataBase)",
