@@ -64,7 +64,7 @@ var AddKeyCmd = &cobra.Command{
 		promot := &survey.Confirm{
 			Message: "以上信息是否正确 (make sure correctness) "}
 		sure := true // Break out
-		survey.AskOne(promot, sure)
+		survey.AskOne(promot, &sure)
 		if sure {
 			KeyDb.Save(cred)
 		}

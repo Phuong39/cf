@@ -26,7 +26,7 @@ var MergeKeyCmd = &cobra.Command{
 			prompt := &survey.Confirm{
 				Message: "是否保存当前所使用的 Key 对 (Save current using key in Local DataBase)?",
 			}
-			survey.AskOne(prompt, skip)
+			survey.AskOne(prompt, &skip)
 			if skip {
 				return
 			}
