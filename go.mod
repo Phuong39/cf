@@ -10,10 +10,10 @@ require (
 	github.com/ivanpirog/coloredcobra v1.0.1
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/schollz/progressbar/v3 v3.8.6
-	github.com/ser163/WordBot v1.0.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.4.0
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.441
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cam v1.0.447
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.447
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm v1.0.436
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tat v1.0.437
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vpc v1.0.441
@@ -39,7 +39,6 @@ require (
 	github.com/onsi/gomega v1.19.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect
-	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/xo/terminfo v0.0.0-20210125001918-ca9a967f8778 // indirect
 	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
