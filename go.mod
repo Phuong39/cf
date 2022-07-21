@@ -14,9 +14,11 @@ require (
 	github.com/spf13/cobra v1.5.0
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cam v1.0.447
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.447
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm v1.0.447
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tat v1.0.447
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vpc v1.0.447
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm v1.0.436
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cwp v1.0.447
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/lighthouse v1.0.447
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tat v1.0.437
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vpc v1.0.441
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
 )
 
