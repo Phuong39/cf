@@ -1,3 +1,9 @@
+## [v0.3.1](https://github.com/teamssix/cf/releases/tag/v0.3.1) 2022.7.21
+
+- [`afe82e5`](https://github.com/teamssix/cf/commit/afe82e511813f452cab021a5665d1ff084a9ce16) feat: 新增腾讯云安全组操作功能 (tencent cloud security group policy add/del)
+- [`06ca14c`](https://github.com/teamssix/cf/commit/06ca14c02fae3d0c5749988ca2be70b755829d94) feat: 新增腾讯云控制台接管功能 (add tencent takeover console function)
+- [`5afae3a`](https://github.com/teamssix/cf/commit/5afae3a67f93bfefa4d90f9ba66728637ecdf67b) feat: 新增腾讯云云镜的相关操作 (add tencent functions)
+
 ## [v0.3.0](https://github.com/teamssix/cf/releases/tag/v0.3.0) 2022.7.17
 
 - [`cabf3d4`](https://github.com/teamssix/cf/commit/cabf3d432606a8a575825d615f47e12a079d28fe) feat: 支持腾讯云 CVM 的相关功能 (support tencent cloud cvm)
