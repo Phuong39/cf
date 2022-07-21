@@ -22,7 +22,7 @@ var CommonTableHeader = []string{
 	"STSToken", "备注 (Remark)",
 }
 
-// GetHeader Get the Current Key config for all Cloud Service Provider.
+// GetHeader - Get the Current Key config for all Cloud Service Provider.
 func GetHeader() {
 	cloudConfigList, _ := cmdutil.ReturnCloudProviderList()
 	for _, provider := range cloudConfigList {
@@ -39,4 +39,28 @@ func GetHeader() {
 			})
 		}
 	}
+}
+
+// PrintKeyTable - Print the Key config for all Cloud Service Provider.
+func PrintKeysTable(keys []Key) {
+	Data := cloud.TableData{
+		Header: CommonTableHeader,
+	}
+	if len(keys) == 0 {
+		Data.Body = append(Data.Body,
+			[]string{"", "", "", "", "", ""})
+		// no handle the Result.Error
+		log.Info("没有在本地数据库中找到任何密钥 (No key found in local database)")
+	} else {
+		for _, key := range keys {
+			Data.Body = append(Data.Body, []string{key.Name, key.Platform,
+				key.AccessKeyId,
+				key.AccessKeySecret,
+				key.STSToken,
+				key.Remark,
+			})
+		}
+		cloud.PrintTable(Data, "")
+	}
+
 }

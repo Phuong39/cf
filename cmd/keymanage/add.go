@@ -81,7 +81,7 @@ func AddOrUpdate() {
 	}
 
 	// Make user to check
-	PrintSaving(key)
+	PrintKeysTable([]Key{key})
 	promot := &survey.Confirm{
 		Message: "以上信息是否正确 (make sure correctness) "}
 	sure := true // Break out
@@ -89,16 +89,4 @@ func AddOrUpdate() {
 	if sure {
 		KeyDb.Where("access_key_id = ?", key.AccessKeyId).Save(&key)
 	}
-}
-
-func PrintSaving(key Key) {
-	Data := cloud.TableData{
-		Header: CommonTableHeader,
-	}
-	Data.Body = append(Data.Body, []string{
-		key.Name, key.Platform,
-		key.AccessKeyId, key.AccessKeySecret,
-		key.STSToken, key.Remark,
-	})
-	cloud.PrintTable(Data, "")
 }
