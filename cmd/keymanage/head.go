@@ -3,7 +3,6 @@ package keymanage
 import (
 	"github.com/spf13/cobra"
 	"github.com/teamssix/cf/pkg/cloud"
-	"github.com/teamssix/cf/pkg/util/cmdutil"
 )
 
 var HeadKeyCmd = &cobra.Command{
@@ -15,16 +14,10 @@ var HeadKeyCmd = &cobra.Command{
 			Header: CommonTableHeader,
 		}
 		for _, key := range HeaderKey {
-			MaskedSTSToken := key.STSToken
-			if MaskedSTSToken == "" {
-				MaskedSTSToken = "[Empty STS Token]"
-			} else {
-				MaskedSTSToken = cmdutil.MaskAK(MaskedSTSToken)
-			}
 			Data.Body = append(Data.Body, []string{key.Name, key.Platform,
-				cmdutil.MaskAK(key.AccessKeyId),
-				cmdutil.MaskAK(key.AccessKeySecret),
-				MaskedSTSToken,
+				key.AccessKeyId,
+				key.AccessKeySecret,
+				key.STSToken,
 				key.Remark,
 			})
 		}
