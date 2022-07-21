@@ -15,7 +15,6 @@ var AddKeyCmd = &cobra.Command{
 	Long:  "添加密钥到数据库 (Add Key)",
 	Run: func(cmd *cobra.Command, args []string) {
 		cloudConfigList, _ := cmdutil.ReturnCloudProviderList()
-		cred := Key{}
 
 		var qs = []*survey.Question{
 			{
@@ -44,7 +43,7 @@ var AddKeyCmd = &cobra.Command{
 			},
 			{
 				Name:     "AccessKeySecret",
-				Prompt:   &survey.Password{Message: "Access Key Secret (必须 Required):"},
+				Prompt:   &survey.Input{Message: "Access Key Secret (必须 Required):"},
 				Validate: survey.Required,
 			},
 			{
@@ -54,19 +53,35 @@ var AddKeyCmd = &cobra.Command{
 		}
 
 		// Generate the new config struct named cred to receive the inputted values.
+		cred := struct {
+			Name            string `survey:"name"`
+			Remark          string `survey:"remark"`
+			Platform        string `survey:"platform"`
+			AccessKeyId     string `survey:"AccessKeyId"`
+			AccessKeySecret string `survey:"AccessKeySecret"`
+			STSToken        string `survey:"STSToken"`
+		}{}
 		survey.Ask(qs, &cred)
-		cred.AccessKeyId = strings.TrimSpace(cred.AccessKeyId)
-		cred.AccessKeySecret = strings.TrimSpace(cred.AccessKeySecret)
-		cred.STSToken = strings.TrimSpace(cred.STSToken)
+
+		key := Key{
+			Name:     cred.Name,
+			Remark:   cred.Remark,
+			Platform: cred.Platform,
+			Config: &cloud.Config{
+				AccessKeyId:     strings.TrimSpace(cred.AccessKeyId),
+				AccessKeySecret: strings.TrimSpace(cred.AccessKeySecret),
+				STSToken:        strings.TrimSpace(cred.STSToken),
+			},
+		}
 
 		// Make user to check
-		PrintSaving(cred)
+		PrintSaving(key)
 		promot := &survey.Confirm{
 			Message: "以上信息是否正确 (make sure correctness) "}
 		sure := true // Break out
 		survey.AskOne(promot, &sure)
 		if sure {
-			KeyDb.Save(cred)
+			KeyDb.Where("name = ?", key.Name).FirstOrCreate(&key)
 		}
 	},
 }
