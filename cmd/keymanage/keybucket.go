@@ -24,19 +24,19 @@ var CommonTableHeader = []string{
 
 // GetHeader Get the Current Key config for all Cloud Service Provider.
 func GetHeader() {
-	_, cloudProviderList := cmdutil.ReturnCloudProviderList()
-	for i, provider := range cloudProviderList {
+	cloudConfigList, _ := cmdutil.ReturnCloudProviderList()
+	for _, provider := range cloudConfigList {
 		config := cmdutil.GetConfig(provider)
 		AccessKeyId := config.AccessKeyId
 		if AccessKeyId == "" {
 			log.Infof("当前未配置平台 %s 访问密钥 (No access key configured)", provider)
 		} else {
-			HeaderKey[i] = Key{
+			HeaderKey = append(HeaderKey, Key{
 				Name:     "Current(当前)",
 				Platform: provider,
 				Config:   &config,
 				Remark:   "当前配置文件中所设置的访问密钥",
-			}
+			})
 		}
 	}
 }

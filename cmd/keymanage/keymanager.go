@@ -17,6 +17,7 @@ func init() {
 	KeyManagerRoot.AddCommand(HeadKeyCmd)
 	KeyManagerRoot.AddCommand(ListKeyCmd)
 	KeyManagerRoot.AddCommand(SwitchKeyCmd)
+	KeyManagerRoot.AddCommand(MergeKeyCmd)
 	// add to root command
 	cmd.RootCmd.AddCommand(KeyManagerRoot)
 	// Do Some prepare Loading keys in Config and local db
