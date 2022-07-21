@@ -38,7 +38,7 @@ var errorMessagesNoExit = map[string]string{
 	"ErrorCode: EntityAlreadyExists.User":        "已接管过控制台，无需重复接管 (Console has been taken over)",
 	"ErrorCode: EntityNotExist.User":             "已取消接管控制台，无需重复取消 (Console has been de-taken over)",
 	"Code=ResourceNotFound, Message=指定资源":        "指定资源不存在 (ResourceNotFound)",
-	"The name already exists":                    "已接管过控制台，无需重复接管 (Console has been taken over)",
+	"InvalidParameter.SubUserNameInUse":          "已接管过控制台，无需重复接管 (Console has been taken over)",
 }
 
 var errorMessagesExit = map[string]string{
