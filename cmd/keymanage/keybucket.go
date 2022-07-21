@@ -22,6 +22,7 @@ var CommonTableHeader = []string{
 	"STSToken", "备注 (Remark)",
 }
 
+// GetHeader Get the Current Key config for all Cloud Service Provider.
 func GetHeader() {
 	_, cloudProviderList := cmdutil.ReturnCloudProviderList()
 	for i, provider := range cloudProviderList {

@@ -19,7 +19,7 @@ func init() {
 	KeyManagerRoot.AddCommand(SwitchKeyCmd)
 	// add to root command
 	cmd.RootCmd.AddCommand(KeyManagerRoot)
-	// Do Some prepare Loading keys in Config file.
+	// Do Some prepare Loading keys in Config and local db
 	GetHeader() // get current config in aliyun/tencent/... config PATH
 	err := database.GlobalDataBase.MainDB.AutoMigrate(&Key{})
 	if err != nil {
