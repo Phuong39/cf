@@ -28,6 +28,7 @@ var errorMessages = map[string]string{
 	"ErrorCode: Forbidden.RAM":                                                 "当前访问凭证没有执行命令的权限 (Current Access Key do not have permission to execute commands)",
 	"ErrorCode: NoPermission":                                                  "当前访问凭证没有接管控制台的权限 (Current Access Key do not have permission to take over the console)",
 	"ErrorCode=NoSuchKey":                                                      "存储桶中没有这个对象 (There is no such key in the bucket)",
+	"Code=ResourceNotFound, Message=未查询到对应机器":                                  "指定资源不存在 (ResourceNotFound)",
 }
 
 var errorMessagesNoExit = map[string]string{
