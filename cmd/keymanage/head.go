@@ -15,10 +15,16 @@ var HeadKeyCmd = &cobra.Command{
 			Header: CommonTableHeader,
 		}
 		for _, key := range HeaderKey {
+			MaskedSTSToken := key.STSToken
+			if MaskedSTSToken == "" {
+				MaskedSTSToken = "[Empty STS Token]"
+			} else {
+				MaskedSTSToken = cmdutil.MaskAK(MaskedSTSToken)
+			}
 			Data.Body = append(Data.Body, []string{key.Name, key.Platform,
 				cmdutil.MaskAK(key.AccessKeyId),
 				cmdutil.MaskAK(key.AccessKeySecret),
-				cmdutil.MaskAK(key.STSToken),
+				MaskedSTSToken,
 				key.Remark,
 			})
 		}
