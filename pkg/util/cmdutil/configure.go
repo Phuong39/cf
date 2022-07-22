@@ -31,6 +31,7 @@ func ConfigureAccessKey() {
 			inputAccessKey(config, cloudConfigList[i])
 		}
 	}
+	// choose one Cloud Provider change its profile
 }
 
 func ReturnCloudProviderList() ([]string, []string) {
@@ -46,6 +47,8 @@ func ReturnCloudProviderList() ([]string, []string) {
 	return cloudConfigList, cloudProviderList
 }
 
+// InputAccessKey prompts the user to input the access key and secret key
+// and saves the access key and secret key to the config struct.
 func inputAccessKey(config cloud.Config, provider string) {
 	OldAccessKeyId := ""
 	OldAccessKeySecret := ""
@@ -54,13 +57,13 @@ func inputAccessKey(config cloud.Config, provider string) {
 	AccessKeySecret := config.AccessKeySecret
 	STSToken := config.STSToken
 	if AccessKeyId != "" {
-		OldAccessKeyId = fmt.Sprintf(" [%s] ", maskAK(AccessKeyId))
+		OldAccessKeyId = fmt.Sprintf(" [%s] ", MaskAK(AccessKeyId))
 	}
 	if AccessKeySecret != "" {
-		OldAccessKeySecret = fmt.Sprintf(" [%s] ", maskAK(AccessKeySecret))
+		OldAccessKeySecret = fmt.Sprintf(" [%s] ", MaskAK(AccessKeySecret))
 	}
 	if STSToken != "" {
-		OldSTSToken = fmt.Sprintf(" [%s] ", maskAK(STSToken))
+		OldSTSToken = fmt.Sprintf(" [%s] ", MaskAK(STSToken))
 	}
 	var qs = []*survey.Question{
 		{
@@ -76,12 +79,16 @@ func inputAccessKey(config cloud.Config, provider string) {
 			Prompt: &survey.Input{Message: "STS Token (可选 Optional)" + OldSTSToken + ":"},
 		},
 	}
+
+	// Generate the new config struct named cred to receive the inputted values.
 	cred := cloud.Config{}
 	err := survey.Ask(qs, &cred)
+
 	cred.AccessKeyId = strings.TrimSpace(cred.AccessKeyId)
 	cred.AccessKeySecret = strings.TrimSpace(cred.AccessKeySecret)
 	cred.STSToken = strings.TrimSpace(cred.STSToken)
 	if cred.AccessKeyId == "" {
+		// if empty, use the old one
 		cred.AccessKeyId = AccessKeyId
 	}
 	if cred.AccessKeySecret == "" {
@@ -94,6 +101,8 @@ func inputAccessKey(config cloud.Config, provider string) {
 	SaveAccessKey(cred, provider)
 }
 
+// SaveAccessKey saves the access key and secret key to the config file.
+// [Can be used to Save and switch the profile]
 func SaveAccessKey(config cloud.Config, provider string) {
 	home, err := GetCFHomeDir()
 	util.HandleErr(err)
@@ -107,7 +116,7 @@ func SaveAccessKey(config cloud.Config, provider string) {
 	err = ioutil.WriteFile(configFilePath, configJSON, 0600)
 	util.HandleErr(err)
 	log.Infof("配置文件路径 (Configuration file path): %s ", configFilePath)
-	createCacheDict()
+	createCacheDict() // create cache dict which is unused now.
 }
 
 func GetConfigFilePath(provider string) string {
@@ -122,6 +131,7 @@ func GetConfigFilePath(provider string) string {
 	return configFilePath
 }
 
+// GetConfig reads the given provider profile and returns the cloud.Config
 func GetConfig(provider string) cloud.Config {
 	configFilePath := GetConfigFilePath(provider)
 	var config cloud.Config
@@ -140,7 +150,7 @@ func GetConfig(provider string) cloud.Config {
 	}
 }
 
-func maskAK(ak string) string {
+func MaskAK(ak string) string {
 	prefix := ak[:2]
 	suffix := ak[len(ak)-6:]
 	return prefix + strings.Repeat("*", 18) + suffix
