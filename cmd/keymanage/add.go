@@ -73,7 +73,7 @@ func AddOrUpdate() {
 		Name:     cred.Name,
 		Remark:   cred.Remark,
 		Platform: cred.Platform,
-		Config: &cloud.Config{
+		Config: cloud.Config{
 			AccessKeyId:     strings.TrimSpace(cred.AccessKeyId),
 			AccessKeySecret: strings.TrimSpace(cred.AccessKeySecret),
 			STSToken:        strings.TrimSpace(cred.STSToken),
