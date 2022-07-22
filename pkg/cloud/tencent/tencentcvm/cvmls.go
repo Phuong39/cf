@@ -2,6 +2,7 @@ package tencentcvm
 
 import (
 	"encoding/json"
+	cwp "github.com/teamssix/cf/pkg/cloud/tencent/tencentcwp"
 	"strconv"
 
 	log "github.com/sirupsen/logrus"
@@ -14,7 +15,7 @@ import (
 
 var (
 	CVMCacheFilePath = cmdutil.ReturnCacheFile("tencent", "CVM")
-	header           = []string{"序号 (SN)", "实例 ID (Instance ID)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private Ip Address)", "公网 IP (Public Ip Address)", "区域 ID (Region ID)", "绑定的安全组 (Security Group Id)"}
+	header           = []string{"序号 (SN)", "实例 ID (Instance ID)", "云镜ID (UUID)", "云镜状态 (CWP Status)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private Ip Address)", "公网 IP (Public Ip Address)", "区域 ID (Region ID)", "绑定的安全组 (Security Group Id)"}
 )
 
 type Instances struct {
@@ -27,6 +28,8 @@ type Instances struct {
 	PublicIpAddress  string
 	RegionId         string
 	SecurityGroupIds string
+	CWPStatus        string
+	UUID             string
 }
 
 func DescribeInstances(region string, running bool, SpecifiedInstanceID string) []Instances {
@@ -82,6 +85,9 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 			b, err := json.Marshal(SecurityGroupIdList)
 			util.HandleErr(err)
 			SecurityGroupIds := string(b)
+
+			CWPStatus, CWPUUID := cwp.DescribeMachineCWPStatus("CVM", *v.Uuid)
+
 			obj := Instances{
 				InstanceId:       *v.InstanceId,
 				InstanceName:     *v.InstanceName,
@@ -92,6 +98,8 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 				PublicIpAddress:  PublicIpAddress,
 				RegionId:         *v.Placement.Zone,
 				SecurityGroupIds: SecurityGroupIds,
+				CWPStatus:        *CWPStatus,
+				UUID:             *CWPUUID,
 			}
 			out = append(out, obj)
 		}
@@ -121,7 +129,7 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 	var data = make([][]string, len(InstancesList))
 	for i, o := range InstancesList {
 		SN := strconv.Itoa(i + 1)
-		data[i] = []string{SN, o.InstanceId, o.InstanceName, o.OSName, o.OSType, o.Status, o.PrivateIpAddress, o.PublicIpAddress, o.RegionId, o.SecurityGroupIds}
+		data[i] = []string{SN, o.InstanceId, o.UUID, o.CWPStatus, o.InstanceName, o.OSName, o.OSType, o.Status, o.PrivateIpAddress, o.PublicIpAddress, o.RegionId, o.SecurityGroupIds}
 	}
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {
