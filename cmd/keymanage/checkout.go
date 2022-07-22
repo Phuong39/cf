@@ -49,7 +49,7 @@ var SwitchKeyCmd = &cobra.Command{
 			log.Error("没有找到对应的 Key 对 (No key found)")
 			return
 		} else {
-			cmdutil.SaveAccessKey(*key.Config, key.Platform)
+			cmdutil.SaveAccessKey(key.Config, key.Platform)
 		}
 	},
 }

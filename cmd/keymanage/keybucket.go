@@ -8,10 +8,10 @@ import (
 
 // Key struct store the KeyPairs.
 type Key struct {
-	Name          string // KeyName to help Red-teamer the Key.
-	Platform      string // Which Cloud Service provider
-	*cloud.Config        // AK-SK config
-	Remark        string // remarks.
+	Name         string // KeyName to help Red-teamer the Key.
+	Platform     string // Which Cloud Service provider
+	cloud.Config        // AK-SK config
+	Remark       string // remarks.
 }
 
 var HeaderKey = []Key{}
@@ -34,7 +34,7 @@ func GetHeader() {
 			HeaderKey = append(HeaderKey, Key{
 				Name:     "Current(当前)",
 				Platform: provider,
-				Config:   &config,
+				Config:   config,
 				Remark:   "当前配置文件中所设置的访问密钥",
 			})
 		}
