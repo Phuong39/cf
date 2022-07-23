@@ -7,9 +7,10 @@ import (
 )
 
 var DelKeyCmd = &cobra.Command{
-	Use:   "del",
-	Short: "删除 key (delete key)",
-	Long:  "删除 key (delete key)",
+	Use:     "del",
+	Short:   "删除 key (delete key)",
+	Long:    "删除 key (delete key)",
+	Aliases: []string{"d", "rm"},
 	Run: func(cmd *cobra.Command, args []string) {
 		var InputAccessKeyId string
 		if len(args) == 1 {

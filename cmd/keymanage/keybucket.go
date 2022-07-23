@@ -29,7 +29,7 @@ func GetHeader() {
 		config := cmdutil.GetConfig(provider)
 		AccessKeyId := config.AccessKeyId
 		if AccessKeyId == "" {
-			log.Infof("当前未配置平台 %s 访问密钥 (No access key configured)", provider)
+			log.Debugf("当前未配置平台 %s 访问密钥 (No access key configured) \n", provider)
 		} else {
 			HeaderKey = append(HeaderKey, Key{
 				Name:     "Current(当前)",
