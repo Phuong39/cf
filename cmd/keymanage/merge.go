@@ -22,13 +22,15 @@ var MergeKeyCmd = &cobra.Command{
 			log.Infof("所属平台: %s", key.Platform)
 			log.Infof("AK: %s", cmdutil.MaskAK(key.AccessKeyId))
 			log.Infof("SK: %s", cmdutil.MaskAK(key.AccessKeySecret))
-			log.Infof("STS Token: %s", cmdutil.MaskAK(key.STSToken))
-			skip := false
+			if key.STSToken != "" {
+				log.Infof("STS Token: %s", key.STSToken)
+			}
+			save := true
 			prompt := &survey.Confirm{
 				Message: "是否保存当前所使用的 Key 对 (Save current using key in Local DataBase)?",
 			}
-			survey.AskOne(prompt, &skip)
-			if skip {
+			survey.AskOne(prompt, &save)
+			if !save { // Not Save
 				return
 			}
 			questions := []*survey.Question{
@@ -52,7 +54,7 @@ var MergeKeyCmd = &cobra.Command{
 			survey.Ask(questions, &answers)
 			key.Name = answers.Name
 			key.Remark = answers.Remark
-			KeyDb.Save(key)
+			KeyDb.Where("access_key_id = ?", key.AccessKeyId).Save(key)
 			log.Infof("快速保存成功 (fast merge into local db successful)")
 		}
 	},
