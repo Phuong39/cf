@@ -10,10 +10,10 @@ import (
 
 var AddKeyCmd = &cobra.Command{
 	Use:     "add",
-	Aliases: []string{"update"},
-	// ToDo: Add keys
-	Short: "添加密钥 (Add Key)",
-	Long:  "添加密钥到数据库 (Add Key)",
+	Aliases: []string{"update", "a"},
+	Short:   "添加密钥 (Add Key)",
+	Long: "添加密钥到数据库, 如果想要更新密钥的标记,也可以使用这个方法 " +
+		"(Add Key to framwork database, if you want to update key remark or name, you can also use this method)",
 	Run: func(cmd *cobra.Command, args []string) {
 		AddOrUpdate()
 	},

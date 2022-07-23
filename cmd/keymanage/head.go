@@ -6,9 +6,10 @@ import (
 )
 
 var HeadKeyCmd = &cobra.Command{
-	Use:   "head",
-	Short: "展示当前所使用的 Key 对 (Show current using key in All Provider config Path)",
-	Long:  "展示当前所使用的 Key 对 (Show current using key in All Provider config Path)",
+	Use:     "head",
+	Short:   "展示当前所使用的 Key 对 (Show current using key in All Provider config Path)",
+	Long:    "展示当前所使用的 Key 对 (Show current using key in All Provider config Path)",
+	Aliases: []string{"h"}, // Short Command
 	Run: func(cmd *cobra.Command, args []string) {
 		Data := cloud.TableData{
 			Header: CommonTableHeader,

@@ -10,7 +10,10 @@ import (
 var SwitchKeyCmd = &cobra.Command{
 	Use:   "switch",
 	Short: "切换当前使用的 Key 对 (Switch current using key in framework)",
-	Long:  "切换当前使用的 Key 对 (Switch current using key in framework)",
+	Long: "切换当前使用的 Key 对, 可以不传入参数也可以后跟一个存在于数据库的 AK 来进行快速切换 " +
+		"(Switch current using key in framework, " +
+		"you can not pass any parameter to switch, or you can pass one existing AK to switch)",
+	Aliases: []string{"s", "checkout"}, // Short Command
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Debugln("SwitchKeyCmd", args)
 		// Sure the AccessKeyId
