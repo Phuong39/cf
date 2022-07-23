@@ -26,7 +26,7 @@ var getconfigCmd = &cobra.Command{
 	Short: "获取当前配置的访问凭证 (Get the currently configured access key)",
 	Long:  `获取当前配置的访问凭证 (Get the currently configured access key)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		_, cloudProviderList := cmdutil.ReturnCloudProviderList()
+		cloudProviderList, _ := cmdutil.ReturnCloudProviderList()
 		for _, provider := range cloudProviderList {
 			config := cmdutil.GetConfig(provider)
 			AccessKeyId := config.AccessKeyId
