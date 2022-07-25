@@ -7,6 +7,7 @@ import (
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
 	lh "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/lighthouse/v20200324"
+	tat "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tat/v20201028"
 	"os"
 )
 
@@ -45,4 +46,33 @@ func GetLHRegions() []*lh.RegionInfo {
 	response, err := client.DescribeRegions(request)
 	util.HandleErr(err)
 	return response.Response.RegionSet
+}
+
+func TATClient(region string) *tat.Client {
+	tencentconfig := cmdutil.GetConfig("tencent")
+	if tencentconfig.AccessKeyId == "" {
+		log.Warnln("需要先配置访问凭证 (Access Key need to be configured first)")
+		os.Exit(0)
+		return nil
+	} else {
+		cpf := profile.NewClientProfile()
+		cpf.HttpProfile.Endpoint = "tat.tencentcloudapi.com"
+		if tencentconfig.STSToken == "" {
+			credential := common.NewCredential(tencentconfig.AccessKeyId, tencentconfig.AccessKeySecret)
+			client, err := tat.NewClient(credential, region, cpf)
+			util.HandleErr(err)
+			if err == nil {
+				log.Traceln("TAT Client 连接成功 (CVM Client connection successful)")
+			}
+			return client
+		} else {
+			credential := common.NewTokenCredential(tencentconfig.AccessKeyId, tencentconfig.AccessKeyId, tencentconfig.STSToken)
+			client, err := tat.NewClient(credential, region, cpf)
+			util.HandleErr(err)
+			if err == nil {
+				log.Traceln("TAT Client 连接成功 (CVM Client connection successful)")
+			}
+			return client
+		}
+	}
 }
