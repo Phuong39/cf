@@ -117,26 +117,26 @@ func CVMExec(command string, commandFile string, scriptType string, specifiedIns
 				if specifiedInstanceID == i[1] {
 					obj := Instances{
 						InstanceId:       i[1],
-						InstanceName:     i[2],
-						OSName:           i[3],
-						OSType:           i[4],
-						Status:           i[5],
-						PrivateIpAddress: i[6],
-						PublicIpAddress:  i[7],
-						RegionId:         i[8],
+						InstanceName:     i[4],
+						OSName:           i[5],
+						OSType:           i[6],
+						Status:           i[7],
+						PrivateIpAddress: i[8],
+						PublicIpAddress:  i[9],
+						RegionId:         i[10],
 					}
 					InstancesList = append(InstancesList, obj)
 				}
 			} else {
 				obj := Instances{
 					InstanceId:       i[1],
-					InstanceName:     i[2],
-					OSName:           i[3],
-					OSType:           i[4],
-					Status:           i[5],
-					PrivateIpAddress: i[6],
-					PublicIpAddress:  i[7],
-					RegionId:         i[8],
+					InstanceName:     i[4],
+					OSName:           i[5],
+					OSType:           i[6],
+					Status:           i[7],
+					PrivateIpAddress: i[8],
+					PublicIpAddress:  i[9],
+					RegionId:         i[10],
 				}
 				InstancesList = append(InstancesList, obj)
 			}
