@@ -2,9 +2,9 @@
 
 ## [v0.3.2](https://github.com/teamssix/cf/releases/tag/v0.3.2) 2022.7.27
 
-- [#63](https://github.com/teamssix/cf/pull/63) 增加 key 管理功能
-- [#80](https://github.com/teamssix/cf/pull/80) 修复云镜增加 Instances 结构体导致的 CVM 命令执行不能正常执行的问题
-- [`adf7d90`](https://github.com/teamssix/cf/commit/adf7d9028bb7f1df68f2f21d32ae3d532f9d72ed) 修复了阿里云 ECS 实例执行命令时的一个 bug
+- [#63](https://github.com/teamssix/cf/pull/63) feat: 增加 key 管理功能
+- [#80](https://github.com/teamssix/cf/pull/80) fix: 修复云镜增加 Instances 结构体导致的 CVM 命令执行不能正常执行的问题
+- [`adf7d90`](https://github.com/teamssix/cf/commit/adf7d9028bb7f1df68f2f21d32ae3d532f9d72ed) fix: 修复了阿里云 ECS 实例执行命令时的一个 bug
 
 ## [v0.3.1](https://github.com/teamssix/cf/releases/tag/v0.3.1) 2022.7.21
 
