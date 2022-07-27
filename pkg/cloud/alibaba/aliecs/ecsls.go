@@ -3,8 +3,10 @@ package aliecs
 import (
 	"encoding/json"
 	"fmt"
+
 	"strconv"
 
+	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
@@ -32,6 +34,7 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 	var out []Instances
 	var response *ecs.DescribeInstancesResponse
 	request := ecs.CreateDescribeInstancesRequest()
+	request.PageSize = requests.NewInteger(100)
 	request.Scheme = "https"
 	if running == true {
 		request.Status = "Running"

