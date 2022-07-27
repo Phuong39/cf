@@ -131,6 +131,8 @@ Thank you for your contributions to CF ~
 
 A note on contributions: [CONTRIBUTING](https://github.com/teamssix/cf/blob/main/CONTRIBUTING.md)
 
+<div align=center><a href="https://github.com/teamssix"><img src="https://repobeats.axiom.co/api/embed/30b8de6c059cbe83fe0ba44fff91136270a39ab9.svg"></a></div>
+
 ## Warning
 
 * This tool can only be used in legal scenarios and is strictly forbidden to be used in illegal scenarios.
@@ -146,6 +148,6 @@ Finally, the following is my personal wechat official accounts, welcome to follo
 
 **If you would like to work with me on this, you can join the team by sending your resume to admin@wgpsec.org.**
 
-<div align=center><img width="700" src="https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202204152148071.png" div align=center/></div>
+<div align=center><a href="https://github.com/teamssix"><img width="700" src="https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202204152148071.png"></a></div>
 
-<div align=center><img src="https://api.star-history.com/svg?repos=teamssix/cf&type=Timeline" div align=center/></div>
+<div align=center><a href="https://github.com/teamssix"><img src="https://api.star-history.com/svg?repos=teamssix/cf&type=Timeline"></a></div>
