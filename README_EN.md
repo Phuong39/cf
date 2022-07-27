@@ -116,6 +116,7 @@ If it feels good, maybe you can give me a Star ~
 
 Thank you for your contributions to CF, A note on contributions: [CONTRIBUTING](https://github.com/teamssix/cf/blob/main/CONTRIBUTING.md)
 
+<div align=center>
 <table>
     <tr>
         <td align="center"><a href="https://github.com/teamssix"><img alt="TeamsSix"
@@ -127,6 +128,8 @@ Thank you for your contributions to CF, A note on contributions: [CONTRIBUTING](
         <td align="center"><a href="https://github.com/Dawnnnnnn"><img alt="Dawnnnnnn"
                                 src="https://avatars.githubusercontent.com/u/24506421?v=4"  style="width: 100px;" /><br />Dawnnnnnn</a></td>
 </table>
+</div>
+
 
 <div align=center><a href="https://github.com/teamssix"><img src="https://repobeats.axiom.co/api/embed/30b8de6c059cbe83fe0ba44fff91136270a39ab9.svg"></a></div>
 
