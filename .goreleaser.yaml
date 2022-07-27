@@ -6,7 +6,7 @@ before:
     - go generate ./...
 builds:
   - env:
-      - CGO_ENABLED=0
+      - CGO_ENABLED=1
     goos:
       - darwin
       - windows
@@ -16,11 +16,8 @@ builds:
       - amd64
       - arm
       - arm64
-      
-    main: ./
 archives:
-  - name_template: "{{ .ProjectName }}-v{{ .Version }}-{{ .Os }}-{{ .Arch }}"
-
+  name_template: "{{ .ProjectName }}-v{{ .Version }}-{{ .Os }}-{{ .Arch }}"
 checksum:
   name_template: "checksums.txt"
 snapshot:
