@@ -1,6 +1,6 @@
 BUILD_ENV := CGO_ENABLED=0
 LDFLAGS=-v -a -ldflags '-s -w' -gcflags="all=-trimpath=${PWD}" -asmflags="all=-trimpath=${PWD}"
-VERSION=v0.3.1
+VERSION=v0.3.2
 
 TARGET_EXEC := cf
 
