@@ -112,7 +112,7 @@ cf tencent vpc ls
 
 ## 贡献者
 
-感谢各位师傅对 CF 的贡献，贡献说明：[CONTRIBUTING](https://github.com/teamssix/cf/blob/main/CONTRIBUTING.md)
+十分感谢各位师傅对 CF 的贡献~，如果你也想对 CF 贡献代码，请参见贡献说明：[CONTRIBUTING](https://github.com/teamssix/cf/blob/main/CONTRIBUTING.md)
 
 <div align=center>
 <table>
