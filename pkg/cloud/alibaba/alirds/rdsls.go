@@ -1,6 +1,7 @@
 package alirds
 
 import (
+	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"strconv"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/rds"
@@ -26,6 +27,7 @@ type DBInstances struct {
 func DescribeDBInstances(region string, running bool, specifiedDBInstanceID string, engine string) ([]DBInstances, error) {
 	var out []DBInstances
 	request := rds.CreateDescribeDBInstancesRequest()
+	request.PageSize = requests.NewInteger(100)
 	request.Scheme = "https"
 	if running == true {
 		request.DBInstanceStatus = "Running"
