@@ -1,9 +1,9 @@
 package database
 
 import (
+	"github.com/glebarez/sqlite"
 	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
-	"gorm.io/driver/sqlite" // Sqlite driver based on GGO
 	"gorm.io/gorm"
 	"os"
 	"path/filepath"

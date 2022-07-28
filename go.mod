@@ -6,6 +6,7 @@ require (
 	github.com/AlecAivazis/survey/v2 v2.3.5
 	github.com/aliyun/alibaba-cloud-sdk-go v1.61.1685
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.4+incompatible
+	github.com/glebarez/sqlite v1.4.6
 	github.com/gookit/color v1.5.1
 	github.com/ivanpirog/coloredcobra v1.0.1
 	github.com/olekukonko/tablewriter v0.0.5
@@ -20,13 +21,14 @@ require (
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tat v1.0.447
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vpc v1.0.446
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
-	gorm.io/driver/sqlite v1.3.6
 	gorm.io/gorm v1.23.8
 )
 
 require (
 	github.com/baiyubin/aliyun-sts-go-sdk v0.0.0-20180326062324-cfa1a18b161f // indirect
 	github.com/fatih/color v1.13.0 // indirect
+	github.com/glebarez/go-sqlite v1.17.3 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
@@ -36,13 +38,13 @@ require (
 	github.com/mattn/go-colorable v0.1.9 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
-	github.com/mattn/go-sqlite3 v1.14.12 // indirect
 	github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b // indirect
 	github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/onsi/ginkgo v1.16.5 // indirect
 	github.com/onsi/gomega v1.20.0 // indirect
+	github.com/remyoudompheng/bigfft v0.0.0-20200410134404-eec4a21b6bb0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
@@ -53,4 +55,8 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20220609170525-579cf78fd858 // indirect
 	gopkg.in/ini.v1 v1.66.2 // indirect
+	modernc.org/libc v1.16.8 // indirect
+	modernc.org/mathutil v1.4.1 // indirect
+	modernc.org/memory v1.1.1 // indirect
+	modernc.org/sqlite v1.17.3 // indirect
 )
