@@ -118,13 +118,15 @@ cf tencent vpc ls
 <table>
     <tr>
         <td align="center"><a href="https://github.com/teamssix"><img alt="TeamsSix"
-                                src="https://avatars.githubusercontent.com/u/49087564?v=4" style="width: 100px;"/><br />TeamsSix</a></td>
+                                src="https://avatars.githubusercontent.com/u/49087564?v=4" style="width: 100px;"/><br/>TeamsSix</a></td>
         <td align="center"><a href="https://github.com/Amzza0x00"><img alt="Amzza0x00"
-                                src="https://avatars.githubusercontent.com/u/32904523?v=4"  style="width: 100px;" /><br />Amzza0x00</a></td>
+                                src="https://avatars.githubusercontent.com/u/32904523?v=4"  style="width: 100px;"/><br/>Amzza0x00</a></td>
         <td align="center"><a href="https://github.com/Esonhugh"><img alt="Esonhugh"
-                                src="https://avatars.githubusercontent.com/u/32677240?v=4"  style="width: 100px;" /><br />Esonhugh</a></td>
+                                src="https://avatars.githubusercontent.com/u/32677240?v=4"  style="width: 100px;"/><br/>Esonhugh</a></td>
         <td align="center"><a href="https://github.com/Dawnnnnnn"><img alt="Dawnnnnnn"
-                                src="https://avatars.githubusercontent.com/u/24506421?v=4"  style="width: 100px;" /><br />Dawnnnnnn</a></td>
+                                src="https://avatars.githubusercontent.com/u/24506421?v=4"  style="width: 100px;"/><br/>Dawnnnnnn</a></td>
+        <td align="center"><a href="https://github.com/Belos-pretender"><img alt="Belos-pretender"
+                                src="https://avatars.githubusercontent.com/u/52148409?v=4"  style="width: 100px;"/><br/>Belos-pretender</a></td>
 </table>
 </div>
 
