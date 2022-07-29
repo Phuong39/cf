@@ -1,6 +1,6 @@
 
 
-## [v0.3.2](https://github.com/teamssix/cf/releases/tag/v0.3.2) 2022.7.27
+## [v0.3.2](https://github.com/teamssix/cf/releases/tag/v0.3.2) 2022.7.29
 
 - [#63](https://github.com/teamssix/cf/pull/63) feat: 增加 key 管理功能
 - [#80](https://github.com/teamssix/cf/pull/80) fix: 修复云镜增加 Instances 结构体导致的 CVM 命令执行不能正常执行的问题
