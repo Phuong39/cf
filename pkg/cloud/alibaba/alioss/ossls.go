@@ -35,6 +35,9 @@ type error interface {
 }
 
 var (
+	objectNum        int
+	ObjectSize       int64
+	objects          []objectContents
 	OSSCacheFilePath = cmdutil.ReturnCacheFile("alibaba", "OSS")
 	header           = []string{"序号 (SN)", "名称 (Name)", "存储桶 ACL (Bucket ACL)", "对象数量 (Object Number)", "存储桶大小 (Bucket Size)", "区域 (Region)", "存储桶地址 (Bucket URL)"}
 )
@@ -67,10 +70,8 @@ func (o *OSSCollector) ListBuckets() ([]Bucket, error) {
 func (o *OSSCollector) ListObjects(bucketName string) ([]Object, []objectContents) {
 	var size = 1000
 	var out []Object
-	var objects []objectContents
 	var Buckets []Bucket
 	marker := oss.Marker("")
-
 	OSSCollector := &OSSCollector{}
 	Buckets, _ = OSSCollector.ListBuckets()
 	if bucketName != "all" {
@@ -87,29 +88,36 @@ func (o *OSSCollector) ListObjects(bucketName string) ([]Object, []objectContent
 		o.OSSClient(region)
 		bucket, err := o.Client.Bucket(BucketName)
 		util.HandleErr(err)
-		lor, err := bucket.ListObjects(oss.MaxKeys(size), marker)
-		util.HandleErr(err)
-		marker = oss.Marker(lor.NextMarker)
-		num := len(lor.Objects)
-		var ObjectSize int64
-		for _, k := range lor.Objects {
-			ObjectSize = ObjectSize + k.Size
-			obj := objectContents{
-				Key:          k.Key,
-				Size:         k.Size,
-				LastModified: k.LastModified.Format("2006-01-02 15:04:05"),
-			}
-			objects = append(objects, obj)
-		}
-		log.Debugf("在 %s 存储桶中找到了 %d 个对象 (Found %d Objects in %s Bucket)", BucketName, num, num, BucketName)
+		getAllObjects(bucket, marker, size)
+		log.Debugf("在 %s 存储桶中找到了 %d 个对象 (Found %d Objects in %s Bucket)", BucketName, objectNum, objectNum, BucketName)
 		obj := Object{
 			BucketName:   BucketName,
-			ObjectNumber: num,
+			ObjectNumber: objectNum,
 			ObjectSize:   ObjectSize,
 		}
 		out = append(out, obj)
 	}
 	return out, objects
+}
+
+func getAllObjects(bucket *oss.Bucket, marker oss.Option, size int) {
+	lor, err := bucket.ListObjects(oss.MaxKeys(size), marker)
+	util.HandleErr(err)
+	marker = oss.Marker(lor.NextMarker)
+	objectNum = objectNum + len(lor.Objects)
+	for _, k := range lor.Objects {
+		ObjectSize = ObjectSize + k.Size
+		obj := objectContents{
+			Key:          k.Key,
+			Size:         k.Size,
+			LastModified: k.LastModified.Format("2006-01-02 15:04:05"),
+		}
+		objects = append(objects, obj)
+	}
+	log.Debugf("下一页标志：%s (next marker: %s)", lor.NextMarker, lor.NextMarker)
+	if lor.NextMarker != "" {
+		getAllObjects(bucket, marker, size)
+	}
 }
 
 func (o *OSSCollector) GetBucketACL() []Acl {
