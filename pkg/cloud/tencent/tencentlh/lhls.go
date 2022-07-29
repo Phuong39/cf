@@ -22,7 +22,6 @@ type Instances struct {
 	InstanceId       string
 	InstanceName     string
 	OSName           string
-	OSType           string
 	Status           string
 	PrivateIpAddress string
 	PublicIpAddress  string

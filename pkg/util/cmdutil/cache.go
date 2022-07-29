@@ -228,3 +228,8 @@ func PrintTable(data [][]string, header []string, resourceType string) {
 		cloud.PrintTable(td, Caption)
 	}
 }
+
+func PrintSSHCacheFile(filePath string, header []string, provide string, resourceType string) {
+	data := ReadCacheFile(filePath, provide, resourceType)
+	PrintTable(data, header, resourceType)
+}
