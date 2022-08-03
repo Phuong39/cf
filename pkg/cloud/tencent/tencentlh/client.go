@@ -29,7 +29,7 @@ func LHClient(region string) *lh.Client {
 			}
 			return client
 		} else {
-			credential := common.NewTokenCredential(tencentConfig.AccessKeyId, tencentConfig.AccessKeyId, tencentConfig.STSToken)
+			credential := common.NewTokenCredential(tencentConfig.AccessKeyId, tencentConfig.AccessKeySecret, tencentConfig.STSToken)
 			client, err := lh.NewClient(credential, region, cpf)
 			util.HandleErr(err)
 			if err == nil {

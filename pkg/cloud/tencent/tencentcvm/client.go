@@ -60,7 +60,7 @@ func TATClient(region string) *tat.Client {
 			}
 			return client
 		} else {
-			credential := common.NewTokenCredential(tencentconfig.AccessKeyId, tencentconfig.AccessKeyId, tencentconfig.STSToken)
+			credential := common.NewTokenCredential(tencentconfig.AccessKeyId, tencentconfig.AccessKeySecret, tencentconfig.STSToken)
 			client, err := tat.NewClient(credential, region, cpf)
 			util.HandleErr(err)
 			if err == nil {
