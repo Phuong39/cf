@@ -17,7 +17,7 @@ builds:
       - arm64
 archives:
   - name_template: "{{ .ProjectName }}-v{{ .Version }}-{{ .Os }}-{{ .Arch }}"
-  - format_overrides:
+    format_overrides:
       - goos: windows
         format: zip
 checksum:
