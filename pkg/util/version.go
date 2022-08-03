@@ -15,8 +15,8 @@ type latestReleasesStruct struct {
 }
 
 var (
-	version    = "v0.3.2"
-	updateTime = "2022.7.29"
+	version    = "v0.3.3"
+	updateTime = "2022.8.3"
 )
 
 func GetCurrentVersion() string {

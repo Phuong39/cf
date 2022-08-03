@@ -1,4 +1,7 @@
-
+## [v0.3.3](https://github.com/teamssix/cf/releases/tag/v0.3.3) 2022.8.3
+* [#99](https://github.com/teamssix/cf/pull/99) feat: 新增腾讯云轻量引用服务器的命令执行功能
+* [#103](https://github.com/teamssix/cf/pull/103) fix: 修复了当阿里云 oss object 超过 1000 时无法完全展示的 bug
+* [#109](https://github.com/teamssix/cf/pull/109) fix: 修复了配置腾讯云 AK 时的一个 bug
 
 ## [v0.3.2](https://github.com/teamssix/cf/releases/tag/v0.3.2) 2022.7.29
 
