@@ -29,7 +29,7 @@ func VPCClient(region string) *vpc.Client {
 			}
 			return client
 		} else {
-			credential := common.NewTokenCredential(tencentconfig.AccessKeyId, tencentconfig.AccessKeyId, tencentconfig.STSToken)
+			credential := common.NewTokenCredential(tencentconfig.AccessKeyId, tencentconfig.AccessKeySecret, tencentconfig.STSToken)
 			client, err := vpc.NewClient(credential, region, cpf)
 			util.HandleErr(err)
 			if err == nil {

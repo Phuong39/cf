@@ -29,7 +29,7 @@ func CAMClient() *cam.Client {
 			}
 			return client
 		} else {
-			credential := common.NewTokenCredential(tencentConfig.AccessKeyId, tencentConfig.AccessKeyId, tencentConfig.STSToken)
+			credential := common.NewTokenCredential(tencentConfig.AccessKeyId, tencentConfig.AccessKeySecret, tencentConfig.STSToken)
 			client, err := cam.NewClient(credential, "", cpf)
 			util.HandleErr(err)
 			if err == nil {
