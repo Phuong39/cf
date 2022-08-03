@@ -28,7 +28,7 @@ func CWPClient(region string) *cwp.Client {
 			}
 			return client
 		} else {
-			credential := common.NewTokenCredential(tencentConfig.AccessKeyId, tencentConfig.AccessKeyId, tencentConfig.STSToken)
+			credential := common.NewTokenCredential(tencentConfig.AccessKeyId, tencentConfig.AccessKeySecret, tencentConfig.STSToken)
 			client, err := cwp.NewClient(credential, region, cpf)
 			util.HandleErr(err)
 			if err == nil {
