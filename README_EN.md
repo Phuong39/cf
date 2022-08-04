@@ -20,8 +20,6 @@ CF is a cloud exploitation framework, It can facilitate the work of the red team
 
 CF download address: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
 
-> Currently CF only supports Alibaba cloud, and will continue to update the support for other cloud providers.
-
 Currently CF has these functions as follows: 
 
 * Currently supported features
