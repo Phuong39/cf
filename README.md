@@ -19,8 +19,6 @@ CF 是一个云环境利用框架，主要用来方便红队人员在获得云�
 
 CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
 
-> 目前 CF 仅支持阿里云，后续会不断更新对其他云的支持
-
 目前 CF 可以实现以下功能：
 
 * 已实现
