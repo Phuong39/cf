@@ -21,7 +21,6 @@ var (
 	scriptType                 string
 	commandFile                string
 	ecsLsRegion                string
-	ecsExecRegion              string
 	ecsLsSpecifiedInstanceID   string
 	ecsExecSpecifiedInstanceID string
 )
@@ -79,7 +78,7 @@ var ecsExecCmd = &cobra.Command{
 			log.Warnf("还未指定要执行的命令 (The command to be executed has not been specified yet)\n")
 			cmd.Help()
 		} else {
-			aliecs2.ECSExec(command, commandFile, scriptType, ecsExecSpecifiedInstanceID, ecsExecRegion, batchCommand, userData, metaDataSTSToken, ecsFlushCache, lhost, lport, timeOut)
+			aliecs2.ECSExec(command, commandFile, scriptType, ecsExecSpecifiedInstanceID, "all", batchCommand, userData, metaDataSTSToken, ecsFlushCache, lhost, lport, timeOut)
 		}
 	},
 }
