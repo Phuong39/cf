@@ -26,15 +26,18 @@ type Instances struct {
 }
 
 var (
-	ECSCacheFilePath = cmdutil.ReturnCacheFile("alibaba", "ECS")
-	header           = []string{"序号 (SN)", "实例 ID (Instance ID)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private Ip Address)", "公网 IP (Public Ip Address)", "区域 ID (Region ID)"}
+	DescribeInstancesOut []Instances
+	ECSCacheFilePath     = cmdutil.ReturnCacheFile("alibaba", "ECS")
+	header               = []string{"序号 (SN)", "实例 ID (Instance ID)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private Ip Address)", "公网 IP (Public Ip Address)", "区域 ID (Region ID)"}
 )
 
-func DescribeInstances(region string, running bool, SpecifiedInstanceID string) []Instances {
-	var out []Instances
+func DescribeInstances(region string, running bool, SpecifiedInstanceID string, NextToken string) []Instances {
 	var response *ecs.DescribeInstancesResponse
 	request := ecs.CreateDescribeInstancesRequest()
 	request.PageSize = requests.NewInteger(100)
+	if NextToken != "" {
+		request.NextToken = NextToken
+	}
 	request.Scheme = "https"
 	if running == true {
 		request.Status = "Running"
@@ -42,10 +45,10 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 	if SpecifiedInstanceID != "all" {
 		request.InstanceIds = fmt.Sprintf("[\"%s\"]", SpecifiedInstanceID)
 	}
+	log.Tracef("正在 %s 区域中查找实例 (Looking for instances in the %s region)", region, region)
 	response, err := ECSClient(region).DescribeInstances(request)
 	util.HandleErr(err)
 	InstancesList := response.Instances.Instance
-	log.Tracef("正在 %s 区域中查找实例 (Looking for instances in the %s region)", region, region)
 	if len(InstancesList) != 0 {
 		log.Debugf("在 %s 区域下找到 %d 个实例 (Found %d instances in %s region)", region, len(InstancesList), len(InstancesList), region)
 		for _, i := range InstancesList {
@@ -84,10 +87,15 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 				PublicIpAddress:  PublicIpAddress,
 				RegionId:         i.RegionId,
 			}
-			out = append(out, obj)
+			DescribeInstancesOut = append(DescribeInstancesOut, obj)
 		}
 	}
-	return out
+	NextToken = response.NextToken
+	if NextToken != "" {
+		log.Tracef("Next Token: %s", NextToken)
+		_ = DescribeInstances(region, running, SpecifiedInstanceID, NextToken)
+	}
+	return DescribeInstancesOut
 }
 
 func ReturnInstancesList(region string, running bool, specifiedInstanceID string) []Instances {
@@ -96,13 +104,14 @@ func ReturnInstancesList(region string, running bool, specifiedInstanceID string
 	if region == "all" {
 		for _, j := range GetECSRegions() {
 			region := j.RegionId
-			Instance = DescribeInstances(region, running, specifiedInstanceID)
+			Instance = DescribeInstances(region, running, specifiedInstanceID, "")
+			DescribeInstancesOut = nil
 			for _, i := range Instance {
 				InstancesList = append(InstancesList, i)
 			}
 		}
 	} else {
-		InstancesList = DescribeInstances(region, running, specifiedInstanceID)
+		InstancesList = DescribeInstances(region, running, specifiedInstanceID, "")
 	}
 	return InstancesList
 }

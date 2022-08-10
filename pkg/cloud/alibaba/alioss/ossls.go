@@ -114,7 +114,7 @@ func getAllObjects(bucket *oss.Bucket, marker oss.Option, size int) {
 		}
 		objects = append(objects, obj)
 	}
-	log.Debugf("下一页标志：%s (next marker: %s)", lor.NextMarker, lor.NextMarker)
+	log.Tracef("Next Marker: %s", lor.NextMarker)
 	if lor.NextMarker != "" {
 		getAllObjects(bucket, marker, size)
 	}
