@@ -14,5 +14,4 @@ func UninstallAgent(UUID string) {
 	_, err := client.DeleteMachine(request)
 	util.HandleErr(err)
 	log.Info("卸载云镜成功 (Uninstall Agent Success)")
-
 }

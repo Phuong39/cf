@@ -45,6 +45,7 @@ var errorMessagesNoExit = map[string]string{
 var errorMessagesExit = map[string]string{
 	"ErrorCode: Forbidden.RAM": "当前访问凭证没有执行命令的权限 (Current Access Key do not have permission to execute commands)",
 	"ErrorCode: NoPermission":  "当前访问凭证没有接管控制台的权限 (Current Access Key do not have permission to take over the console)",
+	"Message=操作未授权，请检查CAM策略。":  "当前 AK 权限不足 (Insufficient Access Key permissions)",
 }
 
 func HandleErr(e error) {
