@@ -12,8 +12,9 @@ import (
 )
 
 var (
-	RDSCacheFilePath = cmdutil.ReturnCacheFile("alibaba", "RDS")
-	header           = []string{"序号 (SN)", "数据库 ID (DB ID)", "数据库类型 (DB Engine)", "数据库版本 (DB Engine Version)", "数据库状态 (DB Staus)", "区域 ID (Region ID)"}
+	DescribeDBInstancesOut []DBInstances
+	RDSCacheFilePath       = cmdutil.ReturnCacheFile("alibaba", "RDS")
+	header                 = []string{"序号 (SN)", "数据库 ID (DB ID)", "数据库类型 (DB Engine)", "数据库版本 (DB Engine Version)", "数据库状态 (DB Staus)", "区域 ID (Region ID)"}
 )
 
 type DBInstances struct {
@@ -24,11 +25,13 @@ type DBInstances struct {
 	RegionId         string
 }
 
-func DescribeDBInstances(region string, running bool, specifiedDBInstanceID string, engine string) ([]DBInstances, error) {
-	var out []DBInstances
+func DescribeDBInstances(region string, running bool, specifiedDBInstanceID string, engine string, NextToken string) ([]DBInstances, error) {
 	request := rds.CreateDescribeDBInstancesRequest()
 	request.PageSize = requests.NewInteger(100)
 	request.Scheme = "https"
+	if NextToken != "" {
+		request.NextToken = NextToken
+	}
 	if running == true {
 		request.DBInstanceStatus = "Running"
 	}
@@ -52,10 +55,15 @@ func DescribeDBInstances(region string, running bool, specifiedDBInstanceID stri
 				RegionId:         i.RegionId,
 				DBInstanceStatus: i.DBInstanceStatus,
 			}
-			out = append(out, obj)
+			DescribeDBInstancesOut = append(DescribeDBInstancesOut, obj)
 		}
 	}
-	return out, err
+	NextToken = response.NextToken
+	if NextToken != "" {
+		log.Tracef("Next Token: %s", NextToken)
+		_, _ = DescribeDBInstances(region, running, specifiedDBInstanceID, engine, NextToken)
+	}
+	return DescribeDBInstancesOut, err
 }
 
 func ReturnDBInstancesList(region string, running bool, specifiedDBInstanceID string, engine string) []DBInstances {
@@ -68,13 +76,14 @@ func ReturnDBInstancesList(region string, running bool, specifiedDBInstanceID st
 		}
 		RegionsList = RemoveRepeatedElement(RegionsList)
 		for _, j := range RegionsList {
-			DBInstance, _ = DescribeDBInstances(j, running, specifiedDBInstanceID, engine)
+			DBInstance, _ = DescribeDBInstances(j, running, specifiedDBInstanceID, engine, "")
+			DescribeDBInstancesOut = nil
 			for _, i := range DBInstance {
 				DBInstancesList = append(DBInstancesList, i)
 			}
 		}
 	} else {
-		DBInstancesList, _ = DescribeDBInstances(region, running, specifiedDBInstanceID, engine)
+		DBInstancesList, _ = DescribeDBInstances(region, running, specifiedDBInstanceID, engine, "")
 	}
 	return DBInstancesList
 }

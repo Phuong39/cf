@@ -267,7 +267,7 @@ func traversalPermissions() ([][]string, [][]string) {
 	}
 	// 4. cf rds ls
 	log.Debugln("正在判断 rds ls 权限 (Determining the permission of rds ls)")
-	_, err4 := alirds.DescribeDBInstances("cn-beijing", true, "all", "all")
+	_, err4 := alirds.DescribeDBInstances("cn-beijing", true, "all", "all", "")
 	if err4 == nil {
 		obj1 = append(obj1, []string{"AliyunRDSReadOnlyAccess", "只读访问云数据库服务(RDS)的权限"})
 		obj2 = append(obj2, []string{rdslsAction, rdslsDescription})
