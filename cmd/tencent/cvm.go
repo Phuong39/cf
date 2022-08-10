@@ -1,7 +1,5 @@
 package tencent
 
-// 腾讯云cvm相关操作
-
 import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
