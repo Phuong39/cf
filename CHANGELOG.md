@@ -1,7 +1,14 @@
+## [v0.3.4](https://github.com/teamssix/cf/releases/tag/v0.3.4) 2022.8.10
+- [#124](https://github.com/teamssix/cf/pull/124) fix: 修复了实例执行命令时的一个 bug
+- [#125](https://github.com/teamssix/cf/pull/125) perf: 优化腾讯云接管控制台的提示信息
+- [#126](https://github.com/teamssix/cf/pull/126) fix: 修复了实例列出不完整的 bug
+- [#127](https://github.com/teamssix/cf/pull/127) perf: 优化程序升级处理代码
+
 ## [v0.3.3](https://github.com/teamssix/cf/releases/tag/v0.3.3) 2022.8.3
-* [#99](https://github.com/teamssix/cf/pull/99) feat: 新增腾讯云轻量引用服务器的命令执行功能
-* [#103](https://github.com/teamssix/cf/pull/103) fix: 修复了当阿里云 oss object 超过 1000 时无法完全展示的 bug
-* [#109](https://github.com/teamssix/cf/pull/109) fix: 修复了配置腾讯云 AK 时的一个 bug
+
+- [#99](https://github.com/teamssix/cf/pull/99) feat: 新增腾讯云轻量引用服务器的命令执行功能
+- [#103](https://github.com/teamssix/cf/pull/103) fix: 修复了当阿里云 oss object 超过 1000 时无法完全展示的 bug
+- [#109](https://github.com/teamssix/cf/pull/109) fix: 修复了配置腾讯云 AK 时的一个 bug
 
 ## [v0.3.2](https://github.com/teamssix/cf/releases/tag/v0.3.2) 2022.7.29
 
