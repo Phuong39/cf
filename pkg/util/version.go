@@ -1,15 +1,16 @@
 package util
 
 import (
+	"encoding/json"
 	log "github.com/sirupsen/logrus"
-	"github.com/tj/go-update"
-	githubUpdateStore "github.com/tj/go-update/stores/github"
-	"runtime"
+	"io/ioutil"
+	"net/http"
+	"strconv"
+	"strings"
 )
 
 var (
-	CFVersion  = "0.3.4"
-	version    = "v" + CFVersion
+	version    = "v0.3.4"
 	updateTime = "2022.8.10"
 )
 
@@ -21,47 +22,77 @@ func GetUpdateTime() string {
 	return updateTime
 }
 
+type latestReleasesStruct struct {
+	NewVersion string `json:"tag_name"`
+}
+
 func AlertUpdateInfo() {
 	oldTimeStamp := ReadTimeStamp(ReturnVersionTimeStampFile())
 	if oldTimeStamp == 0 {
-		_, _, _ = CheckVersion()
+		CheckVersion(version)
 	} else if IsFlushCache(oldTimeStamp) {
-		Check, latest, _ := CheckVersion()
-		if Check {
-			log.Warnln("发现 %s 新版本，可以使用 upgrade 命令进行更新 (Found a new version of %s, use the upgrade command to update)", latest.Version, latest.Version)
+		check, newVersion := CheckVersion(version)
+		if check {
+			log.Warnf("发现 %s 新版本，可以使用 upgrade 命令进行更新 (Found a new version of %s, use the upgrade command to update)\n", newVersion, newVersion)
 		} else {
-			log.Infoln("未发现新版本 (No new versions found)")
+			log.Debugln("未发现新版本 (No new versions found)")
 		}
 	} else {
 		TimeDifference(oldTimeStamp)
 	}
 }
 
-func CheckVersion() (bool, *update.Release, *update.Manager) {
+func CheckVersion(version string) (bool, string) {
 	WriteTimeStamp(ReturnVersionTimeStampFile())
-	var command string
-	switch runtime.GOOS {
-	case "windows":
-		command = "cf.exe"
-	default:
-		command = "cf"
-	}
-	m := &update.Manager{
-		Command: command,
-		Store: &githubUpdateStore.Store{
-			Owner:   "teamssix",
-			Repo:    "cf",
-			Version: CFVersion,
-		},
-	}
-	releases, err := m.LatestReleases()
+
+	url := "https://api.github.com/repos/teamssix/cf/releases/latest"
+	spaceClient := http.Client{}
+	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
-		HandleErr(err)
-	}
-	if len(releases) == 0 {
-		return false, nil, nil
+		return reqErr(err)
 	} else {
-		latest := releases[0]
-		return true, latest, m
+		res, err := spaceClient.Do(req)
+		if err != nil {
+			return reqErr(err)
+		} else {
+			body, err := ioutil.ReadAll(res.Body)
+			if err != nil {
+				return reqErr(err)
+			} else {
+				latestReleases := latestReleasesStruct{}
+				err := json.Unmarshal(body, &latestReleases)
+				if err != nil {
+					return reqErr(err)
+				} else {
+					newVersion := latestReleases.NewVersion
+					versionNumber := caclVersionNumber(version)
+					newVersionNumber := caclVersionNumber(newVersion)
+					if versionNumber >= newVersionNumber {
+						return false, newVersion
+					} else {
+						return true, newVersion
+					}
+				}
+			}
+
+		}
 	}
+}
+
+func caclVersionNumber(version string) int {
+	version = version[1:]
+	versionSplit := strings.Split(version, ".")
+	versionNumber := Atoi(versionSplit[0])*10000 + Atoi(versionSplit[1])*100 + Atoi(versionSplit[2])
+	return versionNumber
+}
+
+func Atoi(s string) int {
+	i, err := strconv.Atoi(s)
+	HandleErr(err)
+	return i
+}
+
+func reqErr(err error) (bool, string) {
+	log.Debugln("获取最新的 releases 版本失败 (Failed to get the latest releases version) : ", err)
+	return false, ""
 }
