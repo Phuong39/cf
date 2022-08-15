@@ -39,17 +39,6 @@ func ReadTimeStamp(timeStampFile string) int64 {
 	return i
 }
 
-func fileExists(path string) bool {
-	_, err := os.Stat(path)
-	if err != nil {
-		if os.IsExist(err) {
-			return true
-		}
-		return false
-	}
-	return true
-}
-
 func ReturnVersionTimeStampFile() string {
 	cacheDict := ReturnCacheDict() + "/versionTimeStamp.txt"
 	return cacheDict

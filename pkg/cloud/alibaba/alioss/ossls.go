@@ -88,6 +88,7 @@ func (o *OSSCollector) ListObjects(bucketName string) ([]Object, []objectContent
 		o.OSSClient(region)
 		bucket, err := o.Client.Bucket(BucketName)
 		util.HandleErr(err)
+		objects = nil
 		getAllObjects(bucket, marker, size)
 		log.Debugf("在 %s 存储桶中找到了 %d 个对象 (Found %d Objects in %s Bucket)", BucketName, objectNum, objectNum, BucketName)
 		obj := Object{
@@ -95,6 +96,8 @@ func (o *OSSCollector) ListObjects(bucketName string) ([]Object, []objectContent
 			ObjectNumber: objectNum,
 			ObjectSize:   ObjectSize,
 		}
+		objectNum = 0
+		ObjectSize = 0
 		out = append(out, obj)
 	}
 	return out, objects
@@ -151,7 +154,6 @@ func (o *OSSCollector) GetBucketACL() []Acl {
 
 func PrintBucketsListRealTime(region string) {
 	OSSCollector := &OSSCollector{}
-
 	Buckets, _ := OSSCollector.ListBuckets()
 	log.Debugf("获取到 %d 条 OSS Bucket 信息 (Obtained %d OSS Bucket information)", len(Buckets), len(Buckets))
 

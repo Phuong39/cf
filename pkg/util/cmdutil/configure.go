@@ -31,7 +31,6 @@ func ConfigureAccessKey() {
 			inputAccessKey(config, cloudConfigList[i])
 		}
 	}
-	// choose one Cloud Provider change its profile
 }
 
 func ReturnCloudProviderList() ([]string, []string) {
@@ -47,8 +46,6 @@ func ReturnCloudProviderList() ([]string, []string) {
 	return cloudConfigList, cloudProviderList
 }
 
-// InputAccessKey prompts the user to input the access key and secret key
-// and saves the access key and secret key to the config struct.
 func inputAccessKey(config cloud.Config, provider string) {
 	OldAccessKeyId := ""
 	OldAccessKeySecret := ""
@@ -101,8 +98,6 @@ func inputAccessKey(config cloud.Config, provider string) {
 	SaveAccessKey(cred, provider)
 }
 
-// SaveAccessKey saves the access key and secret key to the config file.
-// [Can be used to Save and switch the profile]
 func SaveAccessKey(config cloud.Config, provider string) {
 	home, err := GetCFHomeDir()
 	util.HandleErr(err)
@@ -116,7 +111,7 @@ func SaveAccessKey(config cloud.Config, provider string) {
 	err = ioutil.WriteFile(configFilePath, configJSON, 0600)
 	util.HandleErr(err)
 	log.Infof("配置文件路径 (Configuration file path): %s ", configFilePath)
-	createCacheDict() // create cache dict which is unused now.
+	util.CreateFolder(ReturnCacheDict())
 }
 
 func GetConfigFilePath(provider string) string {
@@ -131,7 +126,6 @@ func GetConfigFilePath(provider string) string {
 	return configFilePath
 }
 
-// GetConfig reads the given provider profile and returns the cloud.Config
 func GetConfig(provider string) cloud.Config {
 	configFilePath := GetConfigFilePath(provider)
 	var config cloud.Config
