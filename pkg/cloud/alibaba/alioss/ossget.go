@@ -2,11 +2,11 @@ package alioss
 
 import (
 	"fmt"
+	"github.com/AlecAivazis/survey/v2"
+	"github.com/teamssix/cf/pkg/util/cmdutil"
 	"io"
 	"os"
-	"strings"
-
-	"github.com/AlecAivazis/survey/v2"
+	"path/filepath"
 
 	"github.com/schollz/progressbar/v3"
 
@@ -16,31 +16,52 @@ import (
 )
 
 func getObject(bucketName string, objectKey string, outputPath string) {
-	log.Infof("正在下载 %s 存储桶里的 %s 对象 (Downloading %s objects from %s bucket)", bucketName, objectKey, bucketName, objectKey)
-	var objectSize int64
-	OSSCollector := &OSSCollector{}
-	objects, fd, body, oserr, outputFile := OSSCollector.ReturnBucket(bucketName, objectKey, outputPath)
-	for _, obj := range objects {
-		if objectKey == obj.Key {
-			objectSize = obj.Size
+	if objectKey[len(objectKey)-1:] == "/" {
+		util.CreateFolder(returnBucketFileName(outputPath, bucketName, objectKey))
+	} else {
+		log.Infof("正在下载 %s 存储桶里的 %s 对象 (Downloading %s objects from %s bucket)", bucketName, objectKey, bucketName, objectKey)
+		var (
+			objectSize int64
+			region     string
+		)
+		OSSCollector := &OSSCollector{}
+		Buckets, _ := OSSCollector.ListBuckets()
+		for _, v := range Buckets {
+			if v.Name == bucketName {
+				region = v.Region
+			}
 		}
-	}
-	bar := returnBar(objectSize)
-	io.Copy(io.MultiWriter(fd, bar), body)
-	body.Close()
-	defer fd.Close()
-	if oserr == nil {
-		log.Infof("对象已被保存到 %s (The object has been saved to %s)", outputFile, outputFile)
+		fd, body, oserr, outputFile := OSSCollector.ReturnBucket(bucketName, objectKey, outputPath, region)
+		_, objects := OSSCollector.ListObjects(bucketName)
+		for _, obj := range objects {
+			if objectKey == obj.Key {
+				objectSize = obj.Size
+			}
+		}
+		bar := returnBar(objectSize)
+		io.Copy(io.MultiWriter(fd, bar), body)
+		body.Close()
+		defer fd.Close()
+		if oserr == nil {
+			log.Infof("对象已被保存到 %s (The object has been saved to %s)", outputFile, outputFile)
+		}
 	}
 }
 
 func DownloadAllObjects(bucketName string, outputPath string) {
 	var (
 		objectKey  string
+		region     string
 		objectList []string
 	)
 	OSSCollector := &OSSCollector{}
 	objectList = append(objectList, "all")
+	Buckets, _ := OSSCollector.ListBuckets()
+	for _, v := range Buckets {
+		if v.Name == bucketName {
+			region = v.Region
+		}
+	}
 	_, objects := OSSCollector.ListObjects(bucketName)
 	for _, o := range objects {
 		objectList = append(objectList, o.Key)
@@ -53,85 +74,111 @@ func DownloadAllObjects(bucketName string, outputPath string) {
 	if objectKey == "all" {
 		bar := returnBar((int64(len(objectList) - 1)))
 		for _, j := range objects {
-			bar.Add(1)
-			_, fd, body, _, _ := OSSCollector.ReturnBucket(bucketName, j.Key, outputPath)
-			io.Copy(fd, body)
-			body.Close()
-			defer fd.Close()
+			if j.Key[len(j.Key)-1:] == "/" {
+				bar.Add(1)
+				util.CreateFolder(returnBucketFileName(outputPath, bucketName, j.Key))
+			} else {
+				bar.Add(1)
+				fd, body, _, _ := OSSCollector.ReturnBucket(bucketName, j.Key, outputPath, region)
+				io.Copy(fd, body)
+				body.Close()
+				defer fd.Close()
+			}
 		}
-
 		log.Infof("对象已被保存到 %s 目录下 (The object has been saved to the %s directory)", outputPath, outputPath)
 	} else {
-		getObject(bucketName, objectKey, outputPath)
-	}
-}
-
-func DownloadObjects(bucketName string, objectKey string, outputPath string) {
-	if objectKey == "all" {
-		DownloadAllObjects(bucketName, outputPath)
-	} else {
-		getObject(bucketName, objectKey, outputPath)
-	}
-}
-
-func IsDir(path string) bool {
-	s, err := os.Stat(path)
-	if err != nil {
-		return false
-	}
-	return s.IsDir()
-}
-
-func returnOutputFile(objectKey string, outputPath string) string {
-	var (
-		outputFile string
-		objectName string
-	)
-	if strings.Contains(objectKey, "/") {
-		objectKeyList := strings.Split(objectKey, "/")
-		objectName = objectKeyList[len(objectKeyList)-1]
-	} else {
-		objectName = objectKey
-	}
-
-	if IsDir(outputPath) {
-		if outputPath[len(outputPath)-1:] != "/" {
-			outputFile = outputPath + "/" + objectName
+		if objectKey[len(objectKey)-1:] == "/" {
+			util.CreateFolder(returnBucketFileName(outputPath, bucketName, objectKey))
 		} else {
-			outputFile = outputPath + objectName
+			getObject(bucketName, objectKey, outputPath)
 		}
-	} else {
-		outputFile = outputPath
 	}
-	log.Debugf("下载保存路径为 %s (The save path is %s)", outputFile, outputFile)
-	return outputFile
 }
 
-func (o *OSSCollector) ReturnBucket(bucketName string, objectKey string, outputPath string) ([]objectContents, *os.File, io.ReadCloser, error, string) {
-	var (
-		err    error
-		region string
-	)
-	Buckets, _ := o.ListBuckets()
-	for _, obj := range Buckets {
-		if obj.Name == bucketName {
-			region = obj.Region
+func DownloadObjects(bucketName string, objectKey string, outputPath string, ossDownloadFlushCache bool) {
+	if outputPath == "./result" {
+		util.CreateFolder("./result")
+	}
+	if bucketName == "all" {
+		var (
+			bucketList    []string
+			bucketListAll []string
+		)
+		bucketListAll = append(bucketListAll, "all")
+		if ossDownloadFlushCache {
+			OSSCollector := &OSSCollector{}
+			Buckets, _ := OSSCollector.ListBuckets()
+			for _, v := range Buckets {
+				_, objects := OSSCollector.ListObjects(v.Name)
+				if len(objects) > 0 {
+					bucketList = append(bucketList, v.Name)
+					bucketListAll = append(bucketListAll, v.Name)
+				}
+			}
+		} else {
+			Buckets := cmdutil.ReadCacheFile(OSSCacheFilePath, "alibaba", "OSS")
+			for _, v := range Buckets {
+				OSSCollector := &OSSCollector{}
+				_, objects := OSSCollector.ListObjects(v[1])
+				if len(objects) > 0 {
+					bucketList = append(bucketList, v[1])
+					bucketListAll = append(bucketListAll, v[1])
+				}
+			}
+		}
+		bucketListAll = append(bucketListAll, "exit")
+		if len(bucketList) == 1 {
+			bucketName = bucketList[0]
+		} else {
+			prompt := &survey.Select{
+				Message: "选择一个存储桶 (Choose a bucket): ",
+				Options: bucketListAll,
+			}
+			survey.AskOne(prompt, &bucketName)
+		}
+
+		if bucketName == "all" {
+			for _, v := range bucketList {
+				if objectKey == "all" {
+					DownloadAllObjects(v, outputPath)
+				} else {
+					getObject(v, objectKey, outputPath)
+				}
+			}
+		} else if bucketName == "exit" {
+			os.Exit(0)
+		} else {
+			if objectKey == "all" {
+				DownloadAllObjects(bucketName, outputPath)
+			} else {
+				getObject(bucketName, objectKey, outputPath)
+			}
+		}
+	} else {
+		OSSCollector := &OSSCollector{}
+		_, objects := OSSCollector.ListObjects(bucketName)
+		if len(objects) > 0 {
+			if objectKey == "all" {
+				DownloadAllObjects(bucketName, outputPath)
+			} else {
+				getObject(bucketName, objectKey, outputPath)
+			}
+		} else {
+			log.Warnf("在 %s 存储桶中没有发现对象 (No object found in %s storage bucket)", bucketName, bucketName)
 		}
 	}
-	if region == "" {
-		log.Errorln("未找到该 Bucket (This Bucket not found)")
-		os.Exit(0)
-	}
+}
+
+func (o *OSSCollector) ReturnBucket(bucketName string, objectKey string, outputPath string, region string) (*os.File, io.ReadCloser, error, string) {
 	o.OSSClient(region)
 	bucket, err := o.Client.Bucket(bucketName)
 	util.HandleErr(err)
-	outputFile := returnOutputFile(objectKey, outputPath)
+	outputFile := returnBucketFileName(outputPath, bucketName, objectKey)
 	fd, oserr := os.OpenFile(outputFile, os.O_WRONLY|os.O_CREATE, 0660)
 	util.HandleErr(oserr)
 	body, err := bucket.GetObject(objectKey)
 	util.HandleErr(err)
-	_, objects := o.ListObjects(bucketName)
-	return objects, fd, body, oserr, outputFile
+	return fd, body, oserr, outputFile
 }
 
 func returnBar(replen int64) *progressbar.ProgressBar {
@@ -153,4 +200,11 @@ func returnBar(replen int64) *progressbar.ProgressBar {
 			BarEnd:        "]",
 		}))
 	return bar
+}
+
+func returnBucketFileName(outputPath string, bucketName string, objectName string) string {
+	outputBucketFile := filepath.Join(outputPath, bucketName)
+	util.CreateFolder(outputBucketFile)
+	outputFileName := filepath.Join(outputBucketFile, objectName)
+	return outputFileName
 }

@@ -30,15 +30,6 @@ func ReturnCacheFile(provider string, resourceType string) string {
 	return ossCacheFile
 }
 
-func createCacheDict() {
-	cacheDict := ReturnCacheDict()
-	if FileExists(cacheDict) == false {
-		log.Traceln("创建缓存目录 (Create cache directory): " + cacheDict)
-		err := os.MkdirAll(cacheDict, 0700)
-		util.HandleErr(err)
-	}
-}
-
 func WriteCacheFile(td cloud.TableData, filePath string, region string, id string) {
 	if region == "all" && id == "all" {
 		log.Debugln("写入数据到缓存文件 (Write data to a cache file): " + filePath)
