@@ -45,7 +45,7 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string, 
 	if SpecifiedInstanceID != "all" {
 		request.InstanceIds = fmt.Sprintf("[\"%s\"]", SpecifiedInstanceID)
 	}
-	log.Tracef("正在 %s 区域中查找实例 (Looking for instances in the %s region)", region, region)
+	log.Debugf("正在 %s 区域中查找实例 (Looking for instances in the %s region)", region, region)
 	response, err := ECSClient(region).DescribeInstances(request)
 	util.HandleErr(err)
 	InstancesList := response.Instances.Instance

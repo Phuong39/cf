@@ -14,38 +14,29 @@ require (
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/cobra v1.5.0
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cam v1.0.447
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.447
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.475
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm v1.0.447
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cwp v1.0.447
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/lighthouse v1.0.447
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sts v1.0.475
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tat v1.0.447
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vpc v1.0.446
-	github.com/tj/go-update v2.2.5-0.20200519121640-62b4b798fd68+incompatible
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
 	gorm.io/gorm v1.23.8
 )
 
 require (
-	github.com/apex/log v1.9.0 // indirect
 	github.com/baiyubin/aliyun-sts-go-sdk v0.0.0-20180326062324-cfa1a18b161f // indirect
-	github.com/c4milo/unpackit v0.1.0 // indirect
-	github.com/dsnet/compress v0.0.1 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect
-	github.com/google/go-github v17.0.0+incompatible // indirect
-	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
-	github.com/gosuri/uilive v0.0.4 // indirect
-	github.com/gosuri/uiprogress v0.0.1 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af // indirect
 	github.com/json-iterator/go v1.1.5 // indirect
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
-	github.com/klauspost/compress v1.4.1 // indirect
-	github.com/klauspost/cpuid v1.2.0 // indirect
-	github.com/klauspost/pgzip v1.2.5 // indirect
+	github.com/kr/pretty v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.9 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
@@ -55,12 +46,10 @@ require (
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/onsi/ginkgo v1.16.5 // indirect
 	github.com/onsi/gomega v1.20.0 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20200410134404-eec4a21b6bb0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/ulikunitz/xz v0.5.10 // indirect
 	github.com/xo/terminfo v0.0.0-20210125001918-ca9a967f8778 // indirect
 	golang.org/x/crypto v0.0.0-20220131195533-30dcbda58838 // indirect
 	golang.org/x/mod v0.3.0 // indirect
@@ -70,6 +59,7 @@ require (
 	golang.org/x/time v0.0.0-20220609170525-579cf78fd858 // indirect
 	golang.org/x/tools v0.0.0-20201224043029-2b0845dc783e // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
+	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	gopkg.in/ini.v1 v1.66.2 // indirect
 	lukechampine.com/uint128 v1.1.1 // indirect
 	modernc.org/cc/v3 v3.36.0 // indirect

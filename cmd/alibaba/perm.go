@@ -6,11 +6,11 @@ import (
 )
 
 func init() {
-	alibabaCmd.AddCommand(permissionsCmd)
+	alibabaCmd.AddCommand(permCmd)
 }
 
-var permissionsCmd = &cobra.Command{
-	Use:   "permissions",
+var permCmd = &cobra.Command{
+	Use:   "perm",
 	Short: "列出当前凭证下所拥有的权限 (List access key permissions)",
 	Long:  `列出当前凭证下所拥有的权限 (List access key permissions)`,
 	Run: func(cmd *cobra.Command, args []string) {

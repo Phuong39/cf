@@ -36,6 +36,6 @@ func InitDB() *gorm.DB {
 		err = os.MkdirAll(configHomeFile, 0700)
 		util.HandleErr(err)
 	}
-	db, err := gorm.Open(sqlite.Open(filepath.Join(home, "local.db")), &gorm.Config{})
+	db, _ := gorm.Open(sqlite.Open(filepath.Join(home, "local.db")), &gorm.Config{})
 	return db
 }
