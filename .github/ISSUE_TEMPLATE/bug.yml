@@ -8,7 +8,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        感谢您花时间提交这份 issue (Thanks for taking the time to fill out this bug report!)
+        感谢您花时间提交这份 issue (Thanks for taking the time to fill out this bug report! )
   - type: textarea
     id: what-happened
     attributes:
@@ -18,13 +18,12 @@ body:
       required: true
   - type: textarea
     attributes:
-      label: 步骤复现 (Steps To Reproduce)
+      label: 复现步骤 (Steps To Reproduce)
       description: 复现这个问题的步骤 (Steps to reproduce the behavior.)
       placeholder: |
-        1. In this environment...
-        2. With this config...
-        3. Run '...'
-        4. See error...
+        1. 在 xxx 环境中
+        2. 我执行了 xxx 命令
+        3. 出现了 xxx 错误
     validations:
       required: true
   - type: dropdown
