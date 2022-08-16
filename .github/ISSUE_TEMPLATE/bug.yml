@@ -18,10 +18,10 @@ body:
     validations:
       required: true
   - type: dropdown
-    id: version
+    id: system
     attributes:
-      label: 版本(Version)
-      description: What version of our software are you running?
+      label: 操作系统 (Operating System)
+      description: 你在哪种操作系统下运行的 CF ？(Which operating system you are running the CF in?)
       options:
         - 1.0.2 (Default)
         - 1.0.3 (Edge)
