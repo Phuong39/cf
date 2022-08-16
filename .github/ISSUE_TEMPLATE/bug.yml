@@ -1,7 +1,7 @@
 name: Bug 反馈
 description: 创建一个 issue 帮助改进这个项目
 title: "[BUG] <在这里输入你的标题>"
-labels: ["Bug"]
+labels: ["bug"]
 assignees:
   - teamssix
 body:
@@ -14,6 +14,17 @@ body:
     attributes:
       label: 描述你遇到的问题 (What happened?)
       value: "简单描述你所遇到的问题"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 步骤复现 (Steps To Reproduce)
+      description: 复现这个问题的步骤 (Steps to reproduce the behavior.)
+      placeholder: |
+        1. In this environment...
+        2. With this config...
+        3. Run '...'
+        4. See error...
     validations:
       required: true
   - type: dropdown
