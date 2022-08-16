@@ -2,12 +2,13 @@ package tencentlh
 
 import (
 	"encoding/json"
+	"github.com/teamssix/cf/pkg/cloud/tencent/tencentcvm"
 	lh "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/lighthouse/v20200324"
 	"strconv"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
-	cwp "github.com/teamssix/cf/pkg/cloud/tencent/tencentcwp"
 	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
@@ -15,19 +16,18 @@ import (
 
 var (
 	LHCacheFilePath = cmdutil.ReturnCacheFile("tencent", "LH")
-	header          = []string{"序号 (SN)", "实例ID (Instance ID)", "云镜ID (UUID)", "云镜状态 (CWP Status)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "状态 (Status)", "私有 IP (Private Ip Address)", "公网 IP (Public Ip Address)", "区域 ID (Region ID)"}
+	header          = []string{"序号 (SN)", "实例ID (Instance ID)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private IP)", "公网 IP (Public IP)", "区域 ID (Region ID)"}
 )
 
 type Instances struct {
 	InstanceId       string
 	InstanceName     string
 	OSName           string
+	OSType           string
 	Status           string
 	PrivateIpAddress string
 	PublicIpAddress  string
 	RegionId         string
-	CWPStatus        string
-	UUID             string
 }
 
 func DescribeInstances(region string, running bool, SpecifiedInstanceID string) []Instances {
@@ -55,6 +55,7 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 			PublicIpAddressList  []string
 			PrivateIpAddress     string
 			PublicIpAddress      string
+			OSType               string
 		)
 		for _, v := range InstancesList {
 			for _, m := range v.PrivateAddresses {
@@ -75,20 +76,22 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 			} else {
 				PublicIpAddress = string(b)
 			}
-
+			newOSname := strings.Split(*v.OsName, " ")[0]
+			if find(tencentcvm.LinuxSet, newOSname) {
+				OSType = "linux"
+			} else {
+				OSType = "windows"
+			}
 			util.HandleErr(err)
-			CWPStatus, CWPUUID := cwp.DescribeMachineCWPStatus("LH", *v.Uuid)
-
 			obj := Instances{
 				InstanceId:       *v.InstanceId,
 				InstanceName:     *v.InstanceName,
 				OSName:           *v.OsName,
+				OSType:           OSType,
 				Status:           *v.InstanceState,
 				PrivateIpAddress: PrivateIpAddress,
 				PublicIpAddress:  PublicIpAddress,
 				RegionId:         *v.Zone,
-				CWPStatus:        *CWPStatus,
-				UUID:             *CWPUUID,
 			}
 			out = append(out, obj)
 		}
@@ -118,7 +121,7 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 	var data = make([][]string, len(InstancesList))
 	for i, o := range InstancesList {
 		SN := strconv.Itoa(i + 1)
-		data[i] = []string{SN, o.InstanceId, o.UUID, o.CWPStatus, o.InstanceName, o.OSName, o.Status, o.PrivateIpAddress, o.PublicIpAddress, o.RegionId}
+		data[i] = []string{SN, o.InstanceId, o.InstanceName, o.OSName, o.OSType, o.Status, o.PrivateIpAddress, o.PublicIpAddress, o.RegionId}
 	}
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {

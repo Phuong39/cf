@@ -132,28 +132,26 @@ func GenerateSSHKeyOnInstance(region string, keyName string, specifiedInstanceID
 				if specifiedInstanceID == i[1] {
 					obj := Instances{
 						InstanceId:       i[1],
-						InstanceName:     i[4],
-						OSName:           i[5],
-						Status:           i[6],
-						PrivateIpAddress: i[7],
-						PublicIpAddress:  i[8],
-						RegionId:         i[9],
-						CWPStatus:        i[3],
-						UUID:             i[2],
+						InstanceName:     i[2],
+						OSName:           i[3],
+						OSType:           i[4],
+						Status:           i[5],
+						PrivateIpAddress: i[6],
+						PublicIpAddress:  i[7],
+						RegionId:         i[8],
 					}
 					InstancesList = append(InstancesList, obj)
 				}
 			} else {
 				obj := Instances{
 					InstanceId:       i[1],
-					InstanceName:     i[4],
-					OSName:           i[5],
-					Status:           i[6],
-					PrivateIpAddress: i[7],
-					PublicIpAddress:  i[8],
-					RegionId:         i[9],
-					CWPStatus:        i[3],
-					UUID:             i[2],
+					InstanceName:     i[2],
+					OSName:           i[3],
+					OSType:           i[4],
+					Status:           i[5],
+					PrivateIpAddress: i[6],
+					PublicIpAddress:  i[7],
+					RegionId:         i[8],
 				}
 				InstancesList = append(InstancesList, obj)
 			}
@@ -235,28 +233,26 @@ func DeleteSSHKeyOnInstance(region string, specifiedInstanceID string, lhFlushCa
 				if specifiedInstanceID == i[1] {
 					obj := Instances{
 						InstanceId:       i[1],
-						InstanceName:     i[4],
-						OSName:           i[5],
-						Status:           i[6],
-						PrivateIpAddress: i[7],
-						PublicIpAddress:  i[8],
-						RegionId:         i[9],
-						CWPStatus:        i[3],
-						UUID:             i[2],
+						InstanceName:     i[2],
+						OSName:           i[3],
+						OSType:           i[4],
+						Status:           i[5],
+						PrivateIpAddress: i[6],
+						PublicIpAddress:  i[7],
+						RegionId:         i[8],
 					}
 					InstancesList = append(InstancesList, obj)
 				}
 			} else {
 				obj := Instances{
 					InstanceId:       i[1],
-					InstanceName:     i[4],
-					OSName:           i[5],
-					Status:           i[6],
-					PrivateIpAddress: i[7],
-					PublicIpAddress:  i[8],
-					RegionId:         i[9],
-					CWPStatus:        i[3],
-					UUID:             i[2],
+					InstanceName:     i[2],
+					OSName:           i[3],
+					OSType:           i[4],
+					Status:           i[5],
+					PrivateIpAddress: i[6],
+					PublicIpAddress:  i[7],
+					RegionId:         i[8],
 				}
 				InstancesList = append(InstancesList, obj)
 			}

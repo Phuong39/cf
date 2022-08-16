@@ -2,8 +2,8 @@ package tencentcvm
 
 import (
 	"encoding/json"
-	cwp "github.com/teamssix/cf/pkg/cloud/tencent/tencentcwp"
 	"strconv"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
@@ -15,7 +15,8 @@ import (
 
 var (
 	CVMCacheFilePath = cmdutil.ReturnCacheFile("tencent", "CVM")
-	header           = []string{"序号 (SN)", "实例 ID (Instance ID)", "云镜ID (UUID)", "云镜状态 (CWP Status)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private Ip Address)", "公网 IP (Public Ip Address)", "区域 ID (Region ID)", "绑定的安全组 (Security Group Id)"}
+	header           = []string{"序号 (SN)", "实例 ID (Instance ID)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private IP)", "公网 IP (Public IP)", "区域 ID (Region ID)"}
+	LinuxSet         = []string{"CentOS", "Ubuntu", "Debian", "OpenSUSE", "SUSE", "CoreOS", "FreeBSD", "Kylin", "UnionTech", "TencentOS", "Other Linux"}
 )
 
 type Instances struct {
@@ -27,9 +28,6 @@ type Instances struct {
 	PrivateIpAddress string
 	PublicIpAddress  string
 	RegionId         string
-	SecurityGroupIds string
-	CWPStatus        string
-	UUID             string
 }
 
 func DescribeInstances(region string, running bool, SpecifiedInstanceID string) []Instances {
@@ -58,7 +56,7 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 			PublicIpAddressList  []string
 			PrivateIpAddress     string
 			PublicIpAddress      string
-			SecurityGroupIdList  []string
+			OSType               string
 		)
 		for _, v := range InstancesList {
 			for _, m := range v.PrivateIpAddresses {
@@ -79,27 +77,21 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 			} else {
 				PublicIpAddress = string(b)
 			}
-			for _, i := range v.SecurityGroupIds {
-				SecurityGroupIdList = append(SecurityGroupIdList, *i)
+			newOSname := strings.Split(*v.OsName, " ")[0]
+			if find(LinuxSet, newOSname) {
+				OSType = "linux"
+			} else {
+				OSType = "windows"
 			}
-			b, err := json.Marshal(SecurityGroupIdList)
-			util.HandleErr(err)
-			SecurityGroupIds := string(b)
-
-			CWPStatus, CWPUUID := cwp.DescribeMachineCWPStatus("CVM", *v.Uuid)
-
 			obj := Instances{
 				InstanceId:       *v.InstanceId,
 				InstanceName:     *v.InstanceName,
 				OSName:           *v.OsName,
-				OSType:           *v.InstanceType,
+				OSType:           OSType,
 				Status:           *v.InstanceState,
 				PrivateIpAddress: PrivateIpAddress,
 				PublicIpAddress:  PublicIpAddress,
 				RegionId:         *v.Placement.Zone,
-				SecurityGroupIds: SecurityGroupIds,
-				CWPStatus:        *CWPStatus,
-				UUID:             *CWPUUID,
 			}
 			out = append(out, obj)
 		}
@@ -129,7 +121,7 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 	var data = make([][]string, len(InstancesList))
 	for i, o := range InstancesList {
 		SN := strconv.Itoa(i + 1)
-		data[i] = []string{SN, o.InstanceId, o.UUID, o.CWPStatus, o.InstanceName, o.OSName, o.OSType, o.Status, o.PrivateIpAddress, o.PublicIpAddress, o.RegionId, o.SecurityGroupIds}
+		data[i] = []string{SN, o.InstanceId, o.InstanceName, o.OSName, o.OSType, o.Status, o.PrivateIpAddress, o.PublicIpAddress, o.RegionId}
 	}
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {
