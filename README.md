@@ -19,40 +19,13 @@ CF 是一个云环境利用框架，主要用来方便红队人员在获得云�
 
 CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
 
-目前 CF 可以实现以下功能：
-
-* 已实现
-
-  - [x] 列出对象存储（包括存储桶大小和文件数量信息）
-  - [x] 列出 ECS 实例
-  - [x] 一键获得实例上的临时访问凭证
-  - [x] 一键为所有实例执行三要素，方便 HVV
-  - [x] 一键为实例反弹 Shell
-  - [x] 支持阿里云
-  - [x] 列出 RDS 云数据库实例
-  - [x] 一键接管控制台
-  - [x] 一键查看当前访问凭证所拥有的权限
-  - [x] 支持腾讯云
-  - [x] ……
-  
-* 预计实现
-
-  - [ ] 云上痕迹清除
-  
-  - [ ] 自动检测当前运行环境是不是实例，如果是则一键扫描本地实例的凭证信息
-  - [ ] 一键将获取到的临时凭证添加到工具中
-  - [ ] 支持其他云厂商
-  - [ ] ……
+CF 社区地址：[github.com/teamssix/cf/discussions](https://github.com/teamssix/cf/discussions)
 
 ## 使用手册
 
 使用手册请参见：[wiki.teamssix.com/cf](https://wiki.teamssix.com/cf)
 
 [![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207112152449.png)](https://wiki.teamssix.com/cf)
-
-## 使用案例
-
-[《我用 CF 打穿了他的云上内网》](https://zone.huoxian.cn/d/1341-cf)
 
 ## 简单上手
 

@@ -18,31 +18,9 @@
 
 CF is a cloud exploitation framework, It can facilitate the work of the red team after obtaining access key.
 
-CF download address: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
+CF releases: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
 
-Currently CF has these functions as follows: 
-
-* Currently supported features
-
-  - [x] List OSS
-  - [x] List ECS
-  - [x] Get the STS Token in the instance metadata
-  - [x] Batch execution of multiple commands used to prove permission acquisition
-  - [x] Get intances reverse shell
-  - [x] Support alibaba cloud
-  - [x] List RDS
-  - [x] Takeover console
-  - [x] View permissions for access key
-  - [x] Support Tencent Cloud
-  - [x] ......
-  
-* Functions to be implemented in the future
-  - [ ] Attack trail removal
-  
-  - [ ] Automatically detect if the current running environment is an instance, and if so, scan the local instance for credential information
-  - [ ] Add the resulting credentials to the CF
-  - [ ] Support other cloud providers
-  - [ ] ......
+CF discussions: [github.com/teamssix/cf/discussions](https://github.com/teamssix/cf/discussions)
 
 ## Manual
 
@@ -51,10 +29,6 @@ For detailed manuals, please visit: [wiki.teamssix.com/cf](https://wiki.teamssix
 > The manual currently supports Chinese only
 
 [![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207112152449.png)](https://wiki.teamssix.com/cf)
-
-## Case
-
-[《我用 CF 打穿了他的云上内网》](https://zone.huoxian.cn/d/1341-cf)
 
 ## Easy to start
 

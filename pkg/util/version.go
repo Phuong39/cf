@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	version    = "v0.3.4"
-	updateTime = "2022.8.10"
+	version    = "v0.3.5"
+	updateTime = "2022.8.16"
 )
 
 func GetCurrentVersion() string {
