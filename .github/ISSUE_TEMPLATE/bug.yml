@@ -28,7 +28,7 @@ body:
     validations:
       required: true
   - type: dropdown
-    id: system type
+    id: system-type
     attributes:
       label: 系统类型 (System Type)
       description: 你在哪种系统类型下运行的 CF ？(What type of system are you running CF on?)
@@ -40,7 +40,7 @@ body:
     validations:
       required: true  
   - type: dropdown
-    id: cf version
+    id: cf-version
     attributes:
       label: 版本 (Version)
       description: 你运行的是 CF 的哪个版本？(What version of our software are you running?)
