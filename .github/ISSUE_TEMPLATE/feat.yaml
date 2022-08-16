@@ -12,8 +12,8 @@ body:
   - type: textarea
     id: new-features
     attributes:
-      label: 描述你想反馈的需求 (Describe your needs)
-      value: "详细描述你想反馈的需求，例如希望增加天翼云的相关操作。"
+      label: 描述你希望增加的需求 (Describe your needs)
+      value: "详细描述你希望增加的需求，并且描述为什么想要增加这个需求以及意义，描述的越完善该需求越有可能被采纳。"
     validations:
       required: true
   - type: textarea
