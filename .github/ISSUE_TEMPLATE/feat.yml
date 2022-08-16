@@ -5,25 +5,25 @@ labels: ["enhancement"]
 assignees:
   - teamssix
 body:
-  - type: markdown
-    attributes:
-      value: |
-        感谢您花时间提交这份 issue (Thanks for taking the time to fill out this bug report! )
-  - type: textarea
-    id: new-features
-    attributes:
-      label: 描述你希望增加的需求 (Describe your needs)
-      value: "详细描述你希望增加的需求，并且描述为什么想要增加这个需求以及意义，描述的越完善该需求越有可能被采纳。"
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: 补充信息 (Anything else?)
-      description: |
-        链接？参考资料？任何可以给我们提供更多关于你所遇到的问题的背景资料的东西
-        Links? References? Anything that will give us more context about the issue you are encountering!
-        
-        提示：你可以通过点击这个区域来突出显示它，然后将文件拖入，从而附上图片或其他文件。
-        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
-    validations:
-      required: false
+- type: markdown
+  attributes:
+    value: |
+      感谢您花时间提交这份 issue (Thanks for taking the time to fill out this bug report! )
+- type: textarea
+  id: new-features
+  attributes:
+    label: 描述你希望增加的需求 (Describe your needs)
+    value: "详细描述你希望增加的需求，并且描述为什么想要增加这个需求以及意义，描述的越完善该需求越有可能被采纳。"
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: 补充信息 (Anything else?)
+    description: |
+      链接？参考资料？任何可以给我们提供更多关于你所遇到的问题的背景资料的东西
+      Links? References? Anything that will give us more context about the issue you are encountering!
+      
+      提示：你可以通过点击这个区域来突出显示它，然后将文件拖入，从而附上图片或其他文件。
+      Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+  validations:
+    required: false
