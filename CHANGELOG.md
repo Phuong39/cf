@@ -1,4 +1,20 @@
+## [v0.3.5](https://github.com/teamssix/cf/releases/tag/v0.3.5) 2022.8.16
+
+### 新增功能
+
+* [#133](https://github.com/teamssix/cf/pull/133) 新增腾讯云 AK 权限查看功能
+
+### 功能优化
+
+* [#129](https://github.com/teamssix/cf/pull/129) 优化升级功能，自动识别最优下载线路
+* [#135](https://github.com/teamssix/cf/pull/135) 优化腾讯云 CVM 相关功能
+
+### Bug 修复
+
+* [#131](https://github.com/teamssix/cf/pull/131) 修复阿里云下载存储桶对象时的一个 Bug
+
 ## [v0.3.4](https://github.com/teamssix/cf/releases/tag/v0.3.4) 2022.8.10
+
 - [#124](https://github.com/teamssix/cf/pull/124) fix: 修复了实例执行命令时的一个 bug
 - [#125](https://github.com/teamssix/cf/pull/125) perf: 优化腾讯云接管控制台的提示信息
 - [#126](https://github.com/teamssix/cf/pull/126) fix: 修复了实例列出不完整的 bug
