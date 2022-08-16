@@ -30,7 +30,7 @@ body:
     id: system
     attributes:
       label: 操作系统 (Operating System)
-      description: 你在哪种操作系统下运行的 CF ？(Which operating system you are running the CF in?)
+      description: 你在哪个操作系统下运行的 CF ？(Which operating system you are running the CF in?)
       options:
         - MacOS
         - Linux
@@ -41,7 +41,7 @@ body:
     id: system-type
     attributes:
       label: 系统类型 (System Type)
-      description: 你在哪种系统类型下运行的 CF ？(What type of system are you running CF on?)
+      description: 你在哪个系统类型下运行的 CF ？(What type of system are you running CF on?)
       options:
         - amd64
         - amd32
@@ -52,9 +52,10 @@ body:
   - type: dropdown
     id: cf-version
     attributes:
-      label: 版本 (Version)
+      label: CF 版本 ( CF Version)
       description: 你运行的是 CF 的哪个版本？(What version of our software are you running?)
       options:
+        - 最新的版本
         - 0.3.4
         - 0.3.3
         - 0.3.2
