@@ -1,48 +1,62 @@
-name: Bug 反馈
-description: 创建一个 issue 帮助改进这个项目
-title: "[BUG] 在这里输入你的标题"
-labels: ["Bug"]
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: ["bug", "triage"]
 assignees:
-  - teamssix
+  - octocat
 body:
-  - type: checkboxes
+  - type: markdown
     attributes:
-      label: 在其他人提交的 issue 中，是否已经存在类似的问题？(Is there an existing issue for this?)
-      description: 请自行搜索一下是不是存在类似的问题。(Please search to see if an issue already exists for the bug you encountered.)
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+      placeholder: ex. email@example.com
+    validations:
+      required: false
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Also tell us, what did you expect to happen?
+      placeholder: Tell us what you see!
+      value: "A bug happened!"
+    validations:
+      required: true
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: What version of our software are you running?
       options:
-      - label: 之前确实有人提交过这个类似的问题 (I have searched the existing issues)
-        required: true
-  - type: textarea
-    attributes:
-      label: 问题描述 (Current Behavior)
-      description: 简单描述下你遇到的问题 (A concise description of what you're experiencing.)
+        - 1.0.2 (Default)
+        - 1.0.3 (Edge)
     validations:
       required: true
-  - type: textarea
+  - type: dropdown
+    id: browsers
     attributes:
-      label: 预期结果 (Expected Behavior)
-      description: 简单描述下你预期应该出现的结果 (A concise description of what you expected to happen.)
-    validations:
-      required: false
+      label: What browsers are you seeing the problem on?
+      multiple: true
+      options:
+        - Firefox
+        - Chrome
+        - Safari
+        - Microsoft Edge
   - type: textarea
+    id: logs
     attributes:
-      label: 步骤复现 (Steps To Reproduce)
-      description: 复现这个问题的步骤 (Steps to reproduce the behavior.)
-      placeholder: |
-        1. In this environment...
-        2. With this config...
-        3. Run '...'
-        4. See error...
-    validations:
-      required: true
-  - type: textarea
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. 这将自动格式化为代码，因此无需背板。
+      render: shell
+  - type: checkboxes
+    id: terms
     attributes:
-      label: 补充信息 (Anything else?)
-      description: |
-        链接？参考资料？任何可以给我们提供更多关于你所遇到的问题的背景资料的东西
-        Links? References? Anything that will give us more context about the issue you are encountering!
-        
-        提示：你可以通过点击这个区域来突出显示它，然后将文件拖入，从而附上图片或其他文件。
-        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
-    validations:
-      required: false
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
