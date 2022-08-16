@@ -1,9 +1,9 @@
-name: Bug Report
-description: File a bug report
-title: "[Bug]: "
-labels: ["bug", "triage"]
+name: Bug 反馈
+description: 创建一个 issue 帮助改进这个项目
+title: "[BUG] <在这里输入你的标题>"
+labels: ["Bug"]
 assignees:
-  - octocat
+  - teamssix
 body:
   - type: markdown
     attributes:
