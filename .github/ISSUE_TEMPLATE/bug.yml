@@ -1,0 +1,59 @@
+name: Bug 反馈
+description: 创建一个 issue 帮助改进这个项目
+title: "[BUG] <title>"
+labels: [Bug]
+body:
+- type: checkboxes
+  attributes:
+    label: 在其他人提交的 issue 中，是否已经存在类似的问题？(Is there an existing issue for this?)
+    description: 请自行搜索一下是不是存在类似的问题。(Please search to see if an issue already exists for the bug you encountered.)
+    options:
+    - label: 之前确实有人提交过这个类似的问题 (I have searched the existing issues)
+      required: true
+- type: textarea
+  attributes:
+    label: 问题描述 (Current Behavior)
+    description: 简单描述下你遇到的问题 (A concise description of what you're experiencing.)
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: 预期结果 (Expected Behavior)
+    description: 简单描述下你预期应该出现的结果 (A concise description of what you expected to happen.)
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: 步骤复现 (Steps To Reproduce)
+    description: 复现这个问题的步骤 (Steps to reproduce the behavior.)
+    placeholder: |
+      1. In this environment...
+      2. With this config...
+      3. Run '...'
+      4. See error...
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: 环境 (Environment)
+    description: |
+      examples:
+        - **OS**: Ubuntu 20.04
+        - **Arch**: amd64
+        - **CF**: 0.3.4
+    value: |
+        - OS:
+        - Arch:
+        - CF:
+    render: markdown
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: 补充信息 (Anything else?)
+    description: |
+      Links? References? Anything that will give us more context about the issue you are encountering!
+
+      Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+  validations:
+    required: false
