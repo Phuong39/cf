@@ -19,10 +19,6 @@ import (
 
 var timeSleepSum int
 
-var linuxSet = []string{"CentOS", "Ubuntu", "Debian", "OpenSUSE", "SUSE", "CoreOS", "FreeBSD", "Kylin", "UnionTech", "TencentOS", "Other Linux"}
-
-//var winSet = []string{"Windows Server 2008", "Windows Server 2012", "Windows Server 2016"}
-
 func find(slice []string, val string) bool {
 	for _, item := range slice {
 		if item == val {
@@ -116,24 +112,26 @@ func LhExec(command string, commandFile string, scriptType string, specifiedInst
 				if specifiedInstanceID == i[1] {
 					obj := Instances{
 						InstanceId:       i[1],
-						InstanceName:     i[4],
-						OSName:           i[5],
-						Status:           i[6],
-						PrivateIpAddress: i[8],
+						InstanceName:     i[2],
+						OSName:           i[3],
+						OSType:           i[4],
+						Status:           i[5],
+						PrivateIpAddress: i[6],
 						PublicIpAddress:  i[7],
-						RegionId:         i[9],
+						RegionId:         i[8],
 					}
 					InstancesList = append(InstancesList, obj)
 				}
 			} else {
 				obj := Instances{
 					InstanceId:       i[1],
-					InstanceName:     i[4],
-					OSName:           i[5],
-					Status:           i[6],
-					PrivateIpAddress: i[8],
+					InstanceName:     i[2],
+					OSName:           i[3],
+					OSType:           i[4],
+					Status:           i[5],
+					PrivateIpAddress: i[6],
 					PublicIpAddress:  i[7],
-					RegionId:         i[9],
+					RegionId:         i[8],
 				}
 				InstancesList = append(InstancesList, obj)
 			}
@@ -174,11 +172,7 @@ func LhExec(command string, commandFile string, scriptType string, specifiedInst
 		for _, i := range InstancesList {
 			regions := strings.Split(i.RegionId, "-")
 			region = regions[0] + "-" + regions[1]
-			var OSType string
-			newOSname := strings.Split(i.OSName, " ")[0]
-			if find(linuxSet, newOSname) {
-				OSType = "linux"
-			}
+			OSType := i.OSType
 			specifiedInstanceID := i.InstanceId
 			if userData == true {
 				commandResult := getUserData(region, OSType, scriptType, specifiedInstanceID, timeOut)

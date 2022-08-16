@@ -51,7 +51,11 @@ func DescribeMachineCWPStatus(MachineType string, Quuid string) (*string, *strin
 	}
 	request.MachineRegion = common.StringPtr("all-regions")
 	response, err := client.DescribeMachines(request)
-	util.HandleErr(err)
-	return response.Response.Machines[0].MachineStatus, response.Response.Machines[0].Uuid
-
+	if err == nil {
+		return response.Response.Machines[0].MachineStatus, response.Response.Machines[0].Uuid
+	} else {
+		util.HandleErrNoExit(err)
+		Str := ""
+		return &Str, &Str
+	}
 }

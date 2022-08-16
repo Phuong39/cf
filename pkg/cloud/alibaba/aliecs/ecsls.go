@@ -28,7 +28,7 @@ type Instances struct {
 var (
 	DescribeInstancesOut []Instances
 	ECSCacheFilePath     = cmdutil.ReturnCacheFile("alibaba", "ECS")
-	header               = []string{"序号 (SN)", "实例 ID (Instance ID)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private Ip Address)", "公网 IP (Public Ip Address)", "区域 ID (Region ID)"}
+	header               = []string{"序号 (SN)", "实例 ID (Instance ID)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private IP)", "公网 IP (Public IP)", "区域 ID (Region ID)"}
 )
 
 func DescribeInstances(region string, running bool, SpecifiedInstanceID string, NextToken string) []Instances {
