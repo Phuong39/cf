@@ -22,7 +22,7 @@ body:
       label: 操作系统 (Operating System)
       description: 你在哪种操作系统下运行的 CF ？(Which operating system you are running the CF in?)
       options:
-        - MacOS
+        - MacOS (Default)
         - Linux
         - Windows
     validations:
@@ -33,10 +33,12 @@ body:
       label: 系统类型 (System Type)
       description: 你在哪种系统类型下运行的 CF ？(What type of system are you running CF on?)
       options:
-        - amd64
+        - amd64 (Default)
         - amd32
         - arm64
         - arm32
+      validations:
+      required: true
   - type: textarea
     id: logs
     attributes:
