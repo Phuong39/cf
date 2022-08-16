@@ -13,7 +13,6 @@ body:
     id: what-happened
     attributes:
       label: 描述你遇到的问题 (What happened?)
-      description: 同时写上你所预期的结果 (Also tell us, what did you expect to happen?)
       value: "简单描述你所遇到的问题"
     validations:
       required: true
@@ -23,20 +22,21 @@ body:
       label: 操作系统 (Operating System)
       description: 你在哪种操作系统下运行的 CF ？(Which operating system you are running the CF in?)
       options:
-        - 1.0.2 (Default)
-        - 1.0.3 (Edge)
+        - MacOS
+        - Linux
+        - Windows
     validations:
       required: true
   - type: dropdown
     id: browsers
     attributes:
-      label: What browsers are you seeing the problem on?
-      multiple: true
+      label: 系统类型 (System Type)
+      description: 你在哪种系统类型下运行的 CF ？(What type of system are you running CF on?)
       options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
+        - amd64
+        - amd32
+        - arm64
+        - arm32
   - type: textarea
     id: logs
     attributes:
