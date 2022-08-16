@@ -37,7 +37,7 @@ body:
         - amd32
         - arm64
         - arm32
-      validations:
+    validations:
       required: true
   - type: textarea
     id: logs
