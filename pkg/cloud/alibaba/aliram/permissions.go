@@ -25,17 +25,17 @@ var SN = 1
 var data2 [][]string
 
 const (
-	osslsAction        = "cf oss ls"
+	osslsAction        = "cf alibaba oss ls"
 	osslsDescription   = "列出 OSS 资源"
-	ossgetAction       = "cf oss get"
+	ossgetAction       = "cf alibaba oss get"
 	ossgetDescription  = "下载 OSS 资源"
-	ecslsAction        = "cf ecs ls"
+	ecslsAction        = "cf alibaba ecs ls"
 	ecslsDescription   = "列出 ECS 资源"
-	ecsexecAction      = "cf ecs exec"
+	ecsexecAction      = "cf alibaba ecs exec"
 	ecsexecDescription = "在 ECS 上执行命令"
-	rdslsAction        = "cf rds ls"
+	rdslsAction        = "cf alibaba rds ls"
 	rdslsDescription   = "列出 RDS 资源"
-	consoleAction      = "cf console"
+	consoleAction      = "cf alibaba console"
 	consoleDescription = "接管控制台"
 )
 
@@ -216,7 +216,7 @@ func listGroupsForUser(userName string) []string {
 func traversalPermissions() ([][]string, [][]string) {
 	var obj1 [][]string
 	var obj2 [][]string
-	// 1. cf oss get && cf oss ls
+	// 1. cf alibaba oss get && cf alibaba oss ls
 	log.Debugln("正在判断 oss get 权限 (Determining the permission of oss get)")
 	OSSCollector := &alioss.OSSCollector{}
 	OSSCollector.OSSClient("cn-hangzhou")
@@ -241,7 +241,7 @@ func traversalPermissions() ([][]string, [][]string) {
 			log.Traceln(err11.Error())
 		}
 	}
-	// 2. cf ecs ls
+	// 2. cf alibaba ecs ls
 	log.Debugln("正在判断 ecs ls 权限 (Determining the permission of ecs ls)")
 	request := ecs.CreateDescribeVpcsRequest()
 	request.Scheme = "https"
@@ -252,7 +252,7 @@ func traversalPermissions() ([][]string, [][]string) {
 	} else {
 		log.Traceln(err2.Error())
 	}
-	// 3. cf ecs exec
+	// 3. cf alibaba ecs exec
 	log.Debugln("正在判断 ecs exec 权限 (Determining the permission of ecs exec)")
 	request3 := ecs.CreateInvokeCommandRequest()
 	request3.Scheme = "https"
@@ -265,7 +265,7 @@ func traversalPermissions() ([][]string, [][]string) {
 	} else {
 		log.Traceln(err3.Error())
 	}
-	// 4. cf rds ls
+	// 4. cf alibaba rds ls
 	log.Debugln("正在判断 rds ls 权限 (Determining the permission of rds ls)")
 	_, err4 := alirds.DescribeDBInstances("cn-beijing", true, "all", "all", "")
 	if err4 == nil {
@@ -274,7 +274,7 @@ func traversalPermissions() ([][]string, [][]string) {
 	} else {
 		log.Traceln(err4.Error())
 	}
-	// 5. cf console
+	// 5. cf alibaba console
 	log.Debugln("正在判断 console 权限 (Determining the permission of console)")
 	request5 := ram.CreateDetachPolicyFromUserRequest()
 	request5.Scheme = "https"

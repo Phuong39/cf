@@ -1,14 +1,14 @@
 package tencentcam
 
 import (
-	cam "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cam/v20190116"
-	"os"
-
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
+	cam "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cam/v20190116"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
+	sts "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sts/v20180813"
+	"os"
 )
 
 func CAMClient() *cam.Client {
@@ -34,6 +34,35 @@ func CAMClient() *cam.Client {
 			util.HandleErr(err)
 			if err == nil {
 				log.Traceln("CAM Client 连接成功 (CAM Client connection successful)")
+			}
+			return client
+		}
+	}
+}
+
+func STSClient() *sts.Client {
+	tencentConfig := cmdutil.GetConfig("tencent")
+	if tencentConfig.AccessKeyId == "" {
+		log.Warnln("需要先配置访问凭证 (Access Key need to be configured first)")
+		os.Exit(0)
+		return nil
+	} else {
+		cpf := profile.NewClientProfile()
+		cpf.HttpProfile.Endpoint = "sts.tencentcloudapi.com"
+		if tencentConfig.STSToken == "" {
+			credential := common.NewCredential(tencentConfig.AccessKeyId, tencentConfig.AccessKeySecret)
+			client, err := sts.NewClient(credential, "ap-beijing", cpf)
+			util.HandleErr(err)
+			if err == nil {
+				log.Traceln("STS Client 连接成功 (STS Client connection successful)")
+			}
+			return client
+		} else {
+			credential := common.NewTokenCredential(tencentConfig.AccessKeyId, tencentConfig.AccessKeySecret, tencentConfig.STSToken)
+			client, err := sts.NewClient(credential, "ap-beijing", cpf)
+			util.HandleErr(err)
+			if err == nil {
+				log.Traceln("STS Client 连接成功 (STS Client connection successful)")
 			}
 			return client
 		}

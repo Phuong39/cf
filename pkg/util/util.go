@@ -22,6 +22,7 @@ type error interface {
 var errorMessages = map[string]string{
 	"InvalidAccessKeyId.NotFound": "当前访问凭证无效 (Current access key are invalid)",
 	"Message: The specified parameter \"SecurityToken.Expired\" is not valid.": "当前临时访问凭证已过期 (Current SecurityToken has expired)",
+	"ErrorCode: InvalidSecurityToken.Expired":                                  "当前临时访问凭证已过期 (Current SecurityToken has expired)",
 	"Message: The Access Key is disabled.":                                     "当前访问凭证已被禁用 (The Access Key is disabled)",
 	"ErrorCode: Forbidden.RAM":                                                 "当前访问凭证没有执行命令的权限 (Current Access Key do not have permission to execute commands)",
 	"ErrorCode: NoPermission":                                                  "当前访问凭证没有接管控制台的权限 (Current Access Key do not have permission to take over the console)",
