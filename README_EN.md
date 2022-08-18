@@ -119,8 +119,8 @@ If these cloud security resources are still not enough for you, check out my [cl
 
 Finally, the following is my personal wechat official accounts, welcome to follow ~
 
-**If you would like to work with me on this, you can join the team by sending your resume to admin@wgpsec.org.**
-
 <div align=center><a href="https://github.com/teamssix"><img width="700" src="https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202204152148071.png"></a></div>
+
+**If you would like to work with me on this, you can join the team by sending your resume to admin@wgpsec.org.**
 
 <div align=center><a href="https://github.com/teamssix"><img src="https://api.star-history.com/svg?repos=teamssix/cf&type=Timeline"></a></div>

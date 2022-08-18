@@ -115,8 +115,8 @@ cf tencent vpc ls
 
 另外在我的[云安全文库](https://wiki.teamssix.com/)里有大量的云安全方向的笔记和文章，最后，下面这个是我的个人微信公众号，欢迎关注 ~
 
-**有想法一起研究的师傅可以投递简历至 admin@wgpsec.org 加入狼组安全团队。**
-
 <div align=center><a href="https://github.com/teamssix"><img width="700" src="https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202204152148071.png"></a></div>
+
+**有想法一起研究的师傅可以投递简历至 admin@wgpsec.org 加入狼组安全团队。**
 
 <div align=center><a href="https://github.com/teamssix"><img src="https://api.star-history.com/svg?repos=teamssix/cf&type=Timeline"></a></div>

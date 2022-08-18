@@ -2,6 +2,7 @@ package alioss
 
 import (
 	"fmt"
+	"github.com/AlecAivazis/survey/v2"
 	"strconv"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
@@ -118,7 +119,19 @@ func getAllObjects(bucket *oss.Bucket, marker oss.Option, size int) {
 		objects = append(objects, obj)
 	}
 	log.Tracef("Next Marker: %s", lor.NextMarker)
-	if lor.NextMarker != "" {
+	NextMarker := lor.NextMarker
+	if objectNum == 100000 {
+		var name bool
+		prompt := &survey.Confirm{
+			Message: "已查询到 10w 个对象，是否继续？如果继续可能会耗费较长时间 (Found up to 10w objects, want to continue? If you continue, it may take a long time)",
+			Default: true,
+		}
+		_ = survey.AskOne(prompt, &name)
+		if !name {
+			NextMarker = ""
+		}
+	}
+	if NextMarker != "" {
 		getAllObjects(bucket, marker, size)
 	}
 }
