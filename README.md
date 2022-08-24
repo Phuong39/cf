@@ -21,6 +21,8 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 
 CF 社区地址：[github.com/teamssix/cf/discussions](https://github.com/teamssix/cf/discussions)
 
+[![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202208241902523.png)](https://wiki.teamssix.com/cf)
+
 ## 使用手册
 
 使用手册请参见：[wiki.teamssix.com/cf](https://wiki.teamssix.com/cf)
