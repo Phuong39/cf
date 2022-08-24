@@ -22,6 +22,8 @@ CF releases: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/re
 
 CF discussions: [github.com/teamssix/cf/discussions](https://github.com/teamssix/cf/discussions)
 
+[![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202208241902523.png)](https://wiki.teamssix.com/cf)
+
 ## Manual
 
 For detailed manuals, please visit: [wiki.teamssix.com/cf](https://wiki.teamssix.com/cf)
