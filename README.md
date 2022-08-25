@@ -21,7 +21,7 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 
 CF 社区地址：[github.com/teamssix/cf/discussions](https://github.com/teamssix/cf/discussions)
 
-[![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202208241902523.png)](https://wiki.teamssix.com/cf)
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202208251128505.png)
 
 ## 使用手册
 
@@ -122,3 +122,8 @@ cf tencent vpc ls
 **有想法一起研究的师傅可以投递简历至 admin@wgpsec.org 加入狼组安全团队。**
 
 <div align=center><a href="https://github.com/teamssix"><img src="https://api.star-history.com/svg?repos=teamssix/cf&type=Timeline"></a></div>
+
+## 404星链计划
+<img src="https://github.com/knownsec/404StarLink/raw/master/Images/logo.png" width="30%">
+
+CF 现已加入 [404星链计划](https://github.com/knownsec/404StarLink)
