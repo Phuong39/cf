@@ -22,7 +22,7 @@ CF releases: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/re
 
 CF discussions: [github.com/teamssix/cf/discussions](https://github.com/teamssix/cf/discussions)
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202208251128505.png)
+![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202208251726676.png)
 
 ## Manual
 
@@ -128,6 +128,6 @@ Finally, the following is my personal wechat official accounts, welcome to follo
 <div align=center><a href="https://github.com/teamssix"><img src="https://api.star-history.com/svg?repos=teamssix/cf&type=Timeline"></a></div>
 
 ## 404Starlink
-<img src="https://github.com/knownsec/404StarLink/raw/master/Images/logo.png" width="30%">
+<img src="https://github.com/knownsec/404StarLink/raw/master/Images/logo.png" width="40%">
 
 CF has joined [404Starlink](https://github.com/knownsec/404StarLink)
