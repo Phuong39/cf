@@ -3,6 +3,7 @@ package aliecs
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/teamssix/cf/pkg/util/pubutil"
 
 	"strconv"
 
@@ -136,7 +137,7 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 }
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {
-	if cmdutil.FileExists(ECSCacheFilePath) {
+	if pubutil.FileExists(ECSCacheFilePath) {
 		cmdutil.PrintECSCacheFile(ECSCacheFilePath, header, region, specifiedInstanceID, "alibaba", "ECS")
 	} else {
 		PrintInstancesListRealTime(region, running, specifiedInstanceID)

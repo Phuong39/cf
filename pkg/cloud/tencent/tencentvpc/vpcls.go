@@ -1,6 +1,7 @@
 package tencentvpc
 
 import (
+	"github.com/teamssix/cf/pkg/util/pubutil"
 	"strconv"
 
 	log "github.com/sirupsen/logrus"
@@ -163,7 +164,7 @@ func PrintVPCSecurityGroupPoliciesListRealTime(region string, securityGroupId *s
 }
 
 func PrintVPCSecurityGroupPoliciesListHistory(region string, securityGroupId *string) {
-	if cmdutil.FileExists(VPCCacheFilePath) {
+	if pubutil.FileExists(VPCCacheFilePath) {
 		cmdutil.PrintECSCacheFile(VPCCacheFilePath, vpcHeader, region, *securityGroupId, "tencent", "VPC")
 	} else {
 		PrintVPCSecurityGroupPoliciesListRealTime(region, securityGroupId)

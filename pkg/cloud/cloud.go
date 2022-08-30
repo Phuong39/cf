@@ -7,9 +7,12 @@ import (
 )
 
 type Config struct {
-	AccessKeyId     string `json:"AccessKeyId"`
-	AccessKeySecret string `json:"AccessKeySecret"`
-	STSToken        string `json:"STSToken"`
+	Alias           string
+	AccessKeyId     string
+	AccessKeySecret string
+	STSToken        string
+	Provider        string
+	InUse           bool
 }
 
 type Bucket = Resource

@@ -9,12 +9,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const AppDirName = ".cf"
-
-const (
-	CFHomeEnvVar = "CF_HOME"
-)
-
 type error interface {
 	Error() string
 }
@@ -109,24 +103,4 @@ func GenerateRandomPasswords() string {
 	})
 	str := string(buf)
 	return str
-}
-
-// 判断文件夹是否存在，如果不存在则新建该文件夹
-func CreateFolder(folder string) {
-	if !fileExists(folder) {
-		log.Tracef("创建 %s 目录 (Create %s directory): ", folder, folder)
-		err := os.MkdirAll(folder, 0700)
-		HandleErr(err)
-	}
-}
-
-func fileExists(path string) bool {
-	_, err := os.Stat(path)
-	if err != nil {
-		if os.IsExist(err) {
-			return true
-		}
-		return false
-	}
-	return true
 }

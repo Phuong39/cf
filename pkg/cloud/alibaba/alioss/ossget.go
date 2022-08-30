@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
+	"github.com/teamssix/cf/pkg/util/pubutil"
 	"io"
 	"os"
 	"path/filepath"
@@ -17,7 +18,7 @@ import (
 
 func getObject(bucketName string, objectKey string, outputPath string) {
 	if objectKey[len(objectKey)-1:] == "/" {
-		util.CreateFolder(returnBucketFileName(outputPath, bucketName, objectKey))
+		pubutil.CreateFolder(returnBucketFileName(outputPath, bucketName, objectKey))
 	} else {
 		log.Infof("正在下载 %s 存储桶里的 %s 对象 (Downloading %s objects from %s bucket)", bucketName, objectKey, bucketName, objectKey)
 		var (
@@ -76,7 +77,7 @@ func DownloadAllObjects(bucketName string, outputPath string) {
 		for _, j := range objects {
 			if j.Key[len(j.Key)-1:] == "/" {
 				bar.Add(1)
-				util.CreateFolder(returnBucketFileName(outputPath, bucketName, j.Key))
+				pubutil.CreateFolder(returnBucketFileName(outputPath, bucketName, j.Key))
 			} else {
 				bar.Add(1)
 				fd, body, _, _ := OSSCollector.ReturnBucket(bucketName, j.Key, outputPath, region)
@@ -88,7 +89,7 @@ func DownloadAllObjects(bucketName string, outputPath string) {
 		log.Infof("对象已被保存到 %s 目录下 (The object has been saved to the %s directory)", outputPath, outputPath)
 	} else {
 		if objectKey[len(objectKey)-1:] == "/" {
-			util.CreateFolder(returnBucketFileName(outputPath, bucketName, objectKey))
+			pubutil.CreateFolder(returnBucketFileName(outputPath, bucketName, objectKey))
 		} else {
 			getObject(bucketName, objectKey, outputPath)
 		}
@@ -97,7 +98,7 @@ func DownloadAllObjects(bucketName string, outputPath string) {
 
 func DownloadObjects(bucketName string, objectKey string, outputPath string, ossDownloadFlushCache bool) {
 	if outputPath == "./result" {
-		util.CreateFolder("./result")
+		pubutil.CreateFolder("./result")
 	}
 	if bucketName == "all" {
 		var (
@@ -204,7 +205,7 @@ func returnBar(replen int64) *progressbar.ProgressBar {
 
 func returnBucketFileName(outputPath string, bucketName string, objectName string) string {
 	outputBucketFile := filepath.Join(outputPath, bucketName)
-	util.CreateFolder(outputBucketFile)
+	pubutil.CreateFolder(outputBucketFile)
 	outputFileName := filepath.Join(outputBucketFile, objectName)
 	return outputFileName
 }
