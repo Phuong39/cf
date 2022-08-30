@@ -3,6 +3,7 @@ package alioss
 import (
 	"fmt"
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/teamssix/cf/pkg/util/pubutil"
 	"strconv"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
@@ -217,7 +218,7 @@ func PrintBucketsListRealTime(region string) {
 }
 
 func PrintBucketsListHistory(region string) {
-	if cmdutil.FileExists(OSSCacheFilePath) {
+	if pubutil.FileExists(OSSCacheFilePath) {
 		cmdutil.PrintOSSCacheFile(OSSCacheFilePath, header, region, "alibaba", "OSS")
 	} else {
 		PrintBucketsListRealTime(region)

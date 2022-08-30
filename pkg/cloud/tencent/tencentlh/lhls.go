@@ -3,6 +3,7 @@ package tencentlh
 import (
 	"encoding/json"
 	"github.com/teamssix/cf/pkg/cloud/tencent/tencentcvm"
+	"github.com/teamssix/cf/pkg/util/pubutil"
 	lh "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/lighthouse/v20200324"
 	"strconv"
 	"strings"
@@ -135,7 +136,7 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 }
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {
-	if cmdutil.FileExists(LHCacheFilePath) {
+	if pubutil.FileExists(LHCacheFilePath) {
 		cmdutil.PrintECSCacheFile(LHCacheFilePath, header, region, specifiedInstanceID, "tencent", "LH")
 	} else {
 		PrintInstancesListRealTime(region, running, specifiedInstanceID)

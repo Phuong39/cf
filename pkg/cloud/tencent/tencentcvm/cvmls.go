@@ -2,6 +2,7 @@ package tencentcvm
 
 import (
 	"encoding/json"
+	"github.com/teamssix/cf/pkg/util/pubutil"
 	"strconv"
 	"strings"
 
@@ -135,7 +136,7 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 }
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {
-	if cmdutil.FileExists(CVMCacheFilePath) {
+	if pubutil.FileExists(CVMCacheFilePath) {
 		cmdutil.PrintECSCacheFile(CVMCacheFilePath, header, region, specifiedInstanceID, "tencent", "CVM")
 	} else {
 		PrintInstancesListRealTime(region, running, specifiedInstanceID)

@@ -2,6 +2,8 @@ package util
 
 import (
 	"errors"
+	"github.com/teamssix/cf/pkg/util/env"
+	"github.com/teamssix/cf/pkg/util/pubutil"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -13,7 +15,7 @@ import (
 
 func WriteTimeStamp(file string) {
 	log.Tracef("写入时间戳文件 %s (Writing to a timestamp file %s)", file, file)
-	if !fileExists(file) {
+	if !pubutil.FileExists(file) {
 		log.Traceln("未找到时间戳文件，正在创建时间戳文件 (Timestamp file not found, being created the timestamp file)")
 		err := os.MkdirAll(ReturnCacheDict(), 0700)
 		HandleErr(err)
@@ -25,7 +27,7 @@ func WriteTimeStamp(file string) {
 
 func ReadTimeStamp(timeStampFile string) int64 {
 	log.Tracef("读取时间戳文件 %s (Reading to a timestamp file %s)", timeStampFile, timeStampFile)
-	if !fileExists(timeStampFile) {
+	if !pubutil.FileExists(timeStampFile) {
 		log.Traceln("未找到时间戳文件，正在获取最新数据 (Timestamp file not found, Getting the latest data)")
 		return 0
 	}
@@ -67,7 +69,7 @@ func ReturnCacheDict() string {
 }
 
 func GetCFHomeDir() (string, error) {
-	home := os.Getenv(CFHomeEnvVar)
+	home := os.Getenv(env.CFHomeEnvVar)
 	if home != "" {
 		return home, nil
 	}
@@ -75,7 +77,7 @@ func GetCFHomeDir() (string, error) {
 	if err != nil {
 		return "", errors.New("failed to get user home dir")
 	}
-	return filepath.Join(home, AppDirName), nil
+	return filepath.Join(home, env.AppDirName), nil
 }
 
 func IsFlushCache(oldTimeStamp int64) bool {

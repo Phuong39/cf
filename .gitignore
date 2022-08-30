@@ -18,6 +18,7 @@
 # vendor/
 tmp
 test
+build
 
 # Go workspace file
 go.work

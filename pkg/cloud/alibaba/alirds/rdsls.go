@@ -2,6 +2,7 @@ package alirds
 
 import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
+	"github.com/teamssix/cf/pkg/util/pubutil"
 	"strconv"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/rds"
@@ -125,7 +126,7 @@ func PrintDBInstancesListRealTime(region string, running bool, specifiedDBInstan
 }
 
 func PrintDBInstancesListHistory(region string, running bool, specifiedDBInstanceID string, engine string) {
-	if cmdutil.FileExists(RDSCacheFilePath) {
+	if pubutil.FileExists(RDSCacheFilePath) {
 		cmdutil.PrintRDSCacheFile(RDSCacheFilePath, header, region, specifiedDBInstanceID, engine, "alibaba", "RDS")
 	} else {
 		PrintDBInstancesListRealTime(region, running, specifiedDBInstanceID, engine)

@@ -3,6 +3,7 @@ package cmdutil
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/teamssix/cf/pkg/util/pubutil"
 	"os"
 
 	"github.com/teamssix/cf/pkg/util"
@@ -12,7 +13,7 @@ import (
 )
 
 func ReturnCacheDict() string {
-	home, err := GetCFHomeDir()
+	home, err := pubutil.GetCFHomeDir()
 	util.HandleErr(err)
 	cacheDict := home + "/cache"
 	return cacheDict
@@ -45,7 +46,7 @@ func WriteCacheFile(td cloud.TableData, filePath string, region string, id strin
 }
 
 func ReadCacheFile(filePath string, provider string, resourceType string) [][]string {
-	if !FileExists(filePath) {
+	if !pubutil.FileExists(filePath) {
 		log.Debugf("%s 文件不存在 (%s file does not exist)", filePath, filePath)
 		if filePath == ReturnCacheFile(provider, resourceType) {
 			log.Warnf("需要先使用 cf 获取 %s 资源 (You need to use the cf to get the %s resources first)", resourceType, resourceType)
