@@ -118,7 +118,7 @@ func GetSSHKeysListInfoRealTime() {
 	td := cloud.TableData{Header: SSHCacheHeader, Body: data}
 	cloud.PrintTable(td, "SSHKEYINFO")
 	if region == "全部地区 (all regions)" {
-		cmdutil.WriteCacheFile(td, LHSSHCacheFilePath, "all", "all")
+		cmdutil.WriteCacheFile(td, "tencent", "lhssh", "all", "all")
 	}
 }
 

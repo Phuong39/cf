@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"github.com/teamssix/cf/pkg/util/pubutil"
 	"io"
 	"os"
@@ -12,8 +13,6 @@ import (
 	"github.com/schollz/progressbar/v3"
 
 	log "github.com/sirupsen/logrus"
-
-	"github.com/teamssix/cf/pkg/util"
 )
 
 func getObject(bucketName string, objectKey string, outputPath string) {
@@ -173,12 +172,12 @@ func DownloadObjects(bucketName string, objectKey string, outputPath string, oss
 func (o *OSSCollector) ReturnBucket(bucketName string, objectKey string, outputPath string, region string) (*os.File, io.ReadCloser, error, string) {
 	o.OSSClient(region)
 	bucket, err := o.Client.Bucket(bucketName)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	outputFile := returnBucketFileName(outputPath, bucketName, objectKey)
 	fd, oserr := os.OpenFile(outputFile, os.O_WRONLY|os.O_CREATE, 0660)
-	util.HandleErr(oserr)
+	errutil.HandleErr(oserr)
 	body, err := bucket.GetObject(objectKey)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	return fd, body, oserr, outputFile
 }
 

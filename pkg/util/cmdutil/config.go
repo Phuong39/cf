@@ -3,6 +3,7 @@ package cmdutil
 import (
 	"fmt"
 	"github.com/teamssix/cf/pkg/util/database"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"github.com/teamssix/cf/pkg/util/pubutil"
 	"strconv"
 	"strings"
@@ -11,7 +12,6 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
-	"github.com/teamssix/cf/pkg/util"
 )
 
 func ConfigureAccessKey() {
@@ -32,7 +32,7 @@ func selectProvider() ([]string, []string, string) {
 		Options: cloudProviderList,
 	}
 	err := survey.AskOne(prompt, &cloudProvider)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	return cloudConfigList, cloudProviderList, cloudProvider
 }
 
@@ -108,7 +108,7 @@ func inputAccessKey(config cloud.Config, provider string) {
 	if cred.STSToken == "" && strings.Contains(cred.AccessKeyId, "STS.") {
 		cred.STSToken = STSToken
 	}
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	SaveAccessKey(cred)
 }
 
@@ -127,7 +127,7 @@ func GetConfig(provider string) cloud.Config {
 func ConfigLs() {
 	var (
 		STSToken          string
-		CommonTableHeader = []string{"别名 (alias)", "访问凭证 ID (access_key_id)", "访问凭证密钥 (access_key_secret)", "临时访问凭证令牌 (sts_token)", "云服务提供商 (provider)", "是否在使用 (in_use)"}
+		CommonTableHeader = []string{"别名 (Alias)", "访问凭证 ID (Access Key Id)", "访问凭证密钥 (Access Key Secret)", "临时访问凭证令牌 (STS Token)", "云服务提供商 (Provider)", "是否在使用 (In Use)"}
 	)
 	configList := database.SelectConfig()
 	Data := cloud.TableData{

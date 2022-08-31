@@ -3,6 +3,7 @@ package aliecs
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"github.com/teamssix/cf/pkg/util/pubutil"
 
 	"strconv"
@@ -29,6 +30,7 @@ type Instances struct {
 var (
 	DescribeInstancesOut []Instances
 	ECSCacheFilePath     = cmdutil.ReturnCacheFile("alibaba", "ECS")
+	TimestampType        = util.ReturnTimestampType("alibaba", "ecs")
 	header               = []string{"序号 (SN)", "实例 ID (Instance ID)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private IP)", "公网 IP (Public IP)", "区域 ID (Region ID)"}
 )
 
@@ -48,7 +50,7 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string, 
 	}
 	log.Debugf("正在 %s 区域中查找实例 (Looking for instances in the %s region)", region, region)
 	response, err := ECSClient(region).DescribeInstances(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	InstancesList := response.Instances.Instance
 	if len(InstancesList) != 0 {
 		log.Debugf("在 %s 区域下找到 %d 个实例 (Found %d instances in %s region)", region, len(InstancesList), len(InstancesList), region)
@@ -127,13 +129,12 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {
 		log.Info("未发现 ECS，可能是因为当前访问凭证权限不够 (No ECS found, Probably because the current Access Key do not have enough permissions)")
-		cmdutil.WriteCacheFile(td, ECSCacheFilePath, region, specifiedInstanceID)
 	} else {
 		Caption := "ECS 资源 (ECS resources)"
 		cloud.PrintTable(td, Caption)
-		cmdutil.WriteCacheFile(td, ECSCacheFilePath, region, specifiedInstanceID)
 	}
-	util.WriteTimeStamp(util.ReturnECSTimeStampFile())
+	cmdutil.WriteCacheFile(td, "alibaba", "ecs", region, specifiedInstanceID)
+	util.WriteTimestamp(TimestampType)
 }
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {
@@ -148,13 +149,13 @@ func PrintInstancesList(region string, running bool, specifiedInstanceID string,
 	if ecsFlushCache {
 		PrintInstancesListRealTime(region, running, specifiedInstanceID)
 	} else {
-		oldTimeStamp := util.ReadTimeStamp(util.ReturnECSTimeStampFile())
-		if oldTimeStamp == 0 {
+		oldTimestamp := util.ReadTimestamp(TimestampType)
+		if oldTimestamp == 0 {
 			PrintInstancesListRealTime(region, running, specifiedInstanceID)
-		} else if util.IsFlushCache(oldTimeStamp) {
+		} else if util.IsFlushCache(oldTimestamp) {
 			PrintInstancesListRealTime(region, running, specifiedInstanceID)
 		} else {
-			util.TimeDifference(oldTimeStamp)
+			util.TimeDifference(oldTimestamp)
 			PrintInstancesListHistory(region, running, specifiedInstanceID)
 		}
 	}

@@ -2,6 +2,7 @@ package aliram
 
 import (
 	"fmt"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"sort"
 	"strconv"
 	"strings"
@@ -16,7 +17,6 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/teamssix/cf/pkg/cloud"
-	"github.com/teamssix/cf/pkg/util"
 )
 
 var header = []string{"序号 (SN)", "策略名称 (PolicyName)", "描述 (Description)"}
@@ -139,7 +139,7 @@ func getCallerIdentity() string {
 	request := sts.CreateGetCallerIdentityRequest()
 	request.Scheme = "https"
 	response, err := STSClient().GetCallerIdentity(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	accountArn := response.Arn
 	var userName string
 	if accountArn[len(accountArn)-4:] == "root" {
@@ -191,7 +191,7 @@ func listPoliciesForGroup(groupName string) [][]string {
 	request.Scheme = "https"
 	request.GroupName = groupName
 	response, err := RAMClient().ListPoliciesForGroup(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	var data [][]string
 	for n, i := range response.Policies.Policy {
 		SN := strconv.Itoa(n + 1)
@@ -205,7 +205,7 @@ func listGroupsForUser(userName string) []string {
 	request.Scheme = "https"
 	request.UserName = userName
 	response, err := RAMClient().ListGroupsForUser(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	var groups []string
 	for _, g := range response.Groups.Group {
 		groups = append(groups, g.GroupName)

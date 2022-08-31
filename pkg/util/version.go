@@ -3,23 +3,20 @@ package util
 import (
 	"encoding/json"
 	log "github.com/sirupsen/logrus"
+	"github.com/teamssix/cf/pkg/util/env"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
 )
 
-var (
-	version    = "v0.3.5"
-	updateTime = "2022.8.16"
-)
-
 func GetCurrentVersion() string {
-	return version
+	return env.Version
 }
 
 func GetUpdateTime() string {
-	return updateTime
+	return env.UpdateTime
 }
 
 type latestReleasesStruct struct {
@@ -27,23 +24,23 @@ type latestReleasesStruct struct {
 }
 
 func AlertUpdateInfo() {
-	oldTimeStamp := ReadTimeStamp(ReturnVersionTimeStampFile())
-	if oldTimeStamp == 0 {
-		CheckVersion(version)
-	} else if IsFlushCache(oldTimeStamp) {
-		check, newVersion := CheckVersion(version)
+	oldTimestamp := ReadTimestamp(ReturnVersionTimestampFile())
+	if oldTimestamp == 0 {
+		CheckVersion(env.Version)
+	} else if IsFlushCache(oldTimestamp) {
+		check, newVersion := CheckVersion(env.Version)
 		if check {
 			log.Warnf("发现 %s 新版本，可以使用 upgrade 命令进行更新 (Found a new version of %s, use the upgrade command to update)\n", newVersion, newVersion)
 		} else {
 			log.Debugln("未发现新版本 (No new versions found)")
 		}
 	} else {
-		TimeDifference(oldTimeStamp)
+		TimeDifference(oldTimestamp)
 	}
 }
 
 func CheckVersion(version string) (bool, string) {
-	WriteTimeStamp(ReturnVersionTimeStampFile())
+	WriteTimestamp(ReturnVersionTimestampFile())
 
 	url := "https://api.github.com/repos/teamssix/cf/releases/latest"
 	spaceClient := http.Client{}
@@ -88,7 +85,7 @@ func caclVersionNumber(version string) int {
 
 func Atoi(s string) int {
 	i, err := strconv.Atoi(s)
-	HandleErr(err)
+	errutil.HandleErr(err)
 	return i
 }
 

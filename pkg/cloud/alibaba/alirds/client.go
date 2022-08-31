@@ -1,13 +1,13 @@
 package alirds
 
 import (
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"os"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth/credentials"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/rds"
 	log "github.com/sirupsen/logrus"
-	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
 )
 
@@ -22,7 +22,7 @@ func RDSClient(region string) *rds.Client {
 		if aliconfig.STSToken == "" {
 			credential := credentials.NewAccessKeyCredential(aliconfig.AccessKeyId, aliconfig.AccessKeySecret)
 			client, err := rds.NewClientWithOptions(region, config, credential)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("RDS Client 连接成功 (RDS Client connection successful)")
 			}
@@ -30,7 +30,7 @@ func RDSClient(region string) *rds.Client {
 		} else {
 			credential := credentials.NewStsTokenCredential(aliconfig.AccessKeyId, aliconfig.AccessKeySecret, aliconfig.STSToken)
 			client, err := rds.NewClientWithOptions(region, config, credential)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("RDS Client 连接成功 (RDS Client connection successful)")
 			}
@@ -44,6 +44,6 @@ func GetRDSRegions() []rds.RDSRegion {
 	request := rds.CreateDescribeRegionsRequest()
 	request.Scheme = "https"
 	response, err := client.DescribeRegions(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	return response.Regions.RDSRegion
 }

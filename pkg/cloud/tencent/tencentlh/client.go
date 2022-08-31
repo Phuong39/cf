@@ -2,8 +2,8 @@ package tencentlh
 
 import (
 	log "github.com/sirupsen/logrus"
-	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
 	lh "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/lighthouse/v20200324"
@@ -23,7 +23,7 @@ func LHClient(region string) *lh.Client {
 		if tencentConfig.STSToken == "" {
 			credential := common.NewCredential(tencentConfig.AccessKeyId, tencentConfig.AccessKeySecret)
 			client, err := lh.NewClient(credential, region, cpf)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("LH Client 连接成功 (LH Client connection successful)")
 			}
@@ -31,7 +31,7 @@ func LHClient(region string) *lh.Client {
 		} else {
 			credential := common.NewTokenCredential(tencentConfig.AccessKeyId, tencentConfig.AccessKeySecret, tencentConfig.STSToken)
 			client, err := lh.NewClient(credential, region, cpf)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("LH Client 连接成功 (LH Client connection successful)")
 			}
@@ -44,7 +44,7 @@ func GetLHRegions() []*lh.RegionInfo {
 	client := LHClient("ap-guangzhou")
 	request := lh.NewDescribeRegionsRequest()
 	response, err := client.DescribeRegions(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	return response.Response.RegionSet
 }
 
@@ -60,7 +60,7 @@ func TATClient(region string) *tat.Client {
 		if tencentconfig.STSToken == "" {
 			credential := common.NewCredential(tencentconfig.AccessKeyId, tencentconfig.AccessKeySecret)
 			client, err := tat.NewClient(credential, region, cpf)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("TAT Client 连接成功 (CVM Client connection successful)")
 			}
@@ -68,7 +68,7 @@ func TATClient(region string) *tat.Client {
 		} else {
 			credential := common.NewTokenCredential(tencentconfig.AccessKeyId, tencentconfig.AccessKeyId, tencentconfig.STSToken)
 			client, err := tat.NewClient(credential, region, cpf)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("TAT Client 连接成功 (CVM Client connection successful)")
 			}

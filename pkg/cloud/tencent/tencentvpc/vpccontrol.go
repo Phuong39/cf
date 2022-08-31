@@ -7,6 +7,7 @@ import (
 	"github.com/teamssix/cf/pkg/cloud/tencent/tencentcvm"
 	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	cvm "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm/v20170312"
 	vpc "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vpc/v20170312"
@@ -29,7 +30,7 @@ type securityGroupPolicySet struct {
 	Action    string
 }
 
-//创建安全组并返回安全组id
+// 创建安全组并返回安全组id
 func CreateSecurityGroup(region string) *string {
 	request := vpc.NewCreateSecurityGroupRequest()
 	request.SetScheme("https")
@@ -37,13 +38,13 @@ func CreateSecurityGroup(region string) *string {
 	request.GroupName = common.StringPtr(groupName)
 	request.GroupDescription = common.StringPtr("cf_" + groupName)
 	response, err := VPCClient(region).CreateSecurityGroup(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	securityGroupId := response.Response.SecurityGroup.SecurityGroupId
 	log.Debugf("得到 VPC 安全组 id 为 %s ，区域为 %s (Vpc security group id %s ,region %s ):", *securityGroupId, region, *securityGroupId, region)
 	return securityGroupId
 }
 
-//添加规则
+// 添加规则
 func CreateSecurityGroupPolicies(region string, securityGroupId *string) {
 	//选择出站/入站
 	var rule string
@@ -52,7 +53,7 @@ func CreateSecurityGroupPolicies(region string, securityGroupId *string) {
 		Options: []string{"出站规则 (Egress)", "入站规则 (Ingress)"},
 	}
 	err := survey.AskOne(prompt, &rule)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	request := vpc.NewCreateSecurityGroupPoliciesRequest()
 	request.SetScheme("https")
 	request.SecurityGroupId = securityGroupId
@@ -76,7 +77,7 @@ func CreateSecurityGroupPolicies(region string, securityGroupId *string) {
 	}
 	secGP := securityGroupPolicySet{}
 	err1 := survey.Ask(qs, &secGP)
-	util.HandleErr(err1)
+	errutil.HandleErr(err1)
 	switch {
 	case secGP.Protocol == "":
 		secGP.Protocol = "TCP"
@@ -99,7 +100,7 @@ func CreateSecurityGroupPolicies(region string, securityGroupId *string) {
 			},
 		}
 		_, err2 := VPCClient(region).CreateSecurityGroupPolicies(request)
-		util.HandleErr(err2)
+		errutil.HandleErr(err2)
 	} else {
 		request.SecurityGroupPolicySet = &vpc.SecurityGroupPolicySet{
 			Ingress: []*vpc.SecurityGroupPolicy{
@@ -112,33 +113,33 @@ func CreateSecurityGroupPolicies(region string, securityGroupId *string) {
 			},
 		}
 		_, err2 := VPCClient(region).CreateSecurityGroupPolicies(request)
-		util.HandleErr(err2)
+		errutil.HandleErr(err2)
 	}
 }
 
-//解绑安全组
+// 解绑安全组
 func DisassociateSecurityGroups(region string, securityGroupId *string, instanceIds string) {
 	request := cvm.NewDisassociateSecurityGroupsRequest()
 	request.SetScheme("https")
 	request.SecurityGroupIds = common.StringPtrs([]string{*securityGroupId})
 	request.InstanceIds = common.StringPtrs([]string{instanceIds})
 	_, err := tencentcvm.CVMClient(region).DisassociateSecurityGroups(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 }
 
-//删除创建的安全组
+// 删除创建的安全组
 func DeleteSecurityGroup(region string, securityGroupId *string) {
 	request := vpc.NewDeleteSecurityGroupRequest()
 	request.SetScheme("https")
 	request.SecurityGroupId = securityGroupId
 	_, err := VPCClient(region).DeleteSecurityGroup(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	if err == nil {
 		log.Infof("%s 安全组已删除 (%s Security group is deleted)", region, region)
 	}
 }
 
-//绑定安全组规则->CVM
+// 绑定安全组规则->CVM
 func AssociateSecurityGroups(oldregion string, region string, securityGroupId *string, instancesMap map[string]string) {
 	request := cvm.NewAssociateSecurityGroupsRequest()
 	request.SetScheme("https")
@@ -157,11 +158,11 @@ func AssociateSecurityGroups(oldregion string, region string, securityGroupId *s
 		Options: InstancesList,
 	}
 	err := survey.AskOne(prompt, &InstanceId)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	//设置实例机器 需要跟安全组区域对应
 	request.InstanceIds = common.StringPtrs([]string{InstanceId})
 	_, err1 := tencentcvm.CVMClient(region).AssociateSecurityGroups(request)
-	util.HandleErr(err1)
+	errutil.HandleErr(err1)
 	log.Debugf("成功将安全组 %s 绑定至实例 %s (Success security group bound %s to the instance %s)", *securityGroupId, InstanceId, *securityGroupId, InstanceId)
 }
 
@@ -174,7 +175,7 @@ func VPCAdd(regionList []string, instancesMap map[string]string) {
 		Options: newregionList,
 	}
 	err := survey.AskOne(prompt, &region)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	str := strings.Split(region, "-")
 	newRegion := str[0] + "-" + str[1]
 	securityGroupId := CreateSecurityGroup(newRegion)
@@ -209,7 +210,7 @@ func VPCDel(instancesMap map[string]string, CVMCacheData [][]string) {
 		Options: vpcList,
 	}
 	err := survey.AskOne(prompt1, &securityGroupIdString)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	securityGroupId = &securityGroupIdString
 	for _, i := range CVMCacheData {
 		if strings.Contains(i[9], *securityGroupId) {
@@ -277,7 +278,7 @@ func VPCControl() {
 		Options: opList,
 	}
 	err := survey.AskOne(prompt, &op)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	switch op {
 	case "新增 (add)":
 		{

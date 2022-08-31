@@ -8,10 +8,26 @@ import (
 	"path/filepath"
 )
 
+type TimestampCache struct {
+	TimestampType string
+	Timestamp     int64
+}
+
+type OSSCache struct {
+	AccessKeyId  string
+	SN           string
+	Name         string
+	BucketACL    string
+	ObjectNumber string
+	ObjectSize   string
+	Region       string
+	BucketURL    string
+}
+
 func GetConfigFilePath() string {
 	home, _ := GetCFHomeDir()
 	CreateFolder(home)
-	configFilePath := filepath.Join(home, "config.db")
+	configFilePath := filepath.Join(home, "cache.db")
 	return configFilePath
 }
 

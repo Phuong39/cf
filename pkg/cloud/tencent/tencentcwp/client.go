@@ -2,8 +2,8 @@ package tencentcwp
 
 import (
 	log "github.com/sirupsen/logrus"
-	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
 	cwp "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cwp/v20180228"
@@ -22,7 +22,7 @@ func CWPClient(region string) *cwp.Client {
 		if tencentConfig.STSToken == "" {
 			credential := common.NewCredential(tencentConfig.AccessKeyId, tencentConfig.AccessKeySecret)
 			client, err := cwp.NewClient(credential, region, cpf)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("CWP Client 连接成功 (CWP Client connection successful)")
 			}
@@ -30,7 +30,7 @@ func CWPClient(region string) *cwp.Client {
 		} else {
 			credential := common.NewTokenCredential(tencentConfig.AccessKeyId, tencentConfig.AccessKeySecret, tencentConfig.STSToken)
 			client, err := cwp.NewClient(credential, region, cpf)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("CWP Client 连接成功 (CWP Client connection successful)")
 			}
@@ -54,7 +54,7 @@ func DescribeMachineCWPStatus(MachineType string, Quuid string) (*string, *strin
 	if err == nil {
 		return response.Response.Machines[0].MachineStatus, response.Response.Machines[0].Uuid
 	} else {
-		util.HandleErrNoExit(err)
+		errutil.HandleErrNoExit(err)
 		Str := ""
 		return &Str, &Str
 	}

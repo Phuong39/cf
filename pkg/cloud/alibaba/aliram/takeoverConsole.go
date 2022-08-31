@@ -6,6 +6,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
 	"github.com/teamssix/cf/pkg/util"
+	"github.com/teamssix/cf/pkg/util/errutil"
 )
 
 func CreateUser() {
@@ -13,7 +14,7 @@ func CreateUser() {
 	request.Scheme = "https"
 	request.UserName = "crossfire"
 	_, err := RAMClient().CreateUser(request)
-	util.HandleErrNoExit(err)
+	errutil.HandleErrNoExit(err)
 	if err == nil {
 		log.Debugln("创建 crossfire 用户成功 (Create crossfire user successfully)")
 	}
@@ -26,7 +27,7 @@ func CreateLoginProfile() string {
 	randomPasswords := util.GenerateRandomPasswords()
 	request.Password = randomPasswords
 	_, err := RAMClient().CreateLoginProfile(request)
-	util.HandleErrNoExit(err)
+	errutil.HandleErrNoExit(err)
 	if err == nil {
 		log.Debugln("成功为 crossfire 用户创建控制台登录密码 (Successfully created console login password for crossfire user)")
 	}
@@ -40,7 +41,7 @@ func AttachPolicyToUser() {
 	request.PolicyName = "AdministratorAccess"
 	request.UserName = "crossfire"
 	_, err := RAMClient().AttachPolicyToUser(request)
-	util.HandleErrNoExit(err)
+	errutil.HandleErrNoExit(err)
 	if err == nil {
 		log.Debugln("成功为 crossfire 用户赋予管理员权限 (Successfully grant AdministratorAccess policy to the crossfire user)")
 	}
@@ -50,7 +51,7 @@ func GetAccountAlias() string {
 	request := ram.CreateGetAccountAliasRequest()
 	request.Scheme = "https"
 	response, err := RAMClient().GetAccountAlias(request)
-	util.HandleErrNoExit(err)
+	errutil.HandleErrNoExit(err)
 	accountAlias := response.AccountAlias
 	return accountAlias
 }

@@ -15,7 +15,7 @@ require (
 	github.com/spf13/cobra v1.5.0
 	github.com/ssbeatty/sqlite v1.0.4
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cam v1.0.447
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.475
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.486
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm v1.0.447
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cwp v1.0.447
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/lighthouse v1.0.447

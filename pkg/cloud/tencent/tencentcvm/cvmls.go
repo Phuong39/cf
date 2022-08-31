@@ -2,13 +2,13 @@ package tencentcvm
 
 import (
 	"encoding/json"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"github.com/teamssix/cf/pkg/util/pubutil"
 	"strconv"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
-	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	cvm "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm/v20170312"
@@ -47,7 +47,7 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 		request.InstanceIds = common.StringPtrs([]string{SpecifiedInstanceID})
 	}
 	response, err := CVMClient(region).DescribeInstances(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	InstancesList := response.Response.InstanceSet
 	log.Debugf("正在 %s 区域中查找实例 (Looking for instances in the %s region)", region, region)
 	if len(InstancesList) != 0 {
@@ -127,12 +127,11 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {
 		log.Info("未发现 CVM 实例 (No CVM instances found)")
-		cmdutil.WriteCacheFile(td, CVMCacheFilePath, region, specifiedInstanceID)
 	} else {
 		Caption := "CVM 资源 (CVM resources)"
 		cloud.PrintTable(td, Caption)
-		cmdutil.WriteCacheFile(td, CVMCacheFilePath, region, specifiedInstanceID)
 	}
+	cmdutil.WriteCacheFile(td, "tencent", "cvm", region, specifiedInstanceID)
 }
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {

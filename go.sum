@@ -190,8 +190,9 @@ github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cam v1.0.447 h1:k2V686b
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cam v1.0.447/go.mod h1:Lyweyo5rnnfQnxJRyRnmgGB2uycM+4rAmS5iTzF9pI8=
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.446/go.mod h1:7sCQWVkxcsR38nffDW057DRGk8mUjK1Ing/EFOK8s8Y=
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.447/go.mod h1:7sCQWVkxcsR38nffDW057DRGk8mUjK1Ing/EFOK8s8Y=
-github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.475 h1:LcZcfKDRgft1+4h+B6qykbtiSr4t5m4f/Dp/DBcTt2g=
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.475/go.mod h1:7sCQWVkxcsR38nffDW057DRGk8mUjK1Ing/EFOK8s8Y=
+github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.486 h1:MUO3Gp/jo/t0NBJ2TLH2sDjy+b/eJUCGgBT+7BfN2yE=
+github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.486/go.mod h1:7sCQWVkxcsR38nffDW057DRGk8mUjK1Ing/EFOK8s8Y=
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm v1.0.447 h1:VtFIIC5eJFTAsemlynKAs2ODHo6JrxPSnzDgoGPnJpw=
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm v1.0.447/go.mod h1:vtKRGYERMilQlS9oJxpbCK5qiubvH+3q570agtANOe4=
 github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cwp v1.0.447 h1:54ghmcPLvB+eiLA7rnBCqvJ4HGyoXK1op6Sb0W3vdJc=
