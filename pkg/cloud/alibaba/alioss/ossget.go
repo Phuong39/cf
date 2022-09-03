@@ -3,7 +3,6 @@ package alioss
 import (
 	"fmt"
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/teamssix/cf/pkg/util/cmdutil"
 	"github.com/teamssix/cf/pkg/util/errutil"
 	"github.com/teamssix/cf/pkg/util/pubutil"
 	"io"
@@ -63,95 +62,85 @@ func DownloadAllObjects(bucketName string, outputPath string) {
 		}
 	}
 	_, objects := OSSCollector.ListObjects(bucketName)
-	for _, o := range objects {
-		objectList = append(objectList, o.Key)
-	}
-	prompt := &survey.Select{
-		Message: "选择一个对象 (Choose a object): ",
-		Options: objectList,
-	}
-	survey.AskOne(prompt, &objectKey)
-	if objectKey == "all" {
-		bar := returnBar((int64(len(objectList) - 1)))
-		for _, j := range objects {
-			if j.Key[len(j.Key)-1:] == "/" {
-				bar.Add(1)
-				pubutil.CreateFolder(returnBucketFileName(outputPath, bucketName, j.Key))
-			} else {
-				bar.Add(1)
-				fd, body, _, _ := OSSCollector.ReturnBucket(bucketName, j.Key, outputPath, region)
-				io.Copy(fd, body)
-				body.Close()
-				defer fd.Close()
-			}
-		}
-		log.Infof("对象已被保存到 %s 目录下 (The object has been saved to the %s directory)", outputPath, outputPath)
+	if len(objects) == 0 {
+		log.Warnf("在 %s 存储桶中没有发现对象 (No object found in %s bucket)", bucketName, bucketName)
 	} else {
-		if objectKey[len(objectKey)-1:] == "/" {
-			pubutil.CreateFolder(returnBucketFileName(outputPath, bucketName, objectKey))
+		for _, o := range objects {
+			objectList = append(objectList, o.Key)
+		}
+		objectList = append(objectList, "exit")
+		prompt := &survey.Select{
+			Message: "选择一个对象 (Choose a object): ",
+			Options: objectList,
+		}
+		survey.AskOne(prompt, &objectKey)
+		if objectKey == "all" {
+			log.Infof("正在下载 %s 存储桶内的所有对象…… (Downloading all objects in bucket %s...)", bucketName, bucketName)
+			bar := returnBar((int64(len(objectList) - 1)))
+			for _, j := range objects {
+				if j.Key[len(j.Key)-1:] == "/" {
+					bar.Add(1)
+					pubutil.CreateFolder(returnBucketFileName(outputPath, bucketName, j.Key))
+				} else {
+					bar.Add(1)
+					fd, body, _, _ := OSSCollector.ReturnBucket(bucketName, j.Key, outputPath, region)
+					io.Copy(fd, body)
+					body.Close()
+					defer fd.Close()
+				}
+			}
+			fmt.Println()
+			log.Infof("对象已被保存到 %s 目录下 (The object has been saved to the %s directory)", outputPath, outputPath)
+		} else if objectKey == "exit" {
+			os.Exit(0)
 		} else {
-			getObject(bucketName, objectKey, outputPath)
+			if objectKey[len(objectKey)-1:] == "/" {
+				pubutil.CreateFolder(returnBucketFileName(outputPath, bucketName, objectKey))
+			} else {
+				getObject(bucketName, objectKey, outputPath)
+			}
 		}
 	}
 }
 
-func DownloadObjects(bucketName string, objectKey string, outputPath string, ossDownloadFlushCache bool) {
+func DownloadObjects(bucketName string, objectKey string, outputPath string) {
 	if outputPath == "./result" {
 		pubutil.CreateFolder("./result")
 	}
 	if bucketName == "all" {
-		var (
-			bucketList    []string
-			bucketListAll []string
-		)
-		bucketListAll = append(bucketListAll, "all")
-		if ossDownloadFlushCache {
-			OSSCollector := &OSSCollector{}
-			Buckets, _ := OSSCollector.ListBuckets()
-			for _, v := range Buckets {
-				_, objects := OSSCollector.ListObjects(v.Name)
-				if len(objects) > 0 {
-					bucketList = append(bucketList, v.Name)
-					bucketListAll = append(bucketListAll, v.Name)
-				}
-			}
+		var bucketList []string
+		buckets := ReturnBucketList()
+		if len(buckets) == 0 {
+			log.Info("没发现存储桶 (No Buckets Found)")
 		} else {
-			Buckets := cmdutil.ReadOSSCache("alibaba")
-			for _, v := range Buckets {
-				OSSCollector := &OSSCollector{}
-				_, objects := OSSCollector.ListObjects(v.Name)
-				if len(objects) > 0 {
-					bucketList = append(bucketList, v.Name)
-					bucketListAll = append(bucketListAll, v.Name)
-				}
+			bucketList = append(bucketList, "all")
+			for _, v := range buckets {
+				bucketList = append(bucketList, v)
 			}
-		}
-		bucketListAll = append(bucketListAll, "exit")
-		if len(bucketList) == 1 {
-			bucketName = bucketList[0]
-		} else {
+			bucketList = append(bucketList, "exit")
+			var SelectBucketName string
 			prompt := &survey.Select{
 				Message: "选择一个存储桶 (Choose a bucket): ",
-				Options: bucketListAll,
+				Options: bucketList,
 			}
-			survey.AskOne(prompt, &bucketName)
-		}
-
-		if bucketName == "all" {
-			for _, v := range bucketList {
-				if objectKey == "all" {
-					DownloadAllObjects(v, outputPath)
-				} else {
-					getObject(v, objectKey, outputPath)
+			err := survey.AskOne(prompt, &SelectBucketName)
+			errutil.HandleErr(err)
+			if SelectBucketName == "all" {
+				for _, v := range buckets {
+					if objectKey == "all" {
+						DownloadAllObjects(v, outputPath)
+					} else {
+						getObject(v, objectKey, outputPath)
+					}
 				}
-			}
-		} else if bucketName == "exit" {
-			os.Exit(0)
-		} else {
-			if objectKey == "all" {
-				DownloadAllObjects(bucketName, outputPath)
+			} else if SelectBucketName == "exit" {
+				os.Exit(0)
 			} else {
-				getObject(bucketName, objectKey, outputPath)
+				if objectKey == "all" {
+					DownloadAllObjects(SelectBucketName, outputPath)
+				} else {
+					getObject(SelectBucketName, objectKey, outputPath)
+				}
 			}
 		}
 	} else {
@@ -164,7 +153,7 @@ func DownloadObjects(bucketName string, objectKey string, outputPath string, oss
 				getObject(bucketName, objectKey, outputPath)
 			}
 		} else {
-			log.Warnf("在 %s 存储桶中没有发现对象 (No object found in %s storage bucket)", bucketName, bucketName)
+			log.Warnf("在 %s 存储桶中没有发现对象 (No object found in %s bucket)", bucketName, bucketName)
 		}
 	}
 }
