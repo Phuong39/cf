@@ -3,20 +3,18 @@ package cmdutil
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/teamssix/cf/pkg/util/pubutil"
-	"os"
-
-	"github.com/teamssix/cf/pkg/util"
-
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
+	"github.com/teamssix/cf/pkg/util/database"
+	"github.com/teamssix/cf/pkg/util/errutil"
+	"github.com/teamssix/cf/pkg/util/pubutil"
+	"os"
 )
 
 func ReturnCacheDict() string {
 	home, err := pubutil.GetCFHomeDir()
-	util.HandleErr(err)
-	cacheDict := home + "/cache"
-	return cacheDict
+	errutil.HandleErr(err)
+	return home
 }
 
 func ReturnCacheFile(provider string, resourceType string) string {
@@ -31,15 +29,32 @@ func ReturnCacheFile(provider string, resourceType string) string {
 	return ossCacheFile
 }
 
-func WriteCacheFile(td cloud.TableData, filePath string, region string, id string) {
-	if region == "all" && id == "all" {
-		log.Debugln("写入数据到缓存文件 (Write data to a cache file): " + filePath)
-		filePtr, err := os.Create(filePath)
-		util.HandleErr(err)
-		defer filePtr.Close()
-		encoder := json.NewEncoder(filePtr)
-		err = encoder.Encode(td.Body)
-		util.HandleErr(err)
+func WriteCacheFile(td cloud.TableData, provider string, serviceType string, region string, id string) {
+	AccessKeyId := GetConfig(provider).AccessKeyId
+	if len(td.Body) == 0 {
+		database.DeleteOSSCache(AccessKeyId)
+	} else if region == "all" && id == "all" {
+		log.Debugln("写入数据到缓存数据库 (Write data to a cache database)")
+		if provider == "alibaba" {
+			if serviceType == "oss" {
+				var OSSCacheList []pubutil.OSSCache
+				for _, v := range td.Body {
+					OSSCache := pubutil.OSSCache{
+						AccessKeyId:  AccessKeyId,
+						SN:           v[0],
+						Name:         v[1],
+						BucketACL:    v[2],
+						ObjectNumber: v[3],
+						ObjectSize:   v[4],
+						Region:       v[5],
+						BucketURL:    v[6],
+					}
+					OSSCacheList = append(OSSCacheList, OSSCache)
+				}
+				database.InsertOSSCache(OSSCacheList)
+
+			}
+		}
 	} else {
 		log.Debugln("由于数据不是全部数据，所以不写入缓存文件 (Since the data is not all data, it is not written to the cache file)")
 	}
@@ -55,27 +70,35 @@ func ReadCacheFile(filePath string, provider string, resourceType string) [][]st
 	}
 	log.Debugln("读取文件 (read file): " + filePath)
 	filePtr, err := os.Open(filePath)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	defer filePtr.Close()
 	var data [][]string
 	decoder := json.NewDecoder(filePtr)
 	err = decoder.Decode(&data)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	return data
 }
 
-func PrintOSSCacheFile(filePath string, header []string, region string, provider string, resourceType string) {
-	data := ReadCacheFile(filePath, provider, resourceType)
-	if region == "all" {
-		PrintTable(data, header, resourceType)
-	} else {
-		var dataRegion [][]string
-		for _, i := range data {
-			if i[5] == region {
-				dataRegion = append(dataRegion, i)
+func PrintOSSCacheFile(header []string, region string, provider string, resourceType string) {
+	OSSCache := database.SelectOSSCache(provider)
+	var data [][]string
+	if len(OSSCache) > 0 {
+		if region == "all" {
+			for _, v := range OSSCache {
+				dataSingle := []string{v.SN, v.Name, v.BucketACL, v.ObjectNumber, v.ObjectSize, v.Region, v.BucketURL}
+				data = append(data, dataSingle)
+			}
+		} else {
+			for _, v := range OSSCache {
+				if v.Region == region {
+					dataSingle := []string{v.SN, v.Name, v.BucketACL, v.ObjectNumber, v.ObjectSize, v.Region, v.BucketURL}
+					data = append(data, dataSingle)
+				}
 			}
 		}
-		PrintTable(dataRegion, header, resourceType)
+		PrintTable(data, header, resourceType)
+	} else {
+		PrintTable(data, header, resourceType)
 	}
 }
 

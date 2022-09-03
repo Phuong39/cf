@@ -2,8 +2,8 @@ package tencentcam
 
 import (
 	log "github.com/sirupsen/logrus"
-	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	cam "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cam/v20190116"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
@@ -23,7 +23,7 @@ func CAMClient() *cam.Client {
 		if tencentConfig.STSToken == "" {
 			credential := common.NewCredential(tencentConfig.AccessKeyId, tencentConfig.AccessKeySecret)
 			client, err := cam.NewClient(credential, "", cpf)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("CAM Client 连接成功 (CAM Client connection successful)")
 			}
@@ -31,7 +31,7 @@ func CAMClient() *cam.Client {
 		} else {
 			credential := common.NewTokenCredential(tencentConfig.AccessKeyId, tencentConfig.AccessKeySecret, tencentConfig.STSToken)
 			client, err := cam.NewClient(credential, "", cpf)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("CAM Client 连接成功 (CAM Client connection successful)")
 			}
@@ -52,7 +52,7 @@ func STSClient() *sts.Client {
 		if tencentConfig.STSToken == "" {
 			credential := common.NewCredential(tencentConfig.AccessKeyId, tencentConfig.AccessKeySecret)
 			client, err := sts.NewClient(credential, "ap-beijing", cpf)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("STS Client 连接成功 (STS Client connection successful)")
 			}
@@ -60,7 +60,7 @@ func STSClient() *sts.Client {
 		} else {
 			credential := common.NewTokenCredential(tencentConfig.AccessKeyId, tencentConfig.AccessKeySecret, tencentConfig.STSToken)
 			client, err := sts.NewClient(credential, "ap-beijing", cpf)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("STS Client 连接成功 (STS Client connection successful)")
 			}

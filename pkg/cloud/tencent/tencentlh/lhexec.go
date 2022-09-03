@@ -6,8 +6,8 @@ import (
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/gookit/color"
 	log "github.com/sirupsen/logrus"
-	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	tat "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tat/v20201028"
 	"io/ioutil"
@@ -47,7 +47,7 @@ func CreateCommand(region string, OSType string, command string, scriptType stri
 	log.Debugln("执行命令 (Execute command): \n" + command)
 	request.Content = common.StringPtr(base64.StdEncoding.EncodeToString([]byte(command)))
 	response, err := TATClient(region).CreateCommand(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	CommandId := *response.Response.CommandId
 	log.Debugln("得到 CommandId 为 (CommandId value): " + CommandId)
 	return CommandId
@@ -58,7 +58,7 @@ func DeleteCommand(region string, CommandId string) {
 	request.SetScheme("https")
 	request.CommandId = common.StringPtr(CommandId)
 	_, err := TATClient(region).DeleteCommand(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	log.Debugln("删除 CommandId (Delete CommandId): " + CommandId)
 }
 
@@ -69,7 +69,7 @@ func InvokeCommand(region string, OSType string, command string, scriptType stri
 	request.CommandId = &CommandId
 	request.InstanceIds = common.StringPtrs([]string{specifiedInstanceID})
 	response, err := TATClient(region).InvokeCommand(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	InvokeId := *response.Response.InvocationId
 	log.Debugln("得到 InvokeId 为 (InvokeId value): " + InvokeId)
 	return CommandId, InvokeId
@@ -84,7 +84,7 @@ func DescribeInvocationResults(region string, CommandId string, InvokeId string,
 	request.SetScheme("https")
 	request.HideOutput = common.BoolPtr(false)
 	response, err := TATClient(region).DescribeInvocationTasks(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	InvokeRecordStatus := response.Response.InvocationTaskSet[0].TaskStatus
 	CommandId = *response.Response.InvocationTaskSet[0].CommandId
 	if *InvokeRecordStatus == "SUCCESS" {
@@ -208,10 +208,10 @@ func LhExec(command string, commandFile string, scriptType string, specifiedInst
 					}
 				} else if commandFile != "" {
 					file, err := os.Open(commandFile)
-					util.HandleErr(err)
+					errutil.HandleErr(err)
 					defer file.Close()
 					contentByte, err := ioutil.ReadAll(file)
-					util.HandleErr(err)
+					errutil.HandleErr(err)
 					content := string(contentByte)
 					command = content[:len(content)-1]
 				}
@@ -231,7 +231,7 @@ func getExecResult(region string, command string, OSType string, scriptType stri
 		commandResult = ""
 	} else {
 		commandResultByte, err := base64.StdEncoding.DecodeString(output)
-		util.HandleErr(err)
+		errutil.HandleErr(err)
 		commandResult = string(commandResultByte)
 	}
 	return commandResult

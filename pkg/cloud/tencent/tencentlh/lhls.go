@@ -3,6 +3,7 @@ package tencentlh
 import (
 	"encoding/json"
 	"github.com/teamssix/cf/pkg/cloud/tencent/tencentcvm"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"github.com/teamssix/cf/pkg/util/pubutil"
 	lh "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/lighthouse/v20200324"
 	"strconv"
@@ -10,7 +11,6 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
-	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 )
@@ -46,7 +46,7 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 		request.InstanceIds = common.StringPtrs([]string{SpecifiedInstanceID})
 	}
 	response, err := LHClient(region).DescribeInstances(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	InstancesList := response.Response.InstanceSet
 	log.Tracef("正在 %s 区域中查找实例 (Looking for instances in the %s region)", region, region)
 	if len(InstancesList) != 0 {
@@ -83,7 +83,7 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 			} else {
 				OSType = "windows"
 			}
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			obj := Instances{
 				InstanceId:       *v.InstanceId,
 				InstanceName:     *v.InstanceName,
@@ -127,12 +127,11 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {
 		log.Info("未发现 LH 实例 (No LH instances found)")
-		cmdutil.WriteCacheFile(td, LHCacheFilePath, region, specifiedInstanceID)
 	} else {
 		Caption := "LH 资源 (LH resources)"
 		cloud.PrintTable(td, Caption)
-		cmdutil.WriteCacheFile(td, LHCacheFilePath, region, specifiedInstanceID)
 	}
+	cmdutil.WriteCacheFile(td, "tencent", "lh", region, specifiedInstanceID)
 }
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {

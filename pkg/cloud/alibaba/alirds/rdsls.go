@@ -2,6 +2,7 @@ package alirds
 
 import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"github.com/teamssix/cf/pkg/util/pubutil"
 	"strconv"
 
@@ -15,6 +16,7 @@ import (
 var (
 	DescribeDBInstancesOut []DBInstances
 	RDSCacheFilePath       = cmdutil.ReturnCacheFile("alibaba", "RDS")
+	TimestampType          = util.ReturnTimestampType("alibaba", "rds")
 	header                 = []string{"序号 (SN)", "数据库 ID (DB ID)", "数据库类型 (DB Engine)", "数据库版本 (DB Engine Version)", "数据库状态 (DB Staus)", "区域 ID (Region ID)"}
 )
 
@@ -43,7 +45,7 @@ func DescribeDBInstances(region string, running bool, specifiedDBInstanceID stri
 		request.Engine = engine
 	}
 	response, err := RDSClient(region).DescribeDBInstances(request)
-	util.HandleErrNoExit(err)
+	errutil.HandleErrNoExit(err)
 	DBInstancesList := response.Items.DBInstance
 	log.Tracef("正在 %s 区域中查找数据库实例 (Looking for DBInstances in the %s region)", region, region)
 	if len(DBInstancesList) != 0 {
@@ -116,13 +118,12 @@ func PrintDBInstancesListRealTime(region string, running bool, specifiedDBInstan
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {
 		log.Info("未发现 RDS (No RDS found)")
-		cmdutil.WriteCacheFile(td, RDSCacheFilePath, region, specifiedDBInstanceID)
 	} else {
 		Caption := "RDS 资源 (RDS resources)"
 		cloud.PrintTable(td, Caption)
-		cmdutil.WriteCacheFile(td, RDSCacheFilePath, region, specifiedDBInstanceID)
 	}
-	util.WriteTimeStamp(util.ReturnRDSTimeStampFile())
+	cmdutil.WriteCacheFile(td, "alibaba", "rds", region, specifiedDBInstanceID)
+	util.WriteTimestamp(TimestampType)
 }
 
 func PrintDBInstancesListHistory(region string, running bool, specifiedDBInstanceID string, engine string) {
@@ -137,13 +138,13 @@ func PrintDBInstancesList(region string, running bool, specifiedDBInstanceID str
 	if lsFlushCache {
 		PrintDBInstancesListRealTime(region, running, specifiedDBInstanceID, engine)
 	} else {
-		oldTimeStamp := util.ReadTimeStamp(util.ReturnRDSTimeStampFile())
-		if oldTimeStamp == 0 {
+		oldTimestamp := util.ReadTimestamp(TimestampType)
+		if oldTimestamp == 0 {
 			PrintDBInstancesListRealTime(region, running, specifiedDBInstanceID, engine)
-		} else if util.IsFlushCache(oldTimeStamp) {
+		} else if util.IsFlushCache(oldTimestamp) {
 			PrintDBInstancesListRealTime(region, running, specifiedDBInstanceID, engine)
 		} else {
-			util.TimeDifference(oldTimeStamp)
+			util.TimeDifference(oldTimestamp)
 			PrintDBInstancesListHistory(region, running, specifiedDBInstanceID, engine)
 		}
 	}

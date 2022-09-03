@@ -19,8 +19,6 @@ CF 是一个云环境利用框架，主要用来方便红队人员在获得云�
 
 CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
 
-CF 社区地址：[github.com/teamssix/cf/discussions](https://github.com/teamssix/cf/discussions)
-
 ![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202208251726676.png)
 
 ## 使用手册

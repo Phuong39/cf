@@ -8,6 +8,7 @@ import (
 	"github.com/schollz/progressbar/v3"
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/util"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -42,10 +43,10 @@ func Upgrade(version string) {
 		oldBakFileName := cfWorkDir + "/" + oldFileName + ".bak"
 		downloadFile(downloadURL, fileName)
 		err := os.Rename(cfWorkDir+"/"+oldFileName, oldBakFileName)
-		util.HandleErr(err)
+		errutil.HandleErr(err)
 		unzipFile(fileName)
 		err = os.Remove(fileName)
-		util.HandleErr(err)
+		errutil.HandleErr(err)
 		log.Infof("更新完成，历史版本已被重命名为 %s (The update is complete and the previous version has been renamed to %s)", oldFileName+".bak", oldFileName+".bak")
 	} else {
 		log.Infof("当前 %s 版本为最新版本，无需升级 (The current %s version is the latest version, no need to upgrade)", version, version)
@@ -55,9 +56,9 @@ func Upgrade(version string) {
 func downloadFile(downloadURL string, fileName string) {
 	log.Debugln("下载地址 (download url): " + downloadURL)
 	req, err := http.NewRequest("GET", downloadURL, nil)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	resp, err := http.DefaultClient.Do(req)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	defer resp.Body.Close()
 	f, _ := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY, 0644)
 	defer f.Close()
@@ -88,7 +89,7 @@ func unzipFile(fileName string) {
 	if runtime.GOOS == "windows" {
 		archive, err := zip.OpenReader(fileName)
 		if err != nil {
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 		}
 		defer archive.Close()
 		for _, f := range archive.File {
@@ -101,18 +102,18 @@ func unzipFile(fileName string) {
 			}
 
 			if err = os.MkdirAll(filepath.Dir(filePath), os.ModePerm); err != nil {
-				util.HandleErr(err)
+				errutil.HandleErr(err)
 			}
 			dstFile, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
 			if err != nil {
-				util.HandleErr(err)
+				errutil.HandleErr(err)
 			}
 			fileInArchive, err := f.Open()
 			if err != nil {
-				util.HandleErr(err)
+				errutil.HandleErr(err)
 			}
 			if _, err := io.Copy(dstFile, fileInArchive); err != nil {
-				util.HandleErr(err)
+				errutil.HandleErr(err)
 			}
 			dstFile.Close()
 			fileInArchive.Close()
@@ -123,10 +124,10 @@ func unzipFile(fileName string) {
 		os.Rename(oldCfPath, newCfPath)
 	} else {
 		gzipStream, err := os.Open(fileName)
-		util.HandleErr(err)
+		errutil.HandleErr(err)
 		defer gzipStream.Close()
 		uncompressedStream, err := gzip.NewReader(gzipStream)
-		util.HandleErr(err)
+		errutil.HandleErr(err)
 		defer uncompressedStream.Close()
 		tarReader := tar.NewReader(uncompressedStream)
 		for {
@@ -134,7 +135,7 @@ func unzipFile(fileName string) {
 			if err == io.EOF {
 				break
 			}
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err != nil {
 				if err == io.EOF {
 					break
@@ -142,7 +143,7 @@ func unzipFile(fileName string) {
 			}
 			subFileName := filepath.Join(cacheFolder, header.Name)
 			file, err := createFile(subFileName)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			io.Copy(file, tarReader)
 		}
 		log.Debugln("解压完成 (Unzip completed)")
@@ -152,10 +153,10 @@ func unzipFile(fileName string) {
 		os.Rename(oldCfPath, newCfPath)
 		log.Traceln("为 ./cf 文件赋予可执行权限 (Grant execute permission to ./cf file)")
 		f, err := os.Open(newCfPath)
-		util.HandleErr(err)
+		errutil.HandleErr(err)
 		defer f.Close()
 		err = f.Chmod(0755)
-		util.HandleErr(err)
+		errutil.HandleErr(err)
 	}
 }
 

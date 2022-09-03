@@ -1,6 +1,7 @@
 package aliram
 
 import (
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"os"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/sts"
@@ -9,7 +10,6 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth/credentials"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ram"
 	log "github.com/sirupsen/logrus"
-	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
 )
 
@@ -24,7 +24,7 @@ func RAMClient() *ram.Client {
 		if aliconfig.STSToken == "" {
 			credential := credentials.NewAccessKeyCredential(aliconfig.AccessKeyId, aliconfig.AccessKeySecret)
 			client, err := ram.NewClientWithOptions("cn-beijing", config, credential)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("RAM Client 连接成功 (RDS Client connection successful)")
 			}
@@ -32,7 +32,7 @@ func RAMClient() *ram.Client {
 		} else {
 			credential := credentials.NewStsTokenCredential(aliconfig.AccessKeyId, aliconfig.AccessKeySecret, aliconfig.STSToken)
 			client, err := ram.NewClientWithOptions("cn-beijing", config, credential)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("RAM Client 连接成功 (RDS Client connection successful)")
 			}
@@ -52,7 +52,7 @@ func STSClient() *sts.Client {
 		if aliconfig.STSToken == "" {
 			credential := credentials.NewAccessKeyCredential(aliconfig.AccessKeyId, aliconfig.AccessKeySecret)
 			client, err := sts.NewClientWithOptions("cn-beijing", config, credential)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("RAM Client 连接成功 (RDS Client connection successful)")
 			}
@@ -60,7 +60,7 @@ func STSClient() *sts.Client {
 		} else {
 			credential := credentials.NewStsTokenCredential(aliconfig.AccessKeyId, aliconfig.AccessKeySecret, aliconfig.STSToken)
 			client, err := sts.NewClientWithOptions("cn-beijing", config, credential)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("RAM Client 连接成功 (RDS Client connection successful)")
 			}

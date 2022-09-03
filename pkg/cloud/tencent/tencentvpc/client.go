@@ -1,10 +1,10 @@
 package tencentvpc
 
 import (
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"os"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
@@ -23,7 +23,7 @@ func VPCClient(region string) *vpc.Client {
 		if tencentconfig.STSToken == "" {
 			credential := common.NewCredential(tencentconfig.AccessKeyId, tencentconfig.AccessKeySecret)
 			client, err := vpc.NewClient(credential, region, cpf)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("VPC Client 连接成功 (VPC Client connection successful)")
 			}
@@ -31,7 +31,7 @@ func VPCClient(region string) *vpc.Client {
 		} else {
 			credential := common.NewTokenCredential(tencentconfig.AccessKeyId, tencentconfig.AccessKeySecret, tencentconfig.STSToken)
 			client, err := vpc.NewClient(credential, region, cpf)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("VPC Client 连接成功 (VPC Client connection successful)")
 			}

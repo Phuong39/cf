@@ -6,7 +6,7 @@ import (
 	"github.com/teamssix/cf/pkg/cloud"
 	"github.com/teamssix/cf/pkg/cloud/tencent/tencentcvm"
 	"github.com/teamssix/cf/pkg/cloud/tencent/tencentlh"
-	"github.com/teamssix/cf/pkg/util"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	cam "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cam/v20190116"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	cvm "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm/v20170312"
@@ -142,7 +142,7 @@ func ListPermissions() {
 func getCallerIdentity() (string, uint64) {
 	request := sts.NewGetCallerIdentityRequest()
 	response, err := STSClient().GetCallerIdentity(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	accountType := response.Response.Type
 	accountId, _ := strconv.Atoi(*response.Response.UserId)
 	return *accountType, uint64(accountId)
@@ -186,7 +186,7 @@ func listPoliciesForGroup(groupName uint64) [][]string {
 	request := cam.NewListAttachedGroupPoliciesRequest()
 	request.TargetGroupId = common.Uint64Ptr(groupName)
 	response, err := CAMClient().ListAttachedGroupPolicies(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	var data [][]string
 	for n, i := range response.Response.List {
 		SN := strconv.Itoa(n + 1)
@@ -199,7 +199,7 @@ func listGroupsForUser(accountId uint64) []uint64 {
 	request := cam.NewListGroupsForUserRequest()
 	request.SubUin = common.Uint64Ptr(accountId)
 	response, err := CAMClient().ListGroupsForUser(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	var groups []uint64
 	for _, g := range response.Response.GroupInfo {
 		groups = append(groups, *g.GroupId)

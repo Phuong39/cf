@@ -1,13 +1,13 @@
 package tencentvpc
 
 import (
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"github.com/teamssix/cf/pkg/util/pubutil"
 	"strconv"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
 	"github.com/teamssix/cf/pkg/cloud/tencent/tencentcvm"
-	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
 	vpc "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vpc/v20170312"
 )
@@ -23,14 +23,14 @@ var (
 	vpcHeader        = []string{"序号 (SN)", "安全组 ID (Security Group ID)", "类型 (Type)", "动作 (Action)", "协议 (Protocol)", "端口 (Port)", "网段或IP (CidrBlock)", "安全组规则描述 (PolicyDescription)", "区域 ID (Region ID)"}
 )
 
-//查看安全组
+// 查看安全组
 func DescribeSecurityGroups(region string) ([]*string, []string) {
 	var vpcSecGP []*string
 	var regions []string
 	request := vpc.NewDescribeSecurityGroupsRequest()
 	request.SetScheme("https")
 	response, err := VPCClient(region).DescribeSecurityGroups(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	log.Tracef("正在 %s 区域中查找安全组 (Looking for vpc security group in the %s region)", region, region)
 	securityGroup := response.Response
 	if *securityGroup.TotalCount > 0 {
@@ -46,17 +46,17 @@ func DescribeSecurityGroups(region string) ([]*string, []string) {
 	return nil, nil
 }
 
-//查看安全组的规则
+// 查看安全组的规则
 func DescribeSecurityGroupPolicies(region string, securityGroupId *string) (*vpc.SecurityGroupPolicySet, error) {
 	request := vpc.NewDescribeSecurityGroupPoliciesRequest()
 	request.SetScheme("https")
 	request.SecurityGroupId = securityGroupId
 	response, err := VPCClient(region).DescribeSecurityGroupPolicies(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	return response.Response.SecurityGroupPolicySet, err
 }
 
-//处理全部或指定地区的安全组规则
+// 处理全部或指定地区的安全组规则
 func ReturnVPCSecurityGroupPoliciesList(region string, securityGroupId *string) []securityGroupPolicyList {
 	var (
 		secGroupPolicy     securityGroupPolicyList
@@ -155,12 +155,11 @@ func PrintVPCSecurityGroupPoliciesListRealTime(region string, securityGroupId *s
 	var td = cloud.TableData{Header: vpcHeader, Body: data}
 	if len(data) == 0 {
 		log.Info("未发现 VPC 安全组规则 (Can not find vpc security group egress)")
-		cmdutil.WriteCacheFile(td, VPCCacheFilePath, region, *securityGroupId)
 	} else {
 		eCaption := "VPC 安全组规则 (vpc security group egress)"
 		cloud.PrintTable(td, eCaption)
-		cmdutil.WriteCacheFile(td, VPCCacheFilePath, region, *securityGroupId)
 	}
+	cmdutil.WriteCacheFile(td, "tencent", "vpc", region, *securityGroupId)
 }
 
 func PrintVPCSecurityGroupPoliciesListHistory(region string, securityGroupId *string) {

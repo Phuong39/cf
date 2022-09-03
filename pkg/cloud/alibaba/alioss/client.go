@@ -2,12 +2,12 @@ package alioss
 
 import (
 	"fmt"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"os"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
-	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
@@ -31,14 +31,14 @@ func (o *OSSCollector) OSSClient(region string) *OSSCollector {
 	} else {
 		if config.STSToken == "" {
 			client, err := oss.New(CreateOSSEndpoint(region), config.AccessKeyId, config.AccessKeySecret)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("OSS Client 连接成功 (OSS Client connection successful)")
 			}
 			o.Client = client
 		} else {
 			client, err := oss.New(CreateOSSEndpoint(region), config.AccessKeyId, config.AccessKeySecret)
-			util.HandleErr(err)
+			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("OSS Client 连接成功 (OSS Client connection successful)")
 			}

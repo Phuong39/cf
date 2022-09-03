@@ -3,7 +3,7 @@ package alioss
 import (
 	"fmt"
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/teamssix/cf/pkg/util/pubutil"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"strconv"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
@@ -41,6 +41,7 @@ var (
 	ObjectSize       int64
 	objects          []objectContents
 	OSSCacheFilePath = cmdutil.ReturnCacheFile("alibaba", "OSS")
+	TimestampType    = util.ReturnTimestampType("alibaba", "oss")
 	header           = []string{"序号 (SN)", "名称 (Name)", "存储桶 ACL (Bucket ACL)", "对象数量 (Object Number)", "存储桶大小 (Bucket Size)", "区域 (Region)", "存储桶地址 (Bucket URL)"}
 )
 
@@ -65,7 +66,7 @@ func (o *OSSCollector) ListBuckets() ([]Bucket, error) {
 			break
 		}
 	}
-	util.HandleErrNoExit(err)
+	errutil.HandleErrNoExit(err)
 	return out, err
 }
 
@@ -89,7 +90,7 @@ func (o *OSSCollector) ListObjects(bucketName string) ([]Object, []objectContent
 		region := j.Region
 		o.OSSClient(region)
 		bucket, err := o.Client.Bucket(BucketName)
-		util.HandleErr(err)
+		errutil.HandleErr(err)
 		objects = nil
 		getAllObjects(bucket, marker, size)
 		log.Debugf("在 %s 存储桶中找到了 %d 个对象 (Found %d Objects in %s Bucket)", BucketName, objectNum, objectNum, BucketName)
@@ -107,7 +108,7 @@ func (o *OSSCollector) ListObjects(bucketName string) ([]Object, []objectContent
 
 func getAllObjects(bucket *oss.Bucket, marker oss.Option, size int) {
 	lor, err := bucket.ListObjects(oss.MaxKeys(size), marker)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	marker = oss.Marker(lor.NextMarker)
 	objectNum = objectNum + len(lor.Objects)
 	for _, k := range lor.Objects {
@@ -146,7 +147,7 @@ func (o *OSSCollector) GetBucketACL() []Acl {
 		region := j.Region
 		o.OSSClient(region)
 		gbar, err := o.Client.GetBucketACL(BucketName)
-		util.HandleErr(err)
+		errutil.HandleErr(err)
 
 		BucketACL := gbar.ACL
 		if BucketACL == "private" {
@@ -208,34 +209,29 @@ func PrintBucketsListRealTime(region string) {
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {
 		log.Info("没发现存储桶 (No Buckets Found)")
-		cmdutil.WriteCacheFile(td, OSSCacheFilePath, region, "all")
 	} else {
 		Caption := "OSS 资源 (OSS resources)"
 		cloud.PrintTable(td, Caption)
-		cmdutil.WriteCacheFile(td, OSSCacheFilePath, region, "all")
 	}
-	util.WriteTimeStamp(util.ReturnOSSTimeStampFile())
+	cmdutil.WriteCacheFile(td, "alibaba", "oss", region, "all")
+	util.WriteTimestamp(TimestampType)
 }
 
 func PrintBucketsListHistory(region string) {
-	if pubutil.FileExists(OSSCacheFilePath) {
-		cmdutil.PrintOSSCacheFile(OSSCacheFilePath, header, region, "alibaba", "OSS")
-	} else {
-		PrintBucketsListRealTime(region)
-	}
+	cmdutil.PrintOSSCacheFile(header, region, "alibaba", "OSS")
 }
 
 func PrintBucketsList(region string, lsFlushCache bool) {
 	if lsFlushCache {
 		PrintBucketsListRealTime(region)
 	} else {
-		oldTimeStamp := util.ReadTimeStamp(util.ReturnOSSTimeStampFile())
-		if oldTimeStamp == 0 {
+		oldTimestamp := util.ReadTimestamp(TimestampType)
+		if oldTimestamp == 0 {
 			PrintBucketsListRealTime(region)
-		} else if util.IsFlushCache(oldTimeStamp) {
+		} else if util.IsFlushCache(oldTimestamp) {
 			PrintBucketsListRealTime(region)
 		} else {
-			util.TimeDifference(oldTimeStamp)
+			util.TimeDifference(oldTimestamp)
 			PrintBucketsListHistory(region)
 		}
 	}

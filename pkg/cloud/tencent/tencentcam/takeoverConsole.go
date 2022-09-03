@@ -5,6 +5,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
 	"github.com/teamssix/cf/pkg/util"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	cam "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cam/v20190116"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 )
@@ -16,7 +17,7 @@ func CreateUser(randomPasswords string) {
 	request.Password = common.StringPtr(randomPasswords)
 	request.NeedResetPassword = common.Uint64Ptr(0)
 	_, err := CAMClient().AddUser(request)
-	util.HandleErrNoExit(err)
+	errutil.HandleErrNoExit(err)
 	if err == nil {
 		log.Debugln("创建 crossfire 用户成功 (Create crossfire user successfully)")
 	}
@@ -26,7 +27,7 @@ func GetUserUin() uint64 {
 	request := cam.NewGetUserRequest()
 	request.Name = common.StringPtr("crossfire")
 	response, err := CAMClient().GetUser(request)
-	util.HandleErrNoExit(err)
+	errutil.HandleErrNoExit(err)
 	if err == nil {
 		log.Debugln("获取 crossfire 用户UIN (Get crossfire user Uin successfully)")
 	}
@@ -39,7 +40,7 @@ func AttachPolicyToUser() {
 	request.PolicyId = common.Uint64Ptr(1)
 	request.AttachUin = common.Uint64Ptr(UserUin)
 	_, err := CAMClient().AttachUserPolicy(request)
-	util.HandleErrNoExit(err)
+	errutil.HandleErrNoExit(err)
 	if err == nil {
 		log.Debugln("成功为 crossfire 用户赋予管理员权限 (Successfully grant AdministratorAccess policy to the crossfire user)")
 	}
@@ -48,7 +49,7 @@ func AttachPolicyToUser() {
 func GetOwnerUin() string {
 	request := cam.NewGetUserAppIdRequest()
 	response, err := CAMClient().GetUserAppId(request)
-	util.HandleErrNoExit(err)
+	errutil.HandleErrNoExit(err)
 	OwnerUin := response.Response.OwnerUin
 	return *OwnerUin
 }

@@ -3,6 +3,7 @@ package aliecs
 import (
 	"encoding/base64"
 	"fmt"
+	"github.com/teamssix/cf/pkg/util/errutil"
 	"io/ioutil"
 	"os"
 	"strconv"
@@ -16,7 +17,6 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"github.com/gookit/color"
 	log "github.com/sirupsen/logrus"
-	"github.com/teamssix/cf/pkg/util"
 )
 
 var timeSleepSum int
@@ -41,7 +41,7 @@ func CreateCommand(region string, OSType string, command string, scriptType stri
 	log.Debugln("执行命令 (Execute command): \n" + command)
 	request.CommandContent = base64.StdEncoding.EncodeToString([]byte(command))
 	response, err := ECSClient(region).CreateCommand(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	CommandId := response.CommandId
 	log.Debugln("得到 CommandId 为 (CommandId value): " + CommandId)
 	return CommandId
@@ -52,7 +52,7 @@ func DeleteCommand(region string, CommandId string) {
 	request.Scheme = "https"
 	request.CommandId = CommandId
 	_, err := ECSClient(region).DeleteCommand(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	log.Debugln("删除 CommandId (Delete CommandId): " + CommandId)
 }
 
@@ -63,7 +63,7 @@ func InvokeCommand(region string, OSType string, command string, scriptType stri
 	request.CommandId = CommandId
 	request.InstanceId = &[]string{specifiedInstanceID}
 	response, err := ECSClient(region).InvokeCommand(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	InvokeId := response.InvokeId
 	log.Debugln("得到 InvokeId 为 (InvokeId value): " + InvokeId)
 	return CommandId, InvokeId
@@ -78,7 +78,7 @@ func DescribeInvocationResults(region string, CommandId string, InvokeId string,
 	request.Scheme = "https"
 	request.InvokeId = InvokeId
 	response, err := ECSClient(region).DescribeInvocationResults(request)
-	util.HandleErr(err)
+	errutil.HandleErr(err)
 	InvokeRecordStatus := response.Invocation.InvocationResults.InvocationResult[0].InvokeRecordStatus
 	if InvokeRecordStatus == "Finished" {
 		output = response.Invocation.InvocationResults.InvocationResult[0].Output
@@ -204,10 +204,10 @@ func ECSExec(command string, commandFile string, scriptType string, specifiedIns
 						}
 					} else if commandFile != "" {
 						file, err := os.Open(commandFile)
-						util.HandleErr(err)
+						errutil.HandleErr(err)
 						defer file.Close()
 						contentByte, err := ioutil.ReadAll(file)
-						util.HandleErr(err)
+						errutil.HandleErr(err)
 						content := string(contentByte)
 						command = content[:len(content)-1]
 					}
@@ -232,7 +232,7 @@ func getExecResult(region string, command string, OSType string, scriptType stri
 		commandResult = ""
 	} else {
 		commandResultByte, err := base64.StdEncoding.DecodeString(output)
-		util.HandleErr(err)
+		errutil.HandleErr(err)
 		commandResult = string(commandResultByte)
 	}
 	return commandResult
