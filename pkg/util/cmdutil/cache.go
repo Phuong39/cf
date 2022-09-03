@@ -99,10 +99,12 @@ func WriteCacheFile(td cloud.TableData, provider string, serviceType string, reg
 }
 
 func ReadOSSCache(provider string) []pubutil.OSSCache {
+	log.Debugf("正在读取 %s 的对象存储缓存数据 (Reading %s object storage cache data)", provider, provider)
 	return database.SelectOSSCache(provider)
 }
 
 func ReadECSCache(provider string) []pubutil.ECSCache {
+	log.Debugf("正在读取 %s 的弹性计算实例缓存数据 (Reading %s elastic compute instances cache data)", provider, provider)
 	return database.SelectECSCache(provider)
 }
 

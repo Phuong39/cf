@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/teamssix/cf/pkg/util/errutil"
+	"github.com/teamssix/cf/pkg/util/pubutil"
 	"strconv"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
@@ -235,4 +236,24 @@ func PrintBucketsList(region string, lsFlushCache bool) {
 			PrintBucketsListHistory(region)
 		}
 	}
+}
+
+func ReturnBucketList() []string {
+	var (
+		buckets  []string
+		ossCache []pubutil.OSSCache
+	)
+	OSSCollector := &OSSCollector{}
+	ossCache = cmdutil.ReadOSSCache("alibaba")
+	if len(ossCache) == 0 {
+		BucketsList, _ := OSSCollector.ListBuckets()
+		for _, v := range BucketsList {
+			buckets = append(buckets, v.Name)
+		}
+	} else {
+		for _, v := range ossCache {
+			buckets = append(buckets, v.Name)
+		}
+	}
+	return buckets
 }
