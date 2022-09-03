@@ -2,6 +2,7 @@ package cmdutil
 
 import (
 	"fmt"
+	"github.com/gookit/color"
 	"github.com/teamssix/cf/pkg/util/database"
 	"github.com/teamssix/cf/pkg/util/errutil"
 	"github.com/teamssix/cf/pkg/util/pubutil"
@@ -124,35 +125,56 @@ func GetConfig(provider string) cloud.Config {
 	return database.SelectConfigInUse(provider)
 }
 
-func ConfigLs() {
+func ConfigLs(selectAll bool) {
 	var (
 		STSToken          string
-		CommonTableHeader = []string{"别名 (Alias)", "访问凭证 ID (Access Key Id)", "访问凭证密钥 (Access Key Secret)", "临时访问凭证令牌 (STS Token)", "云服务提供商 (Provider)", "是否在使用 (In Use)"}
+		CommonTableHeader = []string{"别名 (Alias)", "访问凭证 ID (Access Key Id)", "访问凭证密钥 (Secret Key)", "临时访问凭证令牌 (STS Token)", "云服务提供商 (Provider)", "是否在使用 (In Use)"}
 	)
 	configList := database.SelectConfig()
-	Data := cloud.TableData{
-		Header: CommonTableHeader,
-	}
-	if len(configList) == 0 {
-		log.Info("未找到任何密钥 (No key found)")
-	} else {
-		for _, k := range configList {
-			if len(STSToken) > 10 {
-				STSToken = MaskAK(STSToken)
-			} else {
-				STSToken = k.STSToken
-			}
-			Data.Body = append(Data.Body, []string{
-				k.Alias,
-				k.AccessKeyId,
-				k.AccessKeySecret,
-				STSToken,
-				k.Provider,
-				strconv.FormatBool(k.InUse),
-			})
+	if selectAll {
+		for _, v := range configList {
+			color.Tag("info").Print("\n别名 (Alias): ")
+			fmt.Println(v.Alias)
+			color.Tag("info").Print("访问凭证 ID (Access Key Id): ")
+			fmt.Println(v.AccessKeyId)
+			color.Tag("info").Print("访问凭证密钥 (Secret Key): ")
+			fmt.Println(v.AccessKeySecret)
+			color.Tag("info").Print("临时访问凭证令牌 (STS Token): ")
+			fmt.Println(v.STSToken)
+			color.Tag("info").Print("云服务提供商 (Provider): ")
+			fmt.Println(v.Provider)
+			color.Tag("info").Print("是否在使用 (In Use): ")
+			fmt.Println(v.InUse)
 		}
-		cloud.PrintTable(Data, "当前存储的访问凭证信息")
+	} else {
+		Data := cloud.TableData{
+			Header: CommonTableHeader,
+		}
+		if len(configList) == 0 {
+			log.Info("未找到任何密钥 (No key found)")
+		} else {
+			for _, v := range configList {
+				if len(v.STSToken) > 10 {
+					STSToken = MaskAK(v.STSToken)
+				} else {
+					STSToken = v.STSToken
+				}
+				Data.Body = append(Data.Body, []string{
+					v.Alias,
+					v.AccessKeyId,
+					v.AccessKeySecret,
+					STSToken,
+					v.Provider,
+					strconv.FormatBool(v.InUse),
+				})
+			}
+			cloud.PrintTable(Data, "当前存储的访问凭证信息")
+		}
 	}
+}
+
+func ConfigMf() {
+	database.UpdateConfigModify()
 }
 
 func ConfigSw() {

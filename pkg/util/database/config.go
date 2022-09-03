@@ -77,6 +77,62 @@ func UpdateConfigSwitch(provider string) {
 	}
 }
 
+func UpdateConfigModify() {
+	var (
+		config           string
+		selectColumn     string
+		mfValue          string
+		configListId     []string
+		configList       []cloud.Config
+		selectColumnList = []string{"别名 (Alias)", "访问凭证 ID (Access Key Id)", "访问凭证密钥 (Secret Key)", "临时访问凭证令牌 (STS Token)"}
+	)
+	configList = SelectConfig()
+	if len(configList) > 0 {
+		for _, v := range configList {
+			configListId = append(configListId, v.Provider+"-"+v.Alias+"-"+v.AccessKeyId)
+		}
+
+		prompt1 := &survey.Select{
+			Message: "请选择你要修改的访问凭证 (Please select the access key you want to modify): ",
+			Options: configListId,
+		}
+		err := survey.AskOne(prompt1, &config)
+		errutil.HandleErr(err)
+		configSplit := strings.Split(config, "-")
+
+		prompt2 := &survey.Select{
+			Message: "请选择你要修改的属性 (Please select the type you want to modify): ",
+			Options: selectColumnList,
+		}
+		err = survey.AskOne(prompt2, &selectColumn)
+		errutil.HandleErr(err)
+		switch {
+		case selectColumn == "别名 (Alias)":
+			selectColumn = "alias"
+		case selectColumn == "访问凭证 ID (Access Key Id)":
+			selectColumn = "access_key_id"
+		case selectColumn == "访问凭证密钥 (Secret Key)":
+			selectColumn = "access_key_secret"
+		case selectColumn == "临时访问凭证令牌 (STS Token)":
+			selectColumn = "sts_token"
+		}
+
+		var qs = []*survey.Question{
+			{
+				Name:   "ques",
+				Prompt: &survey.Input{Message: "请输入修改后的值 (Please enter the modified value): "},
+			},
+		}
+		err = survey.Ask(qs, &mfValue)
+		errutil.HandleErr(err)
+
+		CacheDb.Model(&cloud.Config{}).Where("provider = ? AND access_key_id = ?", configSplit[0], configSplit[2]).Update(selectColumn, mfValue)
+		log.Infof("修改成功 (Successfully modified)")
+	} else {
+		log.Infoln("未找到任何访问凭证 (No access key found)")
+	}
+}
+
 func SelectConfig() []cloud.Config {
 	var configList []cloud.Config
 	CacheDb.Order("provider").Find(&configList)

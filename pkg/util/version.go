@@ -30,7 +30,7 @@ func AlertUpdateInfo() {
 	} else if IsFlushCache(oldTimestamp) {
 		check, newVersion := CheckVersion(env.Version)
 		if check {
-			log.Warnf("发现 %s 新版本，可以使用 upgrade 命令进行更新 (Found a new version of %s, use the upgrade command to update)\n", newVersion, newVersion)
+			log.Warnf("发现 %s 新版本，可以使用 upgrade 命令进行更新 (Found a new version of %s, use the upgrade command to update)", newVersion, newVersion)
 		} else {
 			log.Debugln("未发现新版本 (No new versions found)")
 		}
