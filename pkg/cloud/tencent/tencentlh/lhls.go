@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/teamssix/cf/pkg/cloud/tencent/tencentcvm"
 	"github.com/teamssix/cf/pkg/util/errutil"
-	"github.com/teamssix/cf/pkg/util/pubutil"
 	lh "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/lighthouse/v20200324"
 	"strconv"
 	"strings"
@@ -48,7 +47,7 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 	response, err := LHClient(region).DescribeInstances(request)
 	errutil.HandleErr(err)
 	InstancesList := response.Response.InstanceSet
-	log.Tracef("正在 %s 区域中查找实例 (Looking for instances in the %s region)", region, region)
+	log.Debugf("正在 %s 区域中查找实例 (Looking for instances in the %s region)", region, region)
 	if len(InstancesList) != 0 {
 		log.Debugf("在 %s 区域下找到 %d 个实例 (Found %d instances in %s region)", region, len(InstancesList), len(InstancesList), region)
 		var (
@@ -135,11 +134,7 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 }
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {
-	if pubutil.FileExists(LHCacheFilePath) {
-		cmdutil.PrintECSCacheFile(LHCacheFilePath, header, region, specifiedInstanceID, "tencent", "LH")
-	} else {
-		PrintInstancesListRealTime(region, running, specifiedInstanceID)
-	}
+	cmdutil.PrintECSCacheFile(header, region, specifiedInstanceID, "tencent", "LH", running)
 }
 
 func PrintInstancesList(region string, running bool, specifiedInstanceID string, lhFlushCache bool) {

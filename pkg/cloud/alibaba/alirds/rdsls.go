@@ -3,7 +3,6 @@ package alirds
 import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/teamssix/cf/pkg/util/errutil"
-	"github.com/teamssix/cf/pkg/util/pubutil"
 	"strconv"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/rds"
@@ -47,7 +46,7 @@ func DescribeDBInstances(region string, running bool, specifiedDBInstanceID stri
 	response, err := RDSClient(region).DescribeDBInstances(request)
 	errutil.HandleErrNoExit(err)
 	DBInstancesList := response.Items.DBInstance
-	log.Tracef("正在 %s 区域中查找数据库实例 (Looking for DBInstances in the %s region)", region, region)
+	log.Debugf("正在 %s 区域中查找数据库实例 (Looking for DBInstances in the %s region)", region, region)
 	if len(DBInstancesList) != 0 {
 		log.Debugf("在 %s 区域下找到 %d 个数据库实例 (Found %d DBInstances in %s region)", region, len(DBInstancesList), len(DBInstancesList), region)
 		for _, i := range DBInstancesList {
@@ -127,11 +126,7 @@ func PrintDBInstancesListRealTime(region string, running bool, specifiedDBInstan
 }
 
 func PrintDBInstancesListHistory(region string, running bool, specifiedDBInstanceID string, engine string) {
-	if pubutil.FileExists(RDSCacheFilePath) {
-		cmdutil.PrintRDSCacheFile(RDSCacheFilePath, header, region, specifiedDBInstanceID, engine, "alibaba", "RDS")
-	} else {
-		PrintDBInstancesListRealTime(region, running, specifiedDBInstanceID, engine)
-	}
+	cmdutil.PrintRDSCacheFile(header, region, specifiedDBInstanceID, engine, "alibaba", "RDS")
 }
 
 func PrintDBInstancesList(region string, running bool, specifiedDBInstanceID string, engine string, lsFlushCache bool) {

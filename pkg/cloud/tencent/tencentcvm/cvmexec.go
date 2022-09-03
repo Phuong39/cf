@@ -107,32 +107,32 @@ func DescribeInvocationResults(region string, CommandId string, InvokeId string,
 func CVMExec(command string, commandFile string, scriptType string, specifiedInstanceID string, region string, batchCommand bool, userData bool, metaDataSTSToken bool, cvmFlushCache bool, lhost string, lport string, timeOut int) {
 	var InstancesList []Instances
 	if cvmFlushCache == false {
-		data := cmdutil.ReadCacheFile(CVMCacheFilePath, "tencent", "CVM")
-		for _, i := range data {
+		data := cmdutil.ReadECSCache("tencent")
+		for _, v := range data {
 			if specifiedInstanceID != "all" {
-				if specifiedInstanceID == i[1] {
+				if specifiedInstanceID == v.InstanceId {
 					obj := Instances{
-						InstanceId:       i[1],
-						InstanceName:     i[2],
-						OSName:           i[3],
-						OSType:           i[4],
-						Status:           i[5],
-						PrivateIpAddress: i[6],
-						PublicIpAddress:  i[7],
-						RegionId:         i[8],
+						InstanceId:       v.InstanceId,
+						InstanceName:     v.InstanceName,
+						OSName:           v.OSName,
+						OSType:           v.OSType,
+						Status:           v.Status,
+						PrivateIpAddress: v.PrivateIpAddress,
+						PublicIpAddress:  v.PublicIpAddress,
+						RegionId:         v.RegionId,
 					}
 					InstancesList = append(InstancesList, obj)
 				}
 			} else {
 				obj := Instances{
-					InstanceId:       i[1],
-					InstanceName:     i[2],
-					OSName:           i[3],
-					OSType:           i[4],
-					Status:           i[5],
-					PrivateIpAddress: i[6],
-					PublicIpAddress:  i[7],
-					RegionId:         i[8],
+					InstanceId:       v.InstanceId,
+					InstanceName:     v.InstanceName,
+					OSName:           v.OSName,
+					OSType:           v.OSType,
+					Status:           v.Status,
+					PrivateIpAddress: v.PrivateIpAddress,
+					PublicIpAddress:  v.PublicIpAddress,
+					RegionId:         v.RegionId,
 				}
 				InstancesList = append(InstancesList, obj)
 			}

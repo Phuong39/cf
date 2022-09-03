@@ -136,7 +136,7 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {
 	if pubutil.FileExists(CVMCacheFilePath) {
-		cmdutil.PrintECSCacheFile(CVMCacheFilePath, header, region, specifiedInstanceID, "tencent", "CVM")
+		cmdutil.PrintECSCacheFile(header, region, specifiedInstanceID, "tencent", "CVM", running)
 	} else {
 		PrintInstancesListRealTime(region, running, specifiedInstanceID)
 	}
