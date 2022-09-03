@@ -24,6 +24,37 @@ type OSSCache struct {
 	BucketURL    string
 }
 
+type ECSCache struct {
+	AccessKeyId      string
+	SN               string
+	InstanceId       string
+	InstanceName     string
+	OSName           string
+	OSType           string
+	Status           string
+	PrivateIpAddress string
+	PublicIpAddress  string
+	RegionId         string
+}
+
+type RDSCache struct {
+	AccessKeyId      string
+	SN               string
+	DBInstanceId     string
+	Engine           string
+	EngineVersion    string
+	DBInstanceStatus string
+	RegionId         string
+}
+
+type SSHCache struct {
+	AssociatedInstanceId string
+	CreatedTime          string
+	KeyId                string
+	KeyName              string
+	Region               string
+}
+
 func GetConfigFilePath() string {
 	home, _ := GetCFHomeDir()
 	CreateFolder(home)

@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/teamssix/cf/pkg/util/errutil"
-	"github.com/teamssix/cf/pkg/util/pubutil"
-
 	"strconv"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
@@ -29,7 +27,6 @@ type Instances struct {
 
 var (
 	DescribeInstancesOut []Instances
-	ECSCacheFilePath     = cmdutil.ReturnCacheFile("alibaba", "ECS")
 	TimestampType        = util.ReturnTimestampType("alibaba", "ecs")
 	header               = []string{"序号 (SN)", "实例 ID (Instance ID)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private IP)", "公网 IP (Public IP)", "区域 ID (Region ID)"}
 )
@@ -138,11 +135,7 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 }
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {
-	if pubutil.FileExists(ECSCacheFilePath) {
-		cmdutil.PrintECSCacheFile(ECSCacheFilePath, header, region, specifiedInstanceID, "alibaba", "ECS")
-	} else {
-		PrintInstancesListRealTime(region, running, specifiedInstanceID)
-	}
+	cmdutil.PrintECSCacheFile(header, region, specifiedInstanceID, "alibaba", "ECS", running)
 }
 
 func PrintInstancesList(region string, running bool, specifiedInstanceID string, ecsFlushCache bool) {

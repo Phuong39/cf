@@ -30,6 +30,8 @@ func init() {
 	err = CacheDataBase.MainDB.AutoMigrate(&cloud.Config{})
 	err = CacheDataBase.MainDB.AutoMigrate(&pubutil.TimestampCache{})
 	err = CacheDataBase.MainDB.AutoMigrate(&pubutil.OSSCache{})
+	err = CacheDataBase.MainDB.AutoMigrate(&pubutil.ECSCache{})
+	err = CacheDataBase.MainDB.AutoMigrate(&pubutil.RDSCache{})
 	if err != nil {
 		log.Errorln("数据库自动配置失败 (Database AutoMigrate Key Struct failure)")
 		errutil.HandleErr(err)

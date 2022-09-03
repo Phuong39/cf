@@ -116,13 +116,13 @@ func DownloadObjects(bucketName string, objectKey string, outputPath string, oss
 				}
 			}
 		} else {
-			Buckets := cmdutil.ReadCacheFile(OSSCacheFilePath, "alibaba", "OSS")
+			Buckets := cmdutil.ReadOSSCache("alibaba")
 			for _, v := range Buckets {
 				OSSCollector := &OSSCollector{}
-				_, objects := OSSCollector.ListObjects(v[1])
+				_, objects := OSSCollector.ListObjects(v.Name)
 				if len(objects) > 0 {
-					bucketList = append(bucketList, v[1])
-					bucketListAll = append(bucketListAll, v[1])
+					bucketList = append(bucketList, v.Name)
+					bucketListAll = append(bucketListAll, v.Name)
 				}
 			}
 		}
