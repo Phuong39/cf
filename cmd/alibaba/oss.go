@@ -19,14 +19,14 @@ func init() {
 	alibabaCmd.AddCommand(ossCmd)
 	ossCmd.AddCommand(ossLsCmd)
 	ossCmd.AddCommand(ossObjCmd)
-	ossLsCmd.Flags().StringVarP(&ossLsRegion, "region", "r", "all", "指定区域 ID (Set Region ID)")
+	ossLsCmd.Flags().StringVarP(&ossLsRegion, "region", "r", "all", "指定区域 ID (Specify region ID)")
 	ossLsCmd.Flags().BoolVar(&ossLsFlushCache, "flushCache", false, "刷新缓存，不使用缓存数据 (Refresh the cache without using cached data)")
 
 	ossObjCmd.AddCommand(ossObjLsCmd)
 	ossObjCmd.AddCommand(ossObjGetCmd)
-	ossObjGetCmd.Flags().StringVarP(&ossDownloadBucket, "bucket", "b", "all", "指定存储桶 (Set Bucket)")
-	ossObjGetCmd.Flags().StringVarP(&ossDownloadObject, "objectKey", "k", "all", "指定对象 (Set object key)")
-	ossObjGetCmd.Flags().StringVarP(&ossDownloadOutputPath, "outputPath", "o", "./result", "指定导出路径 (Set output path)")
+	ossObjGetCmd.Flags().StringVarP(&ossDownloadBucket, "bucket", "b", "all", "指定存储桶 (Specify Bucket)")
+	ossObjGetCmd.Flags().StringVarP(&ossDownloadObject, "objectKey", "k", "all", "指定对象 (Specify object key)")
+	ossObjGetCmd.Flags().StringVarP(&ossDownloadOutputPath, "outputPath", "o", "./result", "指定导出路径 (Specify output path)")
 }
 
 var ossCmd = &cobra.Command{

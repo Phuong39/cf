@@ -43,6 +43,7 @@ var errorMessagesExit = map[string]string{
 
 func HandleErr(e error) {
 	if e != nil {
+		log.Traceln(e.Error())
 		for k, v := range errorMessages {
 			if strings.Contains(e.Error(), k) {
 				log.Errorln(v)
@@ -55,6 +56,7 @@ func HandleErr(e error) {
 
 func HandleErrNoExit(e error) {
 	if e != nil {
+		log.Traceln(e.Error())
 		for k, v := range errorMessagesNoExit {
 			if strings.Contains(e.Error(), k) {
 				log.Debugln(v)

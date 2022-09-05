@@ -20,8 +20,8 @@ func init() {
 	lhCmd.AddCommand(lhLsCmd)
 	lhCmd.AddCommand(lhExecCmd)
 	lhCmd.PersistentFlags().BoolVar(&lhFlushCache, "flushCache", false, "刷新缓存，不使用缓存数据 (Refresh the cache without using cached data)")
-	lhCmd.Flags().StringVarP(&lhRegion, "region", "r", "all", "指定区域 ID (Set Region ID)")
-	lhCmd.Flags().StringVarP(&lhSpecifiedInstanceID, "instanceID", "i", "all", "指定实例 ID (Set Instance ID)")
+	lhCmd.Flags().StringVarP(&lhRegion, "region", "r", "all", "指定区域 ID (Specify Region ID)")
+	lhCmd.Flags().StringVarP(&lhSpecifiedInstanceID, "instanceID", "i", "all", "指定实例 ID (Specify Instance ID)")
 
 	lhLsCmd.Flags().BoolVar(&running, "running", false, "只显示正在运行的实例 (Show only running instances)")
 

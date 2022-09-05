@@ -32,11 +32,11 @@ func init() {
 	cvmCmd.PersistentFlags().BoolVar(&cvmFlushCache, "flushCache", false, "刷新缓存，不使用缓存数据 (Refresh the cache without using cached data)")
 
 	cvmLsCmd.Flags().BoolVar(&running, "running", false, "只显示正在运行的实例 (Show only running instances)")
-	cvmLsCmd.Flags().StringVarP(&cvmLsRegion, "region", "r", "all", "指定区域 ID (Set Region ID)")
-	cvmLsCmd.Flags().StringVarP(&cvmLsSpecifiedInstanceID, "instanceID", "i", "all", "指定实例 ID (Set Instance ID)")
+	cvmLsCmd.Flags().StringVarP(&cvmLsRegion, "region", "r", "all", "指定区域 ID (Specify Region ID)")
+	cvmLsCmd.Flags().StringVarP(&cvmLsSpecifiedInstanceID, "instanceID", "i", "all", "指定实例 ID (Specify Instance ID)")
 
 	cvmExecCmd.Flags().StringVarP(&command, "command", "c", "", "设置待执行的命令 (Set the command you want to execute)")
-	cvmExecCmd.Flags().StringVarP(&cvmExecSpecifiedInstanceID, "instanceID", "i", "all", "指定实例 ID (Set Instance ID)")
+	cvmExecCmd.Flags().StringVarP(&cvmExecSpecifiedInstanceID, "instanceID", "i", "all", "指定实例 ID (Specify Instance ID)")
 	cvmExecCmd.Flags().StringVarP(&commandFile, "file", "f", "", "设置待执行的命令文件 (Set the command file you want to execute)")
 	cvmExecCmd.Flags().StringVarP(&scriptType, "scriptType", "s", "auto", "设置执行脚本的类型 (Set the type of script to execute) [sh|bat|ps]")
 	cvmExecCmd.Flags().StringVar(&lhost, "lhost", "", "设置反弹 shell 的主机 IP (Set the ip of the listening host)")

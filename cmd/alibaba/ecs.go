@@ -32,8 +32,8 @@ func init() {
 
 	ecsCmd.PersistentFlags().BoolVar(&ecsFlushCache, "flushCache", false, "刷新缓存，不使用缓存数据 (Refresh the cache without using cached data)")
 
-	ecsLsCmd.Flags().StringVarP(&ecsLsRegion, "region", "r", "all", "指定区域 ID (Set Region ID)")
-	ecsLsCmd.Flags().StringVarP(&ecsLsSpecifiedInstanceID, "instanceID", "i", "all", "指定实例 ID (Set Instance ID)")
+	ecsLsCmd.Flags().StringVarP(&ecsLsRegion, "region", "r", "all", "指定区域 ID (Specify region ID)")
+	ecsLsCmd.Flags().StringVarP(&ecsLsSpecifiedInstanceID, "instanceID", "i", "all", "指定实例 ID (Specify instance ID)")
 	ecsLsCmd.Flags().BoolVar(&running, "running", false, "只显示正在运行的实例 (Show only running instances)")
 
 	ecsExecCmd.Flags().StringVarP(&ecsExecSpecifiedInstanceID, "instanceID", "i", "all", "指定实例 ID (Set Instance ID)")

@@ -16,9 +16,9 @@ func init() {
 	alibabaCmd.AddCommand(rdsCmd)
 	rdsCmd.AddCommand(rdslsCmd)
 	rdsCmd.PersistentFlags().BoolVar(&rdslsFlushCache, "flushCache", false, "刷新缓存，不使用缓存数据 (Refresh the cache without using cached data)")
-	rdslsCmd.Flags().StringVarP(&rdslsRegion, "region", "r", "all", "指定区域 ID (Set Region ID)")
-	rdslsCmd.Flags().StringVarP(&rdslsSpecifiedDBInstanceID, "DBInstanceID", "i", "all", "指定数据库实例 ID (Set DBInstance ID)")
-	rdslsCmd.Flags().StringVarP(&rdslsEngine, "engine", "e", "all", "指定数据库类型 (Set DBInstance Type)")
+	rdslsCmd.Flags().StringVarP(&rdslsRegion, "region", "r", "all", "指定区域 ID (Specify Region ID)")
+	rdslsCmd.Flags().StringVarP(&rdslsSpecifiedDBInstanceID, "DBInstanceID", "i", "all", "指定数据库实例 ID (Specify DBInstance ID)")
+	rdslsCmd.Flags().StringVarP(&rdslsEngine, "engine", "e", "all", "指定数据库类型 (Specify DBInstance Type)")
 }
 
 var rdsCmd = &cobra.Command{

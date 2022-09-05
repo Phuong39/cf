@@ -12,13 +12,12 @@ func LsTakeoverConsole(provider string) {
 		log.Info("未找到控制台接管信息 (No console takeover information found)")
 	} else {
 		var (
-			header = []string{"云服务提供商 (Provider)", "访问凭证别名 (AK Alias)", "主账号 ID (Primary Account ID)", "用户名 (User Name)", "密码 (Password)", "控制台登录地址 (Login Url)", "接管时间 (Takeover Time)"}
+			header = []string{"云服务提供商 (Provider)", "主账号 ID (Primary Account ID)", "用户名 (User Name)", "密码 (Password)", "控制台登录地址 (Login Url)", "接管时间 (Takeover Time)"}
 			data   [][]string
 		)
 		for _, v := range TakeoverConsoleCache {
 			data = append(data, []string{
 				v.Provider,
-				v.AccessKeyAlias,
 				v.PrimaryAccountID,
 				v.UserName,
 				v.Password,
@@ -27,6 +26,6 @@ func LsTakeoverConsole(provider string) {
 			})
 		}
 		var td = cloud.TableData{Header: header, Body: data}
-		cloud.PrintTable(td, "控制台接管信息")
+		cloud.PrintTable(td, "控制台接管信息 (Console takeover information)")
 	}
 }
