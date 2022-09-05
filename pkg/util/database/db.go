@@ -28,10 +28,15 @@ func init() {
 	CacheDbList.MainDB = Open(pubutil.GetConfigFilePath())
 	CacheDataBase = CacheDbList
 	err = CacheDataBase.MainDB.AutoMigrate(&cloud.Config{})
+	errutil.HandleErr(err)
 	err = CacheDataBase.MainDB.AutoMigrate(&pubutil.TimestampCache{})
+	errutil.HandleErr(err)
 	err = CacheDataBase.MainDB.AutoMigrate(&pubutil.OSSCache{})
+	errutil.HandleErr(err)
 	err = CacheDataBase.MainDB.AutoMigrate(&pubutil.ECSCache{})
+	errutil.HandleErr(err)
 	err = CacheDataBase.MainDB.AutoMigrate(&pubutil.RDSCache{})
+	errutil.HandleErr(err)
 	err = CacheDataBase.MainDB.AutoMigrate(&pubutil.TakeoverConsoleCache{})
 	if err != nil {
 		log.Errorln("数据库自动配置失败 (Database AutoMigrate Key Struct failure)")

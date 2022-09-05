@@ -109,9 +109,8 @@ func ReadECSCache(provider string) []pubutil.ECSCache {
 }
 
 func PrintOSSCacheFile(header []string, region string, provider string, resourceType string) {
-	OSSCache := database.SelectOSSCache(provider)
 	var data [][]string
-	OSSCache = database.SelectOSSCacheFilter(provider, region)
+	OSSCache := database.SelectOSSCacheFilter(provider, region)
 	for _, v := range OSSCache {
 		dataSingle := []string{v.SN, v.Name, v.BucketACL, v.ObjectNumber, v.ObjectSize, v.Region, v.BucketURL}
 		data = append(data, dataSingle)
@@ -120,9 +119,8 @@ func PrintOSSCacheFile(header []string, region string, provider string, resource
 }
 
 func PrintECSCacheFile(header []string, region string, specifiedInstanceID string, provider string, resourceType string, running bool) {
-	ECSCache := database.SelectECSCache(provider)
 	var data [][]string
-	ECSCache = database.SelectEcsCacheFilter(provider, region, specifiedInstanceID, running)
+	ECSCache := database.SelectEcsCacheFilter(provider, region, specifiedInstanceID, running)
 	for _, v := range ECSCache {
 		dataSingle := []string{v.SN, v.InstanceId, v.InstanceName, v.OSName, v.OSType, v.Status, v.PrivateIpAddress, v.PublicIpAddress, v.RegionId}
 		data = append(data, dataSingle)
@@ -131,9 +129,8 @@ func PrintECSCacheFile(header []string, region string, specifiedInstanceID strin
 }
 
 func PrintRDSCacheFile(header []string, region string, specifiedDBInstanceID string, engine string, provider string, resourceType string) {
-	RDSCache := database.SelectRDSCache(provider)
 	var data [][]string
-	RDSCache = database.SelectRDSCacheFilter(provider, region, specifiedDBInstanceID, engine)
+	RDSCache := database.SelectRDSCacheFilter(provider, region, specifiedDBInstanceID, engine)
 	for _, v := range RDSCache {
 		dataSingle := []string{v.SN, v.DBInstanceId, v.Engine, v.EngineVersion, v.DBInstanceStatus, v.RegionId}
 		data = append(data, dataSingle)

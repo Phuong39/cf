@@ -8,7 +8,7 @@ import (
 var (
 	rdslsFlushCache            bool
 	rdslsRegion                string
-	rdslsEngine                string
+	rdslsType                  string
 	rdslsSpecifiedDBInstanceID string
 )
 
@@ -18,7 +18,7 @@ func init() {
 	rdsCmd.PersistentFlags().BoolVar(&rdslsFlushCache, "flushCache", false, "刷新缓存，不使用缓存数据 (Refresh the cache without using cached data)")
 	rdslsCmd.Flags().StringVarP(&rdslsRegion, "region", "r", "all", "指定区域 ID (Specify Region ID)")
 	rdslsCmd.Flags().StringVarP(&rdslsSpecifiedDBInstanceID, "DBInstanceID", "i", "all", "指定数据库实例 ID (Specify DBInstance ID)")
-	rdslsCmd.Flags().StringVarP(&rdslsEngine, "engine", "e", "all", "指定数据库类型 (Specify DBInstance Type)")
+	rdslsCmd.Flags().StringVarP(&rdslsType, "type", "t", "all", "指定数据库类型 (Specify DBInstance Type)")
 }
 
 var rdsCmd = &cobra.Command{
@@ -32,6 +32,6 @@ var rdslsCmd = &cobra.Command{
 	Short: "列出所有的云数据库 (List all DBInstances)",
 	Long:  "列出所有的云数据库 (List all DBInstances)",
 	Run: func(cmd *cobra.Command, args []string) {
-		alirds.PrintDBInstancesList(rdslsRegion, running, rdslsSpecifiedDBInstanceID, rdslsEngine, rdslsFlushCache)
+		alirds.PrintDBInstancesList(rdslsRegion, running, rdslsSpecifiedDBInstanceID, rdslsType, rdslsFlushCache)
 	},
 }
