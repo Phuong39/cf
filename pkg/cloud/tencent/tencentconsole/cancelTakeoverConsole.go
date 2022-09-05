@@ -9,32 +9,38 @@ import (
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 )
 
-func DetachPolicyFromUser() {
-	UserUin := GetUserUin()
+func DetachPolicyFromUser(userName string) {
+	UserUin := GetUserUin(userName)
 	request := cam.NewDetachUserPolicyRequest()
 	request.PolicyId = common.Uint64Ptr(1)
 	request.DetachUin = common.Uint64Ptr(UserUin)
 	_, err := tencentcam.CAMClient().DetachUserPolicy(request)
 	errutil.HandleErr(err)
 	if err == nil {
-		log.Debugln("成功移除 crossfire 用户的权限 (Successfully removed the privileges of the crossfire user)")
+		log.Debugf("成功移除 %s 用户的权限 (Successfully removed the privileges of the %s user)", userName, userName)
 	}
 }
 
-func DeleteUser() {
+func DeleteUser(userName string) {
 	request := cam.NewDeleteUserRequest()
-	request.Name = common.StringPtr("crossfire")
+	request.Name = common.StringPtr(userName)
 	request.Force = common.Uint64Ptr(1)
 	_, err := tencentcam.CAMClient().DeleteUser(request)
 	errutil.HandleErr(err)
 	if err == nil {
-		log.Debugln("删除 crossfire 用户成功 (Delete crossfire user successfully)")
+		log.Debugf("删除 %s 用户成功 (Delete %s user successfully)", userName, userName)
 	}
 }
 
 func CancelTakeoverConsole() {
-	DetachPolicyFromUser()
-	DeleteUser()
-	database.DeleteTakeoverConsoleCache("tencent")
-	log.Infoln("成功删除 crossfire 用户，已取消控制台接管 (Successful deletion of crossfire user, console takeover cancelled)")
+	TakeoverConsoleCache := database.SelectTakeoverConsoleCache("tencent")
+	if len(TakeoverConsoleCache) == 0 {
+		log.Infoln("未接管过控制台，无需取消 (No takeover of the console, no need to cancel)")
+	} else {
+		userName := TakeoverConsoleCache[0].UserName
+		DetachPolicyFromUser(userName)
+		DeleteUser(userName)
+		database.DeleteTakeoverConsoleCache("tencent")
+		log.Infof("成功删除 %s 用户，已取消控制台接管 (Successful deletion of %s user, console takeover cancelled)", userName, userName)
+	}
 }

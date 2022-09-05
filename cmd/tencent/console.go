@@ -6,10 +6,17 @@ import (
 	"github.com/teamssix/cf/pkg/cloud/tencent/tencentconsole"
 )
 
+var (
+	userName string
+	password string
+)
+
 func init() {
 	tencentCmd.AddCommand(consoleCmd)
 	consoleCmd.AddCommand(cancelConsoleCmd)
 	consoleCmd.AddCommand(lsConsoleCmd)
+
+	consoleCmd.Flags().StringVarP(&userName, "userName", "u", "crossfire", "指定用户名 (Specify user name)")
 }
 
 var consoleCmd = &cobra.Command{
@@ -17,7 +24,7 @@ var consoleCmd = &cobra.Command{
 	Short: "一键接管控制台 (Takeover console)",
 	Long:  "一键接管控制台 (Takeover console)",
 	Run: func(cmd *cobra.Command, args []string) {
-		tencentconsole.TakeoverConsole()
+		tencentconsole.TakeoverConsole(userName)
 	},
 }
 

@@ -8,33 +8,39 @@ import (
 	"github.com/teamssix/cf/pkg/util/errutil"
 )
 
-func DetachPolicyFromUser() {
+func DetachPolicyFromUser(userName string) {
 	request := ram.CreateDetachPolicyFromUserRequest()
 	request.Scheme = "https"
 	request.PolicyType = "System"
 	request.PolicyName = "AdministratorAccess"
-	request.UserName = "crossfire"
+	request.UserName = userName
 	_, err := aliram.RAMClient().DetachPolicyFromUser(request)
 	errutil.HandleErrNoExit(err)
 	if err == nil {
-		log.Debugln("成功移除 crossfire 用户的权限 (Successfully removed the privileges of the crossfire user)")
+		log.Debugf("成功移除 %s 用户的权限 (Successfully removed the privileges of the %s user)", userName, userName)
 	}
 }
 
-func DeleteUser() {
+func DeleteUser(userName string) {
 	request := ram.CreateDeleteUserRequest()
 	request.Scheme = "https"
-	request.UserName = "crossfire"
+	request.UserName = userName
 	_, err := aliram.RAMClient().DeleteUser(request)
 	errutil.HandleErrNoExit(err)
 	if err == nil {
-		log.Debugln("删除 crossfire 用户成功 (Delete crossfire user successfully)")
+		log.Debugf("删除 %s 用户成功 (Delete %s user successfully)", userName, userName)
 	}
 }
 
 func CancelTakeoverConsole() {
-	DetachPolicyFromUser()
-	DeleteUser()
-	database.DeleteTakeoverConsoleCache("alibaba")
-	log.Infoln("成功删除 crossfire 用户，已取消控制台接管 (Successful deletion of crossfire user, console takeover cancelled)")
+	TakeoverConsoleCache := database.SelectTakeoverConsoleCache("alibaba")
+	if len(TakeoverConsoleCache) == 0 {
+		log.Infoln("未接管过控制台，无需取消 (No takeover of the console, no need to cancel)")
+	} else {
+		userName := TakeoverConsoleCache[0].UserName
+		DetachPolicyFromUser(userName)
+		DeleteUser(userName)
+		database.DeleteTakeoverConsoleCache("alibaba")
+		log.Infof("成功删除 %s 用户，已取消控制台接管 (Successful deletion of %s user, console takeover cancelled)", userName, userName)
+	}
 }

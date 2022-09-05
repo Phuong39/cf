@@ -16,14 +16,14 @@ var (
 
 func init() {
 	alibabaCmd.AddCommand(lsCmd)
-	lsCmd.Flags().StringVarP(&lsRegion, "region", "r", "all", "指定区域 ID (Set Region ID)")
+	lsCmd.Flags().StringVarP(&lsRegion, "region", "r", "all", "指定区域 ID (Specify region ID)")
 	lsCmd.PersistentFlags().BoolVar(&lsFlushCache, "flushCache", false, "刷新缓存，不使用缓存数据 (Refresh the cache without using cached data)")
 }
 
 var lsCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "列出当前凭证下的云服务资源 (List all resources)",
-	Long:  `列出当前凭证下的云服务资源 (List all resources)`,
+	Short: "一键列出当前凭证下的 OSS、ECS、RDS 资源 (List OSS, ECS, RDS resources)",
+	Long:  `一键列出当前凭证下的 OSS、ECS、RDS 资源 (List OSS, ECS, RDS resources)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		alioss.PrintBucketsList(lsRegion, lsFlushCache)
 		fmt.Println("")

@@ -10,11 +10,9 @@ func InsertTakeoverConsoleCache(provider string, PrimaryAccountID string, userNa
 	DeleteTakeoverConsoleCache(provider)
 	config := SelectConfigInUse(provider)
 	AccessKeyId := config.AccessKeyId
-	AccessKeyAlias := config.Alias
 	CreateTime := time.Now().Format("2006-01-02 15:04:05")
 	TakeoverConsoleCache = append(TakeoverConsoleCache, pubutil.TakeoverConsoleCache{
 		Provider:         provider,
-		AccessKeyAlias:   AccessKeyAlias,
 		AccessKeyId:      AccessKeyId,
 		PrimaryAccountID: PrimaryAccountID,
 		UserName:         userName,

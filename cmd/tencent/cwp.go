@@ -12,7 +12,7 @@ var (
 
 func init() {
 	tencentCmd.AddCommand(cwpUninstall)
-	cwpUninstall.Flags().StringVarP(&UUID, "UUID", "u", "", "指定云镜UUID (Set Agent UUID)")
+	cwpUninstall.Flags().StringVarP(&UUID, "UUID", "u", "", "指定云镜UUID (Specify Agent UUID)")
 }
 
 var cwpUninstall = &cobra.Command{
