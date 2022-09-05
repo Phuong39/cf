@@ -6,6 +6,7 @@ import (
 	"github.com/teamssix/cf/pkg/cloud/alibaba/aliram"
 	"github.com/teamssix/cf/pkg/util/database"
 	"github.com/teamssix/cf/pkg/util/errutil"
+	"strings"
 )
 
 func DetachPolicyFromUser(userName string) {
@@ -37,7 +38,7 @@ func CancelTakeoverConsole() {
 	if len(TakeoverConsoleCache) == 0 {
 		log.Infoln("未接管过控制台，无需取消 (No takeover of the console, no need to cancel)")
 	} else {
-		userName := TakeoverConsoleCache[0].UserName
+		userName := strings.Split(TakeoverConsoleCache[0].UserName, "@")[0]
 		DetachPolicyFromUser(userName)
 		DeleteUser(userName)
 		database.DeleteTakeoverConsoleCache("alibaba")

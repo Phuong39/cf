@@ -9,6 +9,8 @@ import (
 	"github.com/teamssix/cf/pkg/util/errutil"
 	cam "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cam/v20190116"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
+	"os"
+	"strings"
 )
 
 func CreateUser(userName string, password string) {
@@ -19,6 +21,10 @@ func CreateUser(userName string, password string) {
 	request.NeedResetPassword = common.Uint64Ptr(0)
 	_, err := tencentcam.CAMClient().AddUser(request)
 	errutil.HandleErrNoExit(err)
+	if strings.Contains(err.Error(), "The name already exists") {
+		log.Warnf("%s 用户已存在，无法接管，请指定其他的用户名 (%s user already exists and cannot take over, please specify another user name.)", userName, userName)
+		os.Exit(0)
+	}
 	if err == nil {
 		log.Debugf("创建 %s 用户成功 (Create %s user successfully)", userName, userName)
 	}
@@ -68,5 +74,5 @@ func TakeoverConsole(userName string) {
 	var header = []string{"主账号 ID (Primary Account ID)", "子用户名 (Sub User Name)", "登录密码 (Password)", "控制台登录地址 (Login URL)"}
 	var td = cloud.TableData{Header: header, Body: data}
 	cloud.PrintTable(td, "")
-	log.Infof("接管控制台成功，接管控制台会创建 %s 这个后门用户，如果想删除该后门用户，请执行 cf tencent console cancel 命令。(Successfully take over the console. Since taking over the console creates the backdoor user crossfire, if you want to delete the backdoor user, execute the command cf tencent console cancel.)", userName)
+	log.Infof("接管控制台成功，接管控制台会创建 %s 后门用户，如果想删除该后门用户，请执行 cf tencent console cancel 命令。(Successfully take over the console. Since taking over the console creates the backdoor user crossfire, if you want to delete the backdoor user, execute the command cf tencent console cancel.)", userName)
 }
