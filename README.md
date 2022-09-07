@@ -15,7 +15,7 @@
 
 ---
 
-CF 是一个云环境利用框架，适用于在红队场景中对云上内网进行横向、SRC 场景中对 Access Key 即访问凭证的影响程度进行判定、企业场景中对自己的云上资产进行自检……
+CF 是一个云环境利用框架，适用于在红队场景中对云上内网进行横向、SRC 场景中对 Access Key 即访问凭证的影响程度进行判定、企业场景中对自己的云上资产进行自检等等。
 
 CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
 
@@ -31,10 +31,10 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 
 ![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207180028840.png)
 
-配置 CF
+配置访问配置
 
 ```bash
-cf configure
+cf config
 ```
 
 一键列出当前访问凭证的云服务资源

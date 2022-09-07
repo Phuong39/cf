@@ -19,12 +19,13 @@ func CreateUser(userName string) {
 	request.UserName = userName
 	_, err := aliram.RAMClient().CreateUser(request)
 	errutil.HandleErrNoExit(err)
-	if strings.Contains(err.Error(), "EntityAlreadyExists.User") {
-		log.Warnf("%s 用户已存在，无法接管，请指定其他的用户名 (%s user already exists and cannot take over, please specify another user name.)", userName, userName)
-		os.Exit(0)
-	}
 	if err == nil {
 		log.Debugf("创建 %s 用户成功 (Create %s user successfully)", userName, userName)
+	} else {
+		if strings.Contains(err.Error(), "EntityAlreadyExists.User") {
+			log.Warnf("%s 用户已存在，无法接管，请指定其他的用户名 (%s user already exists and cannot take over, please specify another user name.)", userName, userName)
+			os.Exit(0)
+		}
 	}
 }
 

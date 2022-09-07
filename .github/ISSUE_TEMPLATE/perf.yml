@@ -1,6 +1,6 @@
 name: 功能优化反馈
 description: 提交一个功能优化需求帮助改进这个项目
-title: "[Perf] <在这里输入你的标题>"
+title: "[Perf] 在这里输入你的标题"
 labels: ["performance"]
 assignees:
   - teamssix

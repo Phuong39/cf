@@ -21,7 +21,6 @@ require (
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/lighthouse v1.0.447
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sts v1.0.475
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tat v1.0.447
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vpc v1.0.446
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
 	gorm.io/gorm v1.23.8
 )

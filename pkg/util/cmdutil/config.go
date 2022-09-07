@@ -23,6 +23,7 @@ func ConfigureAccessKey() {
 			inputAccessKey(config, cloudConfigList[i])
 		}
 	}
+	log.Infoln("访问凭证配置完成 (Access Key configuration complete.)")
 }
 
 func selectProvider() ([]string, []string, string) {
