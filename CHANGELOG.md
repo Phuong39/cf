@@ -1,3 +1,17 @@
+## [v0.4.0](https://github.com/teamssix/cf/releases/tag/v0.4.0) 2022.9.7
+
+### 新增功能
+
+* [#143](https://github.com/teamssix/cf/pull/143) 增加对已有的访问凭证修改功能
+* [#146](https://github.com/teamssix/cf/pull/146) 增加控制台接管历史记录查看功能
+* [#147](https://github.com/teamssix/cf/pull/147) 增加接管控制台指定用户名功能
+
+### 功能优化
+
+* [#137](https://github.com/teamssix/cf/pull/137) 优化阿里云 OSS 相关功能
+* [#142](https://github.com/teamssix/cf/pull/142) 全面优化配置访问凭证功能
+* [#144](https://github.com/teamssix/cf/pull/144) 全面优化程序缓存功能
+
 ## [v0.3.5](https://github.com/teamssix/cf/releases/tag/v0.3.5) 2022.8.16
 
 ### 新增功能
