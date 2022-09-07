@@ -19,7 +19,16 @@ CF 是一个云环境利用框架，适用于在红队场景中对云上内网�
 
 CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202208251726676.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737418.png)
+
+当前已支持的云：
+
+- [x] 阿里云
+- [x] 腾讯云
+- [ ] AWS（预计在 2022 年 10 月 14 日前支持）
+- [ ] 华为云（预计在 2022 年 12 月 14 日前支持）
+
+功能排期可参考：[github.com/teamssix/cf/discussions/130](https://github.com/teamssix/cf/discussions/130)
 
 ## 使用手册
 
@@ -29,7 +38,9 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 
 ## 简单上手
 
-![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207180028840.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737405.png)
+
+> 这里以阿里云为例，其他更多操作可以查看上面的使用手册。
 
 配置访问配置
 
@@ -37,17 +48,15 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 cf config
 ```
 
-一键列出当前访问凭证的云服务资源
-
-```bash
-cf alibaba ls
-```
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737407.png)
 
 一键列出当前访问凭证的权限
 
 ```bash
-cf alibaba permissions
+cf alibaba perm
 ```
+
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737408.png)
 
 一键接管控制台
 
@@ -55,17 +64,31 @@ cf alibaba permissions
 cf alibaba console
 ```
 
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737409.png)
+
+一键列出当前访问凭证的云服务资源
+
+```bash
+cf alibaba ls
+```
+
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737410.png)
+
 查看 CF 为实例执行命令的操作的帮助信息
 
 ```bash
 cf alibaba ecs exec -h
 ```
 
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737411.png)
+
 一键为所有实例执行三要素，方便 HVV
 
-```
+```bash
 cf alibaba ecs exec -b
 ```
+
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737412.png)
 
 一键获取实例中的临时访问凭证数据
 
@@ -73,11 +96,23 @@ cf alibaba ecs exec -b
 cf alibaba ecs exec -m
 ```
 
-一键查看 VPC 安全组规则
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737413.png)
+
+一键下载 OSS 对象存储数据
 
 ```bash
-cf tencent vpc ls
+cf alibaba oss obj get
 ```
+
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737414.png)
+
+一键升级 CF 版本
+
+```bash
+cf upgrade
+```
+
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737416.png)
 
 如果感觉还不错的话，师傅记得给个 Star 呀 ~，另外 CF 的更多使用方法可以参见使用文档：[wiki.teamssix.com/cf](https://wiki.teamssix.com/cf)
 
@@ -104,10 +139,13 @@ cf tencent vpc ls
 <div align=center><a href="https://github.com/teamssix"><img src="https://repobeats.axiom.co/api/embed/30b8de6c059cbe83fe0ba44fff91136270a39ab9.svg"></a></div>
 
 
-## 注意事项
 
-* 本工具仅用于合法合规用途，严禁用于违法违规用途。
-* 本工具中所涉及的风险点均属于租户责任，与云厂商无关。
+## 404星链计划
+
+<img src="https://github.com/knownsec/404StarLink/raw/master/Images/logo.png" width="40%">
+
+CF 现已加入 [404星链计划](https://github.com/knownsec/404StarLink)
+
 
 ## 更多
 
@@ -121,7 +159,7 @@ cf tencent vpc ls
 
 <div align=center><a href="https://github.com/teamssix"><img src="https://api.star-history.com/svg?repos=teamssix/cf&type=Timeline"></a></div>
 
-## 404星链计划
-<img src="https://github.com/knownsec/404StarLink/raw/master/Images/logo.png" width="40%">
+## 注意事项
 
-CF 现已加入 [404星链计划](https://github.com/knownsec/404StarLink)
+* 本工具仅用于合法合规用途，严禁用于违法违规用途。
+* 本工具中所涉及的风险点均属于租户责任，与云厂商无关。

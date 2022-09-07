@@ -20,7 +20,16 @@ CF is a cloud exploitation framework, It can facilitate the work of the red team
 
 CF releases: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
 
-![img](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202208251726676.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737417.png)
+
+Current Supported Clouds:
+
+- [x] Alibaba Cloud
+- [x] Tencent Cloud
+- [ ] AWS (Expected to be supported by October 14, 2022)
+- [ ] Huawei Cloud (Expected to be supported by December 14, 2022)
+
+For the scheduling of functions you can refer to: [github.com/teamssix/cf/discussions/130](https://github.com/teamssix/cf/discussions/130)
 
 ## Manual
 
@@ -32,55 +41,81 @@ For detailed manuals, please visit: [wiki.teamssix.com/cf](https://wiki.teamssix
 
 ## Easy to start
 
-![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202207180028840.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737405.png)
+
+> Here is the example of Alibaba Cloud, other more operations can be viewed in the user manual.
 
 Configuration
 
 ```bash
-cf configure
+cf config
 ```
 
-One step lists the cloud service resources with current access key
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737407.png)
+
+One-click access to current access credentials
 
 ```bash
-cf alibaba ls
+cf alibaba perm
 ```
 
-ls permissions
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737408.png)
 
-```bash
-cf alibaba permissions
-```
-
-takeover console
+One-click to take over the console
 
 ```bash
 cf alibaba console
 ```
 
-View help information for ecs exec commands
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737409.png)
+
+One-click listing of cloud service resources with current access credentials
+
+```bash
+cf alibaba ls
+```
+
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737410.png)
+
+View the help information for the operation of the command executed by CF for the instance
 
 ```bash
 cf alibaba ecs exec -h
 ```
 
-Batch execution of multiple commands used to prove permission acquisition
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737411.png)
 
-```
+One-click command to execute proof of privilege for all instances
+
+```bash
 cf alibaba ecs exec -b
 ```
 
-Get the STS Token in the instance metadata
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737412.png)
+
+One-click access to temporary access credential data in instances
 
 ```bash
 cf alibaba ecs exec -m
 ```
 
-View security group policy
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737413.png)
+
+One-click download of OSS object storage data
 
 ```bash
-cf tencent vpc ls
+cf alibaba oss obj get
 ```
+
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737414.png)
+
+One-Click Upgrade CF Version
+
+```bash
+cf upgrade
+```
+
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737416.png)
 
 If it feels good, maybe you can give me a Star ~
 
@@ -106,10 +141,13 @@ Thank you for your contributions to CF, A note on contributions: [CONTRIBUTING](
 
 <div align=center><a href="https://github.com/teamssix"><img src="https://repobeats.axiom.co/api/embed/30b8de6c059cbe83fe0ba44fff91136270a39ab9.svg"></a></div>
 
-## Warning
 
-* This tool can only be used in legal scenarios and is strictly forbidden to be used in illegal scenarios.
-* The risks involved in this tool are the responsibility of the tenant and not the cloud providers.
+
+## 404Starlink
+
+<img src="https://github.com/knownsec/404StarLink/raw/master/Images/logo.png" width="40%">
+
+CF has joined [404Starlink](https://github.com/knownsec/404StarLink)
 
 ## More
 
@@ -125,7 +163,10 @@ Finally, the following is my personal wechat official accounts, welcome to follo
 
 <div align=center><a href="https://github.com/teamssix"><img src="https://api.star-history.com/svg?repos=teamssix/cf&type=Timeline"></a></div>
 
-## 404Starlink
-<img src="https://github.com/knownsec/404StarLink/raw/master/Images/logo.png" width="40%">
 
-CF has joined [404Starlink](https://github.com/knownsec/404StarLink)
+
+## Warning
+
+* This tool can only be used in legal scenarios and is strictly forbidden to be used in illegal scenarios.
+* The risks involved in this tool are the responsibility of the tenant and not the cloud providers.
+

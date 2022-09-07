@@ -76,7 +76,7 @@ func DownloadAllObjects(bucketName string, outputPath string) {
 		survey.AskOne(prompt, &objectKey)
 		if objectKey == "all" {
 			log.Infof("正在下载 %s 存储桶内的所有对象…… (Downloading all objects in bucket %s...)", bucketName, bucketName)
-			bar := returnBar((int64(len(objectList) - 1)))
+			bar := returnBar((int64(len(objectList) - 2)))
 			for _, j := range objects {
 				if j.Key[len(j.Key)-1:] == "/" {
 					bar.Add(1)
@@ -89,7 +89,6 @@ func DownloadAllObjects(bucketName string, outputPath string) {
 					defer fd.Close()
 				}
 			}
-			fmt.Println()
 			log.Infof("对象已被保存到 %s 目录下 (The object has been saved to the %s directory)", outputPath, outputPath)
 		} else if objectKey == "exit" {
 			os.Exit(0)
