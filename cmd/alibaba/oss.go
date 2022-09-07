@@ -8,7 +8,6 @@ import (
 
 var (
 	ossLsRegion           string
-	ossLsBucket           string
 	ossLsFlushCache       bool
 	ossDownloadBucket     string
 	ossDownloadObject     string
@@ -40,25 +39,21 @@ var ossLsCmd = &cobra.Command{
 	Short: "列出所有的存储桶 (List all buckets)",
 	Long:  "列出所有的存储桶 (List all buckets)",
 	Run: func(cmd *cobra.Command, args []string) {
-		if ossLsBucket == "all" {
-			log.Debugf("ossLsRegion: %s, ossLsFlushCache: %v", ossLsRegion, ossLsFlushCache)
-			alioss.PrintBucketsList(ossLsRegion, ossLsFlushCache)
-		} else {
-
-		}
+		log.Debugf("ossLsRegion: %s, ossLsFlushCache: %v", ossLsRegion, ossLsFlushCache)
+		alioss.PrintBucketsList(ossLsRegion, ossLsFlushCache)
 	},
 }
 
 var ossObjCmd = &cobra.Command{
 	Use:   "obj",
-	Short: "执行与对象相关的操作 (Perform oss-related operations)",
-	Long:  "执行与对象相关的操作 (Perform oss-related operations)",
+	Short: "执行与对象相关的操作 (Perform objects-related operations)",
+	Long:  "执行与对象相关的操作 (Perform objects-related operations)",
 }
 
 var ossObjGetCmd = &cobra.Command{
 	Use:   "get",
-	Short: "下载指定的对象 (Download objects)",
-	Long:  "下载指定的对象 (Download objects)",
+	Short: "下载存储桶里的对象 (Downloading objects from the bucket)",
+	Long:  "下载存储桶里的对象 (Downloading objects from the bucket)",
 	Run: func(cmd *cobra.Command, args []string) {
 		alioss.DownloadObjects(ossDownloadBucket, ossDownloadObject, ossDownloadOutputPath)
 	},
@@ -66,8 +61,8 @@ var ossObjGetCmd = &cobra.Command{
 
 var ossObjLsCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "列出指定存储桶的对象 (List objects in the specified bucket)",
-	Long:  "列出指定存储桶的对象 (List objects in the specified bucket)",
+	Short: "列出存储桶里的对象 (List objects in the bucket)",
+	Long:  "列出存储桶里的对象 (List objects in the bucket)",
 	Run: func(cmd *cobra.Command, args []string) {
 		alioss.PrintObjectsList()
 	},
