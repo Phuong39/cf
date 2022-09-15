@@ -166,7 +166,9 @@ Finally, the following is my personal wechat official accounts, welcome to follo
 
 <div align=center><a href="https://github.com/teamssix"><img width="700" src="https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202204152148071.png"></a></div>
 
-**If you would like to work with me on this, you can join the team by sending your resume to admin@wgpsec.org.**
+If you would like to work with me on this, you can join the team by sending your resume to admin@wgpsec.org.
+
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209151716790.png)
 
 <div align=center><a href="https://github.com/teamssix"><img src="https://api.star-history.com/svg?repos=teamssix/cf&type=Timeline"></a></div>
 

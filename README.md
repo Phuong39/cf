@@ -156,13 +156,15 @@ CF 现已加入 [404星链计划](https://github.com/knownsec/404StarLink)
 
 ## 更多
 
-如果你对云安全比较感兴趣，可以看我的另外一个项目 [Awesome Cloud Security](https://github.com/teamssix/awesome-cloud-security)，这里收录了很多国内外的云安全资源。
+如果你对云安全比较感兴趣，可以看我的另外一个项目 [Awesome Cloud Security](https://github.com/teamssix/awesome-cloud-security)，这里收录了很多国内外的云安全资源，另外在我的[云安全文库](https://wiki.teamssix.com/)里有大量的云安全方向的笔记和文章，这应该是国内还不错的云安全学习资料。
 
-另外在我的[云安全文库](https://wiki.teamssix.com/)里有大量的云安全方向的笔记和文章，最后，下面这个是我的个人微信公众号，欢迎关注 ~
+下面这个是我的个人微信公众号，在 TeamsSix 公众号里可以与我进行联系，后续关于 CF 的动态我也会发布到我的公众号里。
 
 <div align=center><a href="https://github.com/teamssix"><img width="700" src="https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202204152148071.png"></a></div>
 
-**有想法一起研究的师傅可以投递简历至 admin@wgpsec.org 加入狼组安全团队。**
+最后给我所在的团队打个广告，下面这个是狼组安全团队的公众号，欢迎师傅关注，有想法一起加入狼组的师傅也可以投递简历至 admin@wgpsec.org 加入我们。
+
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209151716790.png)
 
 <div align=center><a href="https://github.com/teamssix"><img src="https://api.star-history.com/svg?repos=teamssix/cf&type=Timeline"></a></div>
 
