@@ -36,6 +36,13 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 
 [![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209081100625.png)](https://wiki.teamssix.com/cf)
 
+## 使用案例
+
+|                标题                | 使用 CF 的版本 |             文章地址              | 发布时间  |
+| :--------------------------------: | :------------: | :-------------------------------: | :-------: |
+| 《记录一次平平无奇的云上攻防过程》 |     v0.4.0     |  https://zone.huoxian.cn/d/2557   | 2022.9.14 |
+|   《我用 CF 打穿了他的云上内网》   |     v0.2.4     | https://zone.huoxian.cn/d/1341-cf | 2022.7.13 |
+
 ## 简单上手
 
 ![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737405.png)
