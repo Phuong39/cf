@@ -123,6 +123,8 @@ cf upgrade
 
 如果感觉还不错的话，师傅记得给个 Star 呀 ~，另外 CF 的更多使用方法可以参见使用文档：[wiki.teamssix.com/cf](https://wiki.teamssix.com/cf)
 
+在 CF 中我写了加入`云安全交流群`的方法，如果你能找到的话，就可以加群哦～
+
 ## 贡献者
 
 十分感谢各位师傅对 CF 的贡献~，如果你也想对 CF 贡献代码，请参见贡献说明：[CONTRIBUTING](https://github.com/teamssix/cf/blob/main/CONTRIBUTING.md)
