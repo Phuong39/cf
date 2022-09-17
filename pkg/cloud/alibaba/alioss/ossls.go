@@ -71,10 +71,20 @@ func (o *OSSCollector) ListBuckets() ([]Bucket, error) {
 	return out, err
 }
 
-func (o *OSSCollector) ListObjects(bucketName string) ([]Object, []objectContents) {
-	var size = 1000
-	var out []Object
-	var Buckets []Bucket
+func (o *OSSCollector) ListObjects(bucketName string, ossLsObjectNumber string) ([]Object, []objectContents) {
+	var (
+		size    int
+		out     []Object
+		Buckets []Bucket
+	)
+	if ossLsObjectNumber == "all" {
+		size = 1000
+	} else {
+		var err error
+		size, err = strconv.Atoi(ossLsObjectNumber)
+		errutil.HandleErr(err)
+	}
+
 	marker := oss.Marker("")
 	OSSCollector := &OSSCollector{}
 	Buckets, _ = OSSCollector.ListBuckets()
@@ -93,7 +103,7 @@ func (o *OSSCollector) ListObjects(bucketName string) ([]Object, []objectContent
 		bucket, err := o.Client.Bucket(BucketName)
 		errutil.HandleErr(err)
 		objects = nil
-		getAllObjects(bucket, marker, size)
+		getAllObjects(bucket, marker, size, ossLsObjectNumber)
 		log.Debugf("在 %s 存储桶中找到了 %d 个对象 (Found %d Objects in %s Bucket)", BucketName, objectNum, objectNum, BucketName)
 		obj := Object{
 			BucketName:   BucketName,
@@ -107,7 +117,7 @@ func (o *OSSCollector) ListObjects(bucketName string) ([]Object, []objectContent
 	return out, objects
 }
 
-func getAllObjects(bucket *oss.Bucket, marker oss.Option, size int) {
+func getAllObjects(bucket *oss.Bucket, marker oss.Option, size int, ossLsObjectNumber string) {
 	lor, err := bucket.ListObjects(oss.MaxKeys(size), marker)
 	errutil.HandleErr(err)
 	marker = oss.Marker(lor.NextMarker)
@@ -126,16 +136,26 @@ func getAllObjects(bucket *oss.Bucket, marker oss.Option, size int) {
 	if objectNum == 100000 {
 		var name bool
 		prompt := &survey.Confirm{
-			Message: "已查询到 10w 个对象，是否继续？如果继续可能会耗费较长时间 (Found up to 10w objects, want to continue? If you continue, it may take a long time)",
+			Message: "已查询到 10w 条对象，是否继续？如果继续可能会耗费较长时间。(Found up to 100,000 objects, want to continue? If you continue, it may take a long time)",
 			Default: true,
 		}
 		_ = survey.AskOne(prompt, &name)
 		if !name {
 			NextMarker = ""
+			log.Infoln("已停止继续查询对象，你还可以通过 -n 参数指定你想要查询对象的数量。(Has stopped continuing to query objects. You can specify the number of objects to query with the -n parameter.)")
+		}
+	}
+	if ossLsObjectNumber != "all" {
+		ossLsObjectNumberInt, err := strconv.Atoi(ossLsObjectNumber)
+		errutil.HandleErr(err)
+		if objectNum >= ossLsObjectNumberInt {
+			NextMarker = ""
+			objectNum = ossLsObjectNumberInt
+			objects = objects[0:objectNum]
 		}
 	}
 	if NextMarker != "" {
-		getAllObjects(bucket, marker, size)
+		getAllObjects(bucket, marker, size, ossLsObjectNumber)
 	}
 }
 
@@ -168,12 +188,12 @@ func (o *OSSCollector) GetBucketACL() []Acl {
 	return out
 }
 
-func PrintBucketsListRealTime(region string) {
+func PrintBucketsListRealTime(region string, ossLsObjectNumber string) {
 	OSSCollector := &OSSCollector{}
 	Buckets, _ := OSSCollector.ListBuckets()
 	log.Debugf("获取到 %d 条 OSS Bucket 信息 (Obtained %d OSS Bucket information)", len(Buckets), len(Buckets))
 
-	Objects, _ := OSSCollector.ListObjects("all")
+	Objects, _ := OSSCollector.ListObjects("all", ossLsObjectNumber)
 	ACL := OSSCollector.GetBucketACL()
 
 	var num = 0
@@ -222,15 +242,15 @@ func PrintBucketsListHistory(region string) {
 	cmdutil.PrintOSSCacheFile(header, region, "alibaba", "OSS")
 }
 
-func PrintBucketsList(region string, lsFlushCache bool) {
+func PrintBucketsList(region string, lsFlushCache bool, ossLsObjectNumber string) {
 	if lsFlushCache {
-		PrintBucketsListRealTime(region)
+		PrintBucketsListRealTime(region, ossLsObjectNumber)
 	} else {
 		oldTimestamp := util.ReadTimestamp(TimestampType)
 		if oldTimestamp == 0 {
-			PrintBucketsListRealTime(region)
+			PrintBucketsListRealTime(region, ossLsObjectNumber)
 		} else if util.IsFlushCache(oldTimestamp) {
-			PrintBucketsListRealTime(region)
+			PrintBucketsListRealTime(region, ossLsObjectNumber)
 		} else {
 			util.TimeDifference(oldTimestamp)
 			PrintBucketsListHistory(region)

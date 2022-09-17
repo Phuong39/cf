@@ -25,7 +25,7 @@ var lsCmd = &cobra.Command{
 	Short: "一键列出当前凭证下的 OSS、ECS、RDS 资源 (List OSS, ECS, RDS resources)",
 	Long:  `一键列出当前凭证下的 OSS、ECS、RDS 资源 (List OSS, ECS, RDS resources)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		alioss.PrintBucketsList(lsRegion, lsFlushCache)
+		alioss.PrintBucketsList(lsRegion, lsFlushCache, "all")
 		fmt.Println("")
 		aliecs.PrintInstancesList(lsRegion, false, "all", lsFlushCache)
 		fmt.Println("")

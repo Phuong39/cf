@@ -31,7 +31,7 @@ func getObject(bucketName string, objectKey string, outputPath string) {
 			}
 		}
 		fd, body, oserr, outputFile := OSSCollector.ReturnBucket(bucketName, objectKey, outputPath, region)
-		_, objects := OSSCollector.ListObjects(bucketName)
+		_, objects := OSSCollector.ListObjects(bucketName, "all")
 		for _, obj := range objects {
 			if objectKey == obj.Key {
 				objectSize = obj.Size
@@ -61,7 +61,7 @@ func DownloadAllObjects(bucketName string, outputPath string) {
 			region = v.Region
 		}
 	}
-	_, objects := OSSCollector.ListObjects(bucketName)
+	_, objects := OSSCollector.ListObjects(bucketName, "all")
 	if len(objects) == 0 {
 		log.Warnf("在 %s 存储桶中没有发现对象 (No object found in %s bucket)", bucketName, bucketName)
 	} else {
@@ -144,7 +144,7 @@ func DownloadObjects(bucketName string, objectKey string, outputPath string) {
 		}
 	} else {
 		OSSCollector := &OSSCollector{}
-		_, objects := OSSCollector.ListObjects(bucketName)
+		_, objects := OSSCollector.ListObjects(bucketName, "all")
 		if len(objects) > 0 {
 			if objectKey == "all" {
 				DownloadAllObjects(bucketName, outputPath)

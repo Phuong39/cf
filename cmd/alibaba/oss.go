@@ -12,12 +12,14 @@ var (
 	ossDownloadBucket     string
 	ossDownloadObject     string
 	ossDownloadOutputPath string
+	ossLsObjectNumber     string
 )
 
 func init() {
 	alibabaCmd.AddCommand(ossCmd)
 	ossCmd.AddCommand(ossLsCmd)
 	ossCmd.AddCommand(ossObjCmd)
+	ossLsCmd.Flags().StringVarP(&ossLsObjectNumber, "number", "n", "all", "指定列出对象的数量 (Specify the number of objects to list)")
 	ossLsCmd.Flags().StringVarP(&ossLsRegion, "region", "r", "all", "指定区域 ID (Specify region ID)")
 	ossLsCmd.Flags().BoolVar(&ossLsFlushCache, "flushCache", false, "刷新缓存，不使用缓存数据 (Refresh the cache without using cached data)")
 
@@ -26,6 +28,8 @@ func init() {
 	ossObjGetCmd.Flags().StringVarP(&ossDownloadBucket, "bucket", "b", "all", "指定存储桶 (Specify Bucket)")
 	ossObjGetCmd.Flags().StringVarP(&ossDownloadObject, "objectKey", "k", "all", "指定对象 (Specify object key)")
 	ossObjGetCmd.Flags().StringVarP(&ossDownloadOutputPath, "outputPath", "o", "./result", "指定导出路径 (Specify output path)")
+
+	ossObjLsCmd.Flags().StringVarP(&ossLsObjectNumber, "number", "n", "all", "指定列出对象的数量 (Specify the number of objects to list)")
 }
 
 var ossCmd = &cobra.Command{
@@ -40,7 +44,7 @@ var ossLsCmd = &cobra.Command{
 	Long:  "列出所有的存储桶 (List all buckets)",
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Debugf("ossLsRegion: %s, ossLsFlushCache: %v", ossLsRegion, ossLsFlushCache)
-		alioss.PrintBucketsList(ossLsRegion, ossLsFlushCache)
+		alioss.PrintBucketsList(ossLsRegion, ossLsFlushCache, ossLsObjectNumber)
 	},
 }
 
@@ -64,6 +68,6 @@ var ossObjLsCmd = &cobra.Command{
 	Short: "列出存储桶里的对象 (List objects in the bucket)",
 	Long:  "列出存储桶里的对象 (List objects in the bucket)",
 	Run: func(cmd *cobra.Command, args []string) {
-		alioss.PrintObjectsList()
+		alioss.PrintObjectsList(ossLsObjectNumber)
 	},
 }
