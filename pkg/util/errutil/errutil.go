@@ -21,6 +21,9 @@ var errorMessages = map[string]string{
 	"Code=ResourceNotFound, Message=未查询到对应机器":                                  "指定资源不存在 (ResourceNotFound)",
 	//"Code=UnauthorizedOperation":                                               "当前 AK 权限不足 (Insufficient Access Key permissions)",
 	"you are not authorized to perform operation (tat:CreateCommand)": "当前 AK 不具备执行命令的权限 (This Access Key does not have permission to execute commands)",
+	"network is unreachable":       "当前网络连接异常 (Network is unreachable)",
+	"InvalidSecurityToken.Expired": "临时令牌已过期 (STS token has expired)",
+	"InvalidAccessKeyId.Inactive":  "当前 AK 已被禁用 (The current AccessKeyId is inactive)",
 }
 
 var errorMessagesNoExit = map[string]string{
@@ -36,8 +39,11 @@ var errorMessagesNoExit = map[string]string{
 }
 
 var errorMessagesExit = map[string]string{
-	"ErrorCode: Forbidden.RAM": "当前访问凭证没有执行命令的权限 (Current Access Key do not have permission to execute commands)",
-	"ErrorCode: NoPermission":  "当前访问凭证没有接管控制台的权限 (Current Access Key do not have permission to take over the console)",
+	"ErrorCode: Forbidden.RAM":     "当前访问凭证没有执行命令的权限 (Current Access Key do not have permission to execute commands)",
+	"ErrorCode: NoPermission":      "当前访问凭证没有接管控制台的权限 (Current Access Key do not have permission to take over the console)",
+	"network is unreachable":       "当前网络连接异常 (Network is unreachable)",
+	"InvalidSecurityToken.Expired": "临时令牌已过期 (STS token has expired)",
+	"InvalidAccessKeyId.Inactive":  "当前 AK 已被禁用 (The current AccessKeyId is inactive)",
 	//"Message=操作未授权，请检查CAM策略。":  "当前 AK 权限不足 (Insufficient Access Key permissions)",
 }
 
