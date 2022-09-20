@@ -27,8 +27,8 @@ var errorMessages = map[string]string{
 }
 
 var errorMessagesNoExit = map[string]string{
-	"ErrorCode: Forbidden.RAM":                                           "当前访问凭证没有执行命令的权限 (Current Access Key do not have permission to execute commands)",
-	"ErrorCode: Forbidden":                                               "当前访问凭证没有 RDS 的读取权限 Current Access Key do not have read access to RDS",
+	"ErrorCode: Forbidden.RAM": "当前访问凭证没有执行命令的权限 (Current Access Key do not have permission to execute commands)",
+	//"ErrorCode: Forbidden":                                               " 当前访问凭证没有 RDS 的读取权限 (Current Access Key do not have read access to RDS"),
 	"You are forbidden to list buckets.":                                 "当前凭证不具备 OSS 的读取权限，无法获取 OSS 数据。 (OSS data is not available because the current credential does not have read access to OSS.)",
 	"ErrorCode: EntityAlreadyExists.User.Policy":                         "已接管过控制台，无需重复接管 (Console has been taken over)",
 	"ErrorCode: EntityAlreadyExists.User":                                "已接管过控制台，无需重复接管 (Console has been taken over)",
