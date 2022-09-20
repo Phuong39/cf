@@ -24,17 +24,19 @@ func RAMClient() *ram.Client {
 		if aliconfig.STSToken == "" {
 			credential := credentials.NewAccessKeyCredential(aliconfig.AccessKeyId, aliconfig.AccessKeySecret)
 			client, err := ram.NewClientWithOptions("cn-beijing", config, credential)
-			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("RAM Client 连接成功 (RDS Client connection successful)")
+			} else {
+				errutil.HandleErr(err)
 			}
 			return client
 		} else {
 			credential := credentials.NewStsTokenCredential(aliconfig.AccessKeyId, aliconfig.AccessKeySecret, aliconfig.STSToken)
 			client, err := ram.NewClientWithOptions("cn-beijing", config, credential)
-			errutil.HandleErr(err)
 			if err == nil {
 				log.Traceln("RAM Client 连接成功 (RDS Client connection successful)")
+			} else {
+				errutil.HandleErr(err)
 			}
 			return client
 		}
