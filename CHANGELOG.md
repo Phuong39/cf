@@ -1,3 +1,14 @@
+## [v0.4.1](https://github.com/teamssix/cf/releases/tag/v0.4.1) 2022.9.20
+
+### 新增功能
+
+* [#161](https://github.com/teamssix/cf/pull/161) 增加对象列表导出功能
+* [#162](https://github.com/teamssix/cf/pull/162) 增加指定查询对象列表数量功能
+
+### 功能优化
+
+* [#164](https://github.com/teamssix/cf/pull/164) 优化接管控制台输出信息
+
 ## [v0.4.0](https://github.com/teamssix/cf/releases/tag/v0.4.0) 2022.9.7
 
 ### 新增功能
