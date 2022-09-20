@@ -30,7 +30,7 @@ func selectProvider() ([]string, []string, string) {
 	var cloudProvider string
 	cloudConfigList, cloudProviderList := ReturnCloudProviderList()
 	prompt := &survey.Select{
-		Message: "选择你要配置的云服务商 (Select a cloud provider): ",
+		Message: "选择你要设置的云服务商 (Select a cloud provider): ",
 		Options: cloudProviderList,
 	}
 	err := survey.AskOne(prompt, &cloudProvider)
