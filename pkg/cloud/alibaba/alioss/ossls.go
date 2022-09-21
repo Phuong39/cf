@@ -38,12 +38,11 @@ type error interface {
 }
 
 var (
-	objectNum        int
-	ObjectSize       int64
-	objects          []objectContents
-	OSSCacheFilePath = cmdutil.ReturnCacheFile("alibaba", "OSS")
-	TimestampType    = util.ReturnTimestampType("alibaba", "oss")
-	header           = []string{"序号 (SN)", "名称 (Name)", "存储桶 ACL (Bucket ACL)", "对象数量 (Object Number)", "存储桶大小 (Bucket Size)", "区域 (Region)", "存储桶地址 (Bucket URL)"}
+	objectNum     int
+	ObjectSize    int64
+	objects       []objectContents
+	TimestampType = util.ReturnTimestampType("alibaba", "oss")
+	header        = []string{"序号 (SN)", "名称 (Name)", "存储桶 ACL (Bucket ACL)", "对象数量 (Object Number)", "存储桶大小 (Bucket Size)", "区域 (Region)", "存储桶地址 (Bucket URL)"}
 )
 
 func (o *OSSCollector) ListBuckets() ([]Bucket, error) {

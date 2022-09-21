@@ -15,18 +15,6 @@ func ReturnCacheDict() string {
 	return home
 }
 
-func ReturnCacheFile(provider string, resourceType string) string {
-	config := GetConfig(provider)
-	var ossCacheFile string
-	AccessKeyId := config.AccessKeyId
-	if AccessKeyId == "" {
-		ossCacheFile = ""
-	} else {
-		ossCacheFile = ReturnCacheDict() + "/" + AccessKeyId[len(AccessKeyId)-6:] + "_" + resourceType + ".json"
-	}
-	return ossCacheFile
-}
-
 func WriteCacheFile(td cloud.TableData, provider string, serviceType string, region string, id string) {
 	AccessKeyId := GetConfig(provider).AccessKeyId
 	if serviceType == "lh" {

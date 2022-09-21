@@ -15,8 +15,7 @@ import (
 )
 
 var (
-	LHCacheFilePath = cmdutil.ReturnCacheFile("tencent", "LH")
-	header          = []string{"序号 (SN)", "实例ID (Instance ID)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private IP)", "公网 IP (Public IP)", "区域 ID (Region ID)"}
+	header = []string{"序号 (SN)", "实例ID (Instance ID)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private IP)", "公网 IP (Public IP)", "区域 ID (Region ID)"}
 )
 
 type Instances struct {
