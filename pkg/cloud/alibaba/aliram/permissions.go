@@ -50,6 +50,7 @@ func ListPermissions() {
 		cloud.PrintTable(td, Caption)
 		fmt.Println()
 		data2 = appendData(osslsAction, osslsDescription)
+		data2 = appendData(ossgetAction, ossgetDescription)
 		data2 = appendData(ecslsAction, ecslsDescription)
 		data2 = appendData(ecsexecAction, ecsexecDescription)
 		data2 = appendData(rdslsAction, rdslsDescription)

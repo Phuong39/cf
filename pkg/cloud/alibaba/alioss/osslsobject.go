@@ -54,7 +54,7 @@ func PrintObjectsList(ossLsObjectNumber string) {
 
 					// 超过 100 时，将输出结果写入到文件中去
 					home, _ := pubutil.GetCFHomeDir()
-					cacheFolder := filepath.Join(home, "cache")
+					cacheFolder := filepath.Join(home, "output")
 					pubutil.CreateFolder(cacheFolder)
 					cacheFileName := filepath.Join(cacheFolder, "ossObjectList-"+strconv.FormatInt(time.Now().Unix(), 10)+".csv")
 					var cacheFileData []string
