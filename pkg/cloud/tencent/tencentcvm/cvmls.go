@@ -3,7 +3,6 @@ package tencentcvm
 import (
 	"encoding/json"
 	"github.com/teamssix/cf/pkg/util/errutil"
-	"github.com/teamssix/cf/pkg/util/pubutil"
 	"strconv"
 	"strings"
 
@@ -15,9 +14,8 @@ import (
 )
 
 var (
-	CVMCacheFilePath = cmdutil.ReturnCacheFile("tencent", "CVM")
-	header           = []string{"序号 (SN)", "实例 ID (Instance ID)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private IP)", "公网 IP (Public IP)", "区域 ID (Region ID)"}
-	LinuxSet         = []string{"CentOS", "Ubuntu", "Debian", "OpenSUSE", "SUSE", "CoreOS", "FreeBSD", "Kylin", "UnionTech", "TencentOS", "Other Linux"}
+	header   = []string{"序号 (SN)", "实例 ID (Instance ID)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private IP)", "公网 IP (Public IP)", "区域 ID (Region ID)"}
+	LinuxSet = []string{"CentOS", "Ubuntu", "Debian", "OpenSUSE", "SUSE", "CoreOS", "FreeBSD", "Kylin", "UnionTech", "TencentOS", "Other Linux"}
 )
 
 type Instances struct {
@@ -135,11 +133,7 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 }
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {
-	if pubutil.FileExists(CVMCacheFilePath) {
-		cmdutil.PrintECSCacheFile(header, region, specifiedInstanceID, "tencent", "CVM", running)
-	} else {
-		PrintInstancesListRealTime(region, running, specifiedInstanceID)
-	}
+	cmdutil.PrintECSCacheFile(header, region, specifiedInstanceID, "tencent", "CVM", running)
 }
 
 func PrintInstancesList(region string, running bool, specifiedInstanceID string, cvmFlushCache bool) {

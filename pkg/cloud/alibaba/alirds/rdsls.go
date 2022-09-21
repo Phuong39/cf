@@ -14,7 +14,6 @@ import (
 
 var (
 	DescribeDBInstancesOut []DBInstances
-	RDSCacheFilePath       = cmdutil.ReturnCacheFile("alibaba", "RDS")
 	TimestampType          = util.ReturnTimestampType("alibaba", "rds")
 	header                 = []string{"序号 (SN)", "数据库 ID (DB ID)", "数据库类型 (DB Engine)", "数据库版本 (DB Engine Version)", "数据库状态 (DB Staus)", "区域 ID (Region ID)"}
 )
