@@ -19,7 +19,7 @@ CF 是一个云环境利用框架，适用于在红队场景中对云上内网�
 
 CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
 
-![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737418.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209232137126.png)
 
 当前已支持的云：
 
