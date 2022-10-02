@@ -39,6 +39,22 @@ For detailed manuals, please visit: [wiki.teamssix.com/cf](https://wiki.teamssix
 
 [![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209081100625.png)](https://wiki.teamssix.com/cf)
 
+## Install
+
+Download the binary file corresponding to the system in the CF download url: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)  and run it from the command line, the following systems are currently supported.
+
+|          File name           | System  |            Architecture            | Bit  |
+| :--------------------------: | :-----: | :--------------------------------: | :--: |
+| cf_x.x.x_darwin_amd64.tar.gz |  MacOS  |     AMD (Mac for Intel chips)      |  64  |
+| cf_x.x.x_darwin_arm64.tar.gz |  MacOS  | ARM (Mac for Apple M Series Chips) |  64  |
+|  cf_x.x.x_linux_386.tar.gz   |  Linux  |                AMD                 |  32  |
+| cf_x.x.x_linux_amd64.tar.gz  |  Linux  |                AMD                 |  64  |
+| cf_x.x.x_linux_arm64.tar.gz  |  Linux  |                ARM                 |  64  |
+|   cf_x.x.x_windows_386.zip   | Windows |                AMD                 |  32  |
+|  cf_x.x.x_windows_amd64.zip  | Windows |                AMD                 |  64  |
+|  cf_x.x.x_windows_arm64.zip  | Windows |                ARM                 |  64  |
+
+
 ## Cases
 
 |               Title                | Version |                             URL                              |   Time    |
