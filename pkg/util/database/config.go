@@ -6,11 +6,25 @@ import (
 	"github.com/teamssix/cf/pkg/cloud"
 	"github.com/teamssix/cf/pkg/util/errutil"
 	"os"
+	"sort"
 	"strings"
 )
 
 func InsertConfig(config cloud.Config) {
-	CacheDb.Create(&config)
+	var configAccessKeyIDList []string
+	configList := SelectConfig()
+	for _, v := range configList {
+		configAccessKeyIDList = append(configAccessKeyIDList, v.AccessKeyId)
+	}
+	sort.Strings(configAccessKeyIDList)
+	index := sort.SearchStrings(configAccessKeyIDList, config.AccessKeyId)
+
+	if index < len(configAccessKeyIDList) && configAccessKeyIDList[index] == config.AccessKeyId {
+		log.Warnln("已配置过该 Access Key (The Access Key has been configured.)")
+	} else {
+		CacheDb.Create(&config)
+		log.Infoln("访问凭证配置完成 (Access Key configuration complete.)")
+	}
 }
 
 func DeleteConfig() {
