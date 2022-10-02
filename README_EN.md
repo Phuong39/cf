@@ -41,7 +41,7 @@ For detailed manuals, please visit: [wiki.teamssix.com/cf](https://wiki.teamssix
 
 ## Install
 
-Download the binary file corresponding to the system in the CF download url: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)  and run it from the command line, the following systems are currently supported.
+Download the compressed files corresponding to the system in the CF download url: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases), decompressing it and run it in the command line. The following systems are currently supported:
 
 |          File name           | System  |            Architecture            | Bit  |
 | :--------------------------: | :-----: | :--------------------------------: | :--: |
@@ -54,6 +54,20 @@ Download the binary file corresponding to the system in the CF download url: [gi
 |  cf_x.x.x_windows_amd64.zip  | Windows |                AMD                 |  64  |
 |  cf_x.x.x_windows_arm64.zip  | Windows |                ARM                 |  64  |
 
+### MacOS && Linux
+
+> Note that the address and filename in the following command are replaced by the values in [releases](https://github.com/teamssix/cf/releases).
+
+```bash
+wget https://github.com/teamssix/cf/releases/download/xxx/cf_xxx_xxx_xxx.tar.gz
+tar zxvf cf_xxx_xxx_xxx.tar.gz
+chmod +x cf
+./cf
+```
+
+### Windows
+
+Download the ZIP file corresponding to your system in the CF download url: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases), unzip it, and run it from the command line.
 
 ## Cases
 
