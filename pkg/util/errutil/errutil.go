@@ -24,6 +24,7 @@ var errorMessages = map[string]string{
 	"network is unreachable":       "当前网络连接异常 (Network is unreachable)",
 	"InvalidSecurityToken.Expired": "临时令牌已过期 (STS token has expired)",
 	"InvalidAccessKeyId.Inactive":  "当前 AK 已被禁用 (The current AccessKeyId is inactive)",
+	"interrupt":                    "程序已退出 (Program exited.)",
 }
 
 var errorMessagesNoExit = map[string]string{
