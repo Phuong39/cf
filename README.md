@@ -185,7 +185,6 @@ cf upgrade
 
 CF 现已加入 [404星链计划](https://github.com/knownsec/404StarLink)
 
-
 ## 更多
 
 如果你对云安全比较感兴趣，可以看我的另外一个项目 [Awesome Cloud Security](https://github.com/teamssix/awesome-cloud-security)，这里收录了很多国内外的云安全资源，另外在我的[云安全文库](https://wiki.teamssix.com/)里有大量的云安全方向的笔记和文章，这应该是国内还不错的云安全学习资料。
@@ -204,3 +203,5 @@ CF 现已加入 [404星链计划](https://github.com/knownsec/404StarLink)
 
 * 本工具仅用于合法合规用途，严禁用于违法违规用途。
 * 本工具中所涉及的风险点均属于租户责任，与云厂商无关。
+
+<div align=center><b>感谢你使用我的工具</b></div>

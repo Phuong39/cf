@@ -1,4 +1,4 @@
-package env
+package global
 
 const (
 	CFHomeEnvVar = "CF_HOME"

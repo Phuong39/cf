@@ -209,3 +209,4 @@ If you would like to work with me on this, you can join the team by sending your
 * This tool can only be used in legal scenarios and is strictly forbidden to be used in illegal scenarios.
 * The risks involved in this tool are the responsibility of the tenant and not the cloud providers.
 
+<div align=center><b>Thank you for using my tool.</b></div>

@@ -3,7 +3,7 @@ package pubutil
 import (
 	"errors"
 	log "github.com/sirupsen/logrus"
-	"github.com/teamssix/cf/pkg/util/env"
+	"github.com/teamssix/cf/pkg/util/global"
 	"os"
 	"path/filepath"
 )
@@ -65,7 +65,7 @@ func GetConfigFilePath() string {
 }
 
 func GetCFHomeDir() (string, error) {
-	home := os.Getenv(env.CFHomeEnvVar)
+	home := os.Getenv(global.CFHomeEnvVar)
 	if home != "" {
 		return home, nil
 	}
@@ -73,7 +73,7 @@ func GetCFHomeDir() (string, error) {
 	if err != nil {
 		return "", errors.New("failed to get user home dir")
 	}
-	return filepath.Join(home, env.AppDirName), nil
+	return filepath.Join(home, global.AppDirName), nil
 }
 
 func FileExists(path string) bool {
