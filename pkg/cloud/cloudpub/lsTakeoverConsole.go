@@ -1,4 +1,4 @@
-package console
+package cloudpub
 
 import (
 	log "github.com/sirupsen/logrus"

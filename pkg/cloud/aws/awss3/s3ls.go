@@ -1,13 +1,18 @@
 package awss3
 
 import (
+	"context"
+	"strconv"
+
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
+
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3"
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
 	"github.com/teamssix/cf/pkg/util"
 	"github.com/teamssix/cf/pkg/util/cmdutil"
 	"github.com/teamssix/cf/pkg/util/errutil"
-	"strconv"
 )
 
 var (
@@ -18,15 +23,95 @@ var (
 func ListBuckets() []string {
 	var buckets []string
 	input := &s3.ListBucketsInput{}
-	svc := S3Client()
+	svc := S3Client("")
 	result, err := svc.ListBuckets(input)
 	if err != nil {
 		errutil.HandleErr(err)
 	}
+
 	for _, v := range result.Buckets {
 		buckets = append(buckets, *v.Name)
 	}
 	return buckets
+}
+
+func GetBucketRegion(bucket string) string {
+	region, err := s3manager.GetBucketRegionWithClient(context.Background(), S3Client(""), bucket)
+	if err != nil {
+		errutil.HandleErr(err)
+	}
+	return region
+}
+
+func FindBucketAcl(bucket string, region string) string {
+	var (
+		bucketACL string
+		read      int
+		write     int
+		readACP   int
+		writeACP  int
+		sum       int
+	)
+	input := &s3.GetBucketAclInput{
+		Bucket: aws.String(bucket),
+	}
+	svc := S3Client(region)
+	result, err := svc.GetBucketAcl(input)
+	if err != nil {
+		errutil.HandleErr(err)
+	}
+	for _, v := range result.Grants {
+		if *v.Grantee.Type == "Group" {
+			if *v.Grantee.URI == "http://acs.amazonaws.com/groups/global/AllUsers" {
+				switch *v.Permission {
+				case "READ":
+					read = 1
+				case "WRITE":
+					write = 2
+				case "READ_ACP":
+					readACP = 4
+				case "WRITE_ACP":
+					writeACP = 8
+				}
+			}
+		}
+	}
+	sum = read + write + readACP + writeACP
+	switch sum {
+	case 0:
+		bucketACL = "私有 (Private)"
+	case 1:
+		bucketACL = "公共读 (Public Read)"
+	case 2:
+		bucketACL = "公共写 (Public Write)"
+	case 3:
+		bucketACL = "公共读写 (Public Read Write)"
+	case 4:
+		bucketACL = "ACL 公共读 (Bucket ACL Public Read)"
+	case 5:
+		bucketACL = "存储桶和 ACL 公共读 (Bucket and Bucket ACL are Public Read)"
+	case 6:
+		bucketACL = "存储桶公共写、ACL 公共读 (Bucket Public Write, Bucket ACL Public Read)"
+	case 7:
+		bucketACL = "存储桶公共写读写、ACL 公共读 (Bucket Public Read Write, Bucket ACL Public Read)"
+	case 8:
+		bucketACL = "ACL 公共写 (Bucket ACL Public Write)"
+	case 9:
+		bucketACL = "存储桶公共读、ACL 公共写 (Bucket Public Read, Bucket ACL Public Write)"
+	case 10:
+		bucketACL = "存储桶和 ACL 公共写 (Bucket and Bucket ACL are Public Write)"
+	case 11:
+		bucketACL = "存储桶公共读写、ACL 公共写 (Bucket Public Read Write, Bucket ACL Public Write)"
+	case 12:
+		bucketACL = "ACL 公共读写 (Bucket ACL Public Read Write)"
+	case 13:
+		bucketACL = "存储桶公共读、ACL 公共读写 (Bucket Public Read, Bucket ACL Public Read Write)"
+	case 14:
+		bucketACL = "存储桶公共写、ACL 公共读写 (Bucket Public Write, Bucket ACL Public Read Write)"
+	case 15:
+		bucketACL = "存储桶和 ACL 公共读写 (Bucket and Bucket ACL are Public Read Write)"
+	}
+	return bucketACL
 }
 
 func PrintBucketsListRealTime(region string, s3LsObjectNumber string) {
@@ -36,7 +121,9 @@ func PrintBucketsListRealTime(region string, s3LsObjectNumber string) {
 	var data = make([][]string, len(buckets))
 	for i, o := range buckets {
 		SN := strconv.Itoa(i + 1)
-		data[i] = []string{SN, o, "", "", "", "", ""}
+		bucketRegion := GetBucketRegion(o)
+		bucketACL := FindBucketAcl(o, bucketRegion)
+		data[i] = []string{SN, o, bucketACL, "", "", bucketRegion, ""}
 	}
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {
