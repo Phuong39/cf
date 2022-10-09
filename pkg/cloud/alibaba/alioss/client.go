@@ -2,9 +2,10 @@ package alioss
 
 import (
 	"fmt"
-	"github.com/teamssix/cf/pkg/util/errutil"
 	"os"
 	"strings"
+
+	"github.com/teamssix/cf/pkg/util/errutil"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
@@ -46,21 +47,5 @@ func (o *OSSCollector) OSSClient(region string) *OSSCollector {
 			o.Client = client
 		}
 		return o
-	}
-}
-
-func formatFileSize(fileSize int64) (size string) {
-	if fileSize < 1024 {
-		return fmt.Sprintf("%.2f B", float64(fileSize)/float64(1))
-	} else if fileSize < (1024 * 1024) {
-		return fmt.Sprintf("%.2f KB", float64(fileSize)/float64(1024))
-	} else if fileSize < (1024 * 1024 * 1024) {
-		return fmt.Sprintf("%.2f MB", float64(fileSize)/float64(1024*1024))
-	} else if fileSize < (1024 * 1024 * 1024 * 1024) {
-		return fmt.Sprintf("%.2f GB", float64(fileSize)/float64(1024*1024*1024))
-	} else if fileSize < (1024 * 1024 * 1024 * 1024 * 1024) {
-		return fmt.Sprintf("%.2f TB", float64(fileSize)/float64(1024*1024*1024*1024))
-	} else {
-		return fmt.Sprintf("%.2fEB", float64(fileSize)/float64(1024*1024*1024*1024*1024))
 	}
 }

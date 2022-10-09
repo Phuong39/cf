@@ -4,6 +4,8 @@ import (
 	"context"
 	"strconv"
 
+	"github.com/teamssix/cf/pkg/util/pubutil"
+
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -23,7 +25,7 @@ var (
 func ListBuckets() []string {
 	var buckets []string
 	input := &s3.ListBucketsInput{}
-	svc := S3Client("")
+	svc := S3Client("all")
 	result, err := svc.ListBuckets(input)
 	if err != nil {
 		errutil.HandleErr(err)
@@ -36,7 +38,7 @@ func ListBuckets() []string {
 }
 
 func GetBucketRegion(bucket string) string {
-	region, err := s3manager.GetBucketRegionWithClient(context.Background(), S3Client(""), bucket)
+	region, err := s3manager.GetBucketRegionWithClient(context.Background(), S3Client("all"), bucket)
 	if err != nil {
 		errutil.HandleErr(err)
 	}
@@ -114,6 +116,32 @@ func FindBucketAcl(bucket string, region string) string {
 	return bucketACL
 }
 
+func getBucketObjectInfo(bucket string, region string, s3LsObjectNumber string) (string, string) {
+	var (
+		objectsKeyNum         string
+		objectsSizeSum        string
+		n                     int64
+		s3LsObjectNumberInt64 int64
+		MaxKeys               int64
+	)
+	s3LsObjectNumberInt64, err := strconv.ParseInt(s3LsObjectNumber, 10, 64)
+	if err != nil {
+		errutil.HandleErr(err)
+	}
+	if s3LsObjectNumberInt64 > 1000 {
+		MaxKeys = 1000
+	} else {
+		MaxKeys = s3LsObjectNumberInt64
+	}
+	objectsKey, objectsSize := ListObjectsV2(bucket, region, s3LsObjectNumberInt64, MaxKeys)
+	objectsKeyNum = strconv.Itoa(len(objectsKey))
+	for _, v := range objectsSize {
+		n += v
+	}
+	objectsSizeSum = pubutil.FormatFileSize(n)
+	return objectsKeyNum, objectsSizeSum
+}
+
 func PrintBucketsListRealTime(region string, s3LsObjectNumber string) {
 	buckets := ListBuckets()
 	log.Debugf("获取到 %d 条 S3 Bucket 信息 (Obtained %d S3 Bucket information)", len(buckets), len(buckets))
@@ -122,8 +150,15 @@ func PrintBucketsListRealTime(region string, s3LsObjectNumber string) {
 	for i, o := range buckets {
 		SN := strconv.Itoa(i + 1)
 		bucketRegion := GetBucketRegion(o)
-		bucketACL := FindBucketAcl(o, bucketRegion)
-		data[i] = []string{SN, o, bucketACL, "", "", bucketRegion, ""}
+		if region != "all" && region == bucketRegion {
+			bucketACL := FindBucketAcl(o, bucketRegion)
+			objectsKeyNum, objectsSizeSum := getBucketObjectInfo(o, bucketRegion, s3LsObjectNumber)
+			data[i] = []string{SN, o, bucketACL, objectsKeyNum, objectsSizeSum, bucketRegion, "https://" + o + ".s3." + bucketRegion + ".amazonaws.com"}
+		} else {
+			bucketACL := FindBucketAcl(o, bucketRegion)
+			objectsKeyNum, objectsSizeSum := getBucketObjectInfo(o, bucketRegion, s3LsObjectNumber)
+			data[i] = []string{SN, o, bucketACL, objectsKeyNum, objectsSizeSum, bucketRegion, "https://" + o + ".s3." + bucketRegion + ".amazonaws.com"}
+		}
 	}
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {

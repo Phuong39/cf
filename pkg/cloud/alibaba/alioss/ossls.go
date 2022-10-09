@@ -2,10 +2,11 @@ package alioss
 
 import (
 	"fmt"
+	"strconv"
+
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/teamssix/cf/pkg/util/errutil"
 	"github.com/teamssix/cf/pkg/util/pubutil"
-	"strconv"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	log "github.com/sirupsen/logrus"
@@ -211,14 +212,14 @@ func PrintBucketsListRealTime(region string, ossLsObjectNumber string) {
 		if region == "all" {
 			SN := strconv.Itoa(i + 1)
 			ObjectNumber := strconv.Itoa(Objects[i].ObjectNumber)
-			ObjectSize := formatFileSize(Objects[i].ObjectSize)
+			ObjectSize := pubutil.FormatFileSize(Objects[i].ObjectSize)
 			BucketACL := ACL[i].Acl
 			BucketURL := fmt.Sprintf("https://%s.oss-%s.aliyuncs.com", o.Name, o.Region)
 			data[i] = []string{SN, o.Name, BucketACL, ObjectNumber, ObjectSize, o.Region, BucketURL}
 		} else {
 			if region == o.Region {
 				ObjectNumber := strconv.Itoa(Objects[i].ObjectNumber)
-				ObjectSize := formatFileSize(Objects[i].ObjectSize)
+				ObjectSize := pubutil.FormatFileSize(Objects[i].ObjectSize)
 				BucketACL := ACL[i].Acl
 				BucketURL := fmt.Sprintf("https://%s.oss-%s.aliyuncs.com", o.Name, o.Region)
 				data[num] = []string{strconv.Itoa(num + 1), o.Name, BucketACL, ObjectNumber, ObjectSize, o.Region, BucketURL}

@@ -18,7 +18,7 @@ func S3Client(region string) *s3.S3 {
 		os.Exit(0)
 		return nil
 	} else {
-		if region == "" {
+		if region == "all" {
 			region = "us-east-1"
 		}
 		cfg := &aws.Config{
