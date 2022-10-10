@@ -2,10 +2,12 @@ package pubutil
 
 import (
 	"errors"
-	log "github.com/sirupsen/logrus"
-	"github.com/teamssix/cf/pkg/util/env"
+	"fmt"
 	"os"
 	"path/filepath"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/teamssix/cf/pkg/util/global"
 )
 
 type TimestampCache struct {
@@ -65,7 +67,7 @@ func GetConfigFilePath() string {
 }
 
 func GetCFHomeDir() (string, error) {
-	home := os.Getenv(env.CFHomeEnvVar)
+	home := os.Getenv(global.CFHomeEnvVar)
 	if home != "" {
 		return home, nil
 	}
@@ -73,7 +75,7 @@ func GetCFHomeDir() (string, error) {
 	if err != nil {
 		return "", errors.New("failed to get user home dir")
 	}
-	return filepath.Join(home, env.AppDirName), nil
+	return filepath.Join(home, global.AppDirName), nil
 }
 
 func FileExists(path string) bool {
@@ -91,5 +93,21 @@ func CreateFolder(folder string) {
 	if !FileExists(folder) {
 		log.Tracef("创建 %s 目录 (Create %s directory): ", folder, folder)
 		_ = os.MkdirAll(folder, 0700)
+	}
+}
+
+func FormatFileSize(fileSize int64) (size string) {
+	if fileSize < 1024 {
+		return fmt.Sprintf("%.2f B", float64(fileSize)/float64(1))
+	} else if fileSize < (1024 * 1024) {
+		return fmt.Sprintf("%.2f KB", float64(fileSize)/float64(1024))
+	} else if fileSize < (1024 * 1024 * 1024) {
+		return fmt.Sprintf("%.2f MB", float64(fileSize)/float64(1024*1024))
+	} else if fileSize < (1024 * 1024 * 1024 * 1024) {
+		return fmt.Sprintf("%.2f GB", float64(fileSize)/float64(1024*1024*1024))
+	} else if fileSize < (1024 * 1024 * 1024 * 1024 * 1024) {
+		return fmt.Sprintf("%.2f TB", float64(fileSize)/float64(1024*1024*1024*1024))
+	} else {
+		return fmt.Sprintf("%.2fEB", float64(fileSize)/float64(1024*1024*1024*1024*1024))
 	}
 }

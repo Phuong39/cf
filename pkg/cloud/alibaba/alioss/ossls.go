@@ -2,10 +2,11 @@ package alioss
 
 import (
 	"fmt"
+	"strconv"
+
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/teamssix/cf/pkg/util/errutil"
 	"github.com/teamssix/cf/pkg/util/pubutil"
-	"strconv"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	log "github.com/sirupsen/logrus"
@@ -188,6 +189,10 @@ func (o *OSSCollector) GetBucketACL() []Acl {
 }
 
 func PrintBucketsListRealTime(region string, ossLsObjectNumber string) {
+	var (
+		num     int
+		dataLen int
+	)
 	OSSCollector := &OSSCollector{}
 	Buckets, _ := OSSCollector.ListBuckets()
 	log.Debugf("获取到 %d 条 OSS Bucket 信息 (Obtained %d OSS Bucket information)", len(Buckets), len(Buckets))
@@ -195,7 +200,6 @@ func PrintBucketsListRealTime(region string, ossLsObjectNumber string) {
 	Objects, _ := OSSCollector.ListObjects("all", ossLsObjectNumber)
 	ACL := OSSCollector.GetBucketACL()
 
-	var num = 0
 	for _, o := range Buckets {
 		if region == "all" {
 			num = len(Buckets)
@@ -211,30 +215,34 @@ func PrintBucketsListRealTime(region string, ossLsObjectNumber string) {
 		if region == "all" {
 			SN := strconv.Itoa(i + 1)
 			ObjectNumber := strconv.Itoa(Objects[i].ObjectNumber)
-			ObjectSize := formatFileSize(Objects[i].ObjectSize)
+			ObjectSize := pubutil.FormatFileSize(Objects[i].ObjectSize)
 			BucketACL := ACL[i].Acl
 			BucketURL := fmt.Sprintf("https://%s.oss-%s.aliyuncs.com", o.Name, o.Region)
 			data[i] = []string{SN, o.Name, BucketACL, ObjectNumber, ObjectSize, o.Region, BucketURL}
+			dataLen = dataLen + 1
 		} else {
 			if region == o.Region {
 				ObjectNumber := strconv.Itoa(Objects[i].ObjectNumber)
-				ObjectSize := formatFileSize(Objects[i].ObjectSize)
+				ObjectSize := pubutil.FormatFileSize(Objects[i].ObjectSize)
 				BucketACL := ACL[i].Acl
 				BucketURL := fmt.Sprintf("https://%s.oss-%s.aliyuncs.com", o.Name, o.Region)
 				data[num] = []string{strconv.Itoa(num + 1), o.Name, BucketACL, ObjectNumber, ObjectSize, o.Region, BucketURL}
 				num = num + 1
+				dataLen = dataLen + 1
 			}
 		}
 	}
 	var td = cloud.TableData{Header: header, Body: data}
-	if len(data) == 0 {
+	if dataLen == 0 {
 		log.Info("没发现存储桶 (No Buckets Found)")
 	} else {
 		Caption := "OSS 资源 (OSS resources)"
 		cloud.PrintTable(td, Caption)
 	}
-	cmdutil.WriteCacheFile(td, "alibaba", "oss", region, "all")
-	util.WriteTimestamp(TimestampType)
+	if region == "all" {
+		cmdutil.WriteCacheFile(td, "alibaba", "oss", region, "all")
+		util.WriteTimestamp(TimestampType)
+	}
 }
 
 func PrintBucketsListHistory(region string) {

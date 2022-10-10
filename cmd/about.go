@@ -28,7 +28,7 @@ Hi, I'm TeamsSix and I'm glad you've found this place. You can find and follow m
 		cloud.PrintTable(td, "")
 		color.Print(`
 如果你使用着感觉还不错，记得给个 Star 哦<gray>（另外 T Wiki 是我自己在维护的云安全知识库，如果你想加入云安全交流群，那么在 T Wiki 中可以找到）</>
-Hopefully this repository will reach 1k stars. <bold>I can do all this through him who gives me strength.</>
+<bold>感谢你使用我的工具 (Thank you for using my tool.)</>
 `)
 	},
 }

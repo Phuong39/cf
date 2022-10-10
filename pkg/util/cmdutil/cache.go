@@ -2,6 +2,7 @@ package cmdutil
 
 import (
 	"fmt"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
 	"github.com/teamssix/cf/pkg/util/database"
@@ -21,7 +22,7 @@ func WriteCacheFile(td cloud.TableData, provider string, serviceType string, reg
 		serviceType = "ecs"
 	}
 	if len(td.Body) == 0 {
-		if serviceType == "oss" {
+		if serviceType == "oss" || serviceType == "s3" {
 			database.DeleteOSSCache(AccessKeyId)
 		} else if serviceType == "ecs" {
 			database.DeleteECSCache(AccessKeyId)
@@ -31,7 +32,7 @@ func WriteCacheFile(td cloud.TableData, provider string, serviceType string, reg
 	} else if region == "all" && id == "all" {
 		log.Debugln("写入数据到缓存数据库 (Write data to a cache database)")
 		switch {
-		case serviceType == "oss":
+		case serviceType == "oss" || serviceType == "s3":
 			var OSSCacheList []pubutil.OSSCache
 			for _, v := range td.Body {
 				OSSCache := pubutil.OSSCache{

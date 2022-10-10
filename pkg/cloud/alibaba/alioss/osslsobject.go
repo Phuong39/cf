@@ -2,14 +2,15 @@ package alioss
 
 import (
 	"bufio"
-	"github.com/AlecAivazis/survey/v2"
-	"github.com/teamssix/cf/pkg/cloud"
-	"github.com/teamssix/cf/pkg/util/errutil"
-	"github.com/teamssix/cf/pkg/util/pubutil"
 	"os"
 	"path/filepath"
 	"strconv"
 	"time"
+
+	"github.com/AlecAivazis/survey/v2"
+	"github.com/teamssix/cf/pkg/cloud"
+	"github.com/teamssix/cf/pkg/util/errutil"
+	"github.com/teamssix/cf/pkg/util/pubutil"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -36,10 +37,10 @@ func PrintObjectsList(ossLsObjectNumber string) {
 		} else {
 			OSSCollector := &OSSCollector{}
 			objectsSum, objects := OSSCollector.ListObjects(bucketName, ossLsObjectNumber)
-			objectSize := formatFileSize(objectsSum[0].ObjectSize)
+			objectSize := pubutil.FormatFileSize(objectsSum[0].ObjectSize)
 			var objectsData = make([][]string, len(objects))
 			for i, o := range objects {
-				objectsData[i] = []string{strconv.Itoa(i + 1), o.Key, formatFileSize(o.Size), o.LastModified}
+				objectsData[i] = []string{strconv.Itoa(i + 1), o.Key, pubutil.FormatFileSize(o.Size), o.LastModified}
 			}
 			if len(objectsData) == 0 {
 				log.Info("没发现对象 (No Objects Found)")

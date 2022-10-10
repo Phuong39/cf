@@ -2,7 +2,7 @@ package tencent
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/teamssix/cf/pkg/cloud/console"
+	"github.com/teamssix/cf/pkg/cloud/cloudpub"
 	"github.com/teamssix/cf/pkg/cloud/tencent/tencentconsole"
 )
 
@@ -42,6 +42,6 @@ var lsConsoleCmd = &cobra.Command{
 	Short: "查看接管控制台的信息 (View Takeover console information)",
 	Long:  "查看接管控制台的信息 (View Takeover console information)",
 	Run: func(cmd *cobra.Command, args []string) {
-		console.LsTakeoverConsole("tencent")
+		cloudpub.LsTakeoverConsole("tencent")
 	},
 }

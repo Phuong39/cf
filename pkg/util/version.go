@@ -3,8 +3,8 @@ package util
 import (
 	"encoding/json"
 	log "github.com/sirupsen/logrus"
-	"github.com/teamssix/cf/pkg/util/env"
 	"github.com/teamssix/cf/pkg/util/errutil"
+	"github.com/teamssix/cf/pkg/util/global"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -12,11 +12,11 @@ import (
 )
 
 func GetCurrentVersion() string {
-	return env.Version
+	return global.Version
 }
 
 func GetUpdateTime() string {
-	return env.UpdateTime
+	return global.UpdateTime
 }
 
 type latestReleasesStruct struct {
@@ -26,9 +26,9 @@ type latestReleasesStruct struct {
 func AlertUpdateInfo() {
 	oldTimestamp := ReadTimestamp(ReturnVersionTimestampFile())
 	if oldTimestamp == 0 {
-		CheckVersion(env.Version)
+		CheckVersion(global.Version)
 	} else if IsFlushCache(oldTimestamp) {
-		check, newVersion := CheckVersion(env.Version)
+		check, newVersion := CheckVersion(global.Version)
 		if check {
 			log.Warnf("发现 %s 新版本，可以使用 upgrade 命令进行更新 (Found a new version of %s, use the upgrade command to update)", newVersion, newVersion)
 		} else {

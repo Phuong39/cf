@@ -5,6 +5,7 @@ import (
 	"github.com/gookit/color"
 	"github.com/teamssix/cf/pkg/util/database"
 	"github.com/teamssix/cf/pkg/util/errutil"
+	"github.com/teamssix/cf/pkg/util/global"
 	"github.com/teamssix/cf/pkg/util/pubutil"
 	"strconv"
 	"strings"
@@ -23,7 +24,6 @@ func ConfigureAccessKey() {
 			inputAccessKey(config, cloudConfigList[i])
 		}
 	}
-	log.Infoln("访问凭证配置完成 (Access Key configuration complete.)")
 }
 
 func selectProvider() ([]string, []string, string) {
@@ -42,10 +42,7 @@ func ReturnCloudProviderList() ([]string, []string) {
 	var (
 		cloudConfigList   []string
 		cloudProviderList []string
-		CloudProviderMap  = map[string]string{
-			"alibaba": "阿里云 (Alibaba Cloud)",
-			"tencent": "腾讯云 (Tencent Cloud)",
-		}
+		CloudProviderMap  = global.CloudProviderMap
 	)
 	for k, v := range CloudProviderMap {
 		cloudConfigList = append(cloudConfigList, k)

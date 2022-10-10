@@ -3,7 +3,7 @@ package alibaba
 import (
 	"github.com/spf13/cobra"
 	"github.com/teamssix/cf/pkg/cloud/alibaba/aliconsole"
-	"github.com/teamssix/cf/pkg/cloud/console"
+	"github.com/teamssix/cf/pkg/cloud/cloudpub"
 )
 
 var (
@@ -42,6 +42,6 @@ var lsConsoleCmd = &cobra.Command{
 	Short: "查看接管控制台的信息 (View Takeover console information)",
 	Long:  "查看接管控制台的信息 (View Takeover console information)",
 	Run: func(cmd *cobra.Command, args []string) {
-		console.LsTakeoverConsole("alibaba")
+		cloudpub.LsTakeoverConsole("alibaba")
 	},
 }

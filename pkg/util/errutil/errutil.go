@@ -1,9 +1,10 @@
 package errutil
 
 import (
-	log "github.com/sirupsen/logrus"
 	"os"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type error interface {
