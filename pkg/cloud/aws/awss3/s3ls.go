@@ -27,9 +27,7 @@ func ListBuckets() []string {
 	input := &s3.ListBucketsInput{}
 	svc := S3Client("all")
 	result, err := svc.ListBuckets(input)
-	if err != nil {
-		errutil.HandleErr(err)
-	}
+	errutil.HandleErr(err)
 
 	for _, v := range result.Buckets {
 		buckets = append(buckets, *v.Name)
@@ -39,9 +37,7 @@ func ListBuckets() []string {
 
 func GetBucketRegion(bucket string) string {
 	region, err := s3manager.GetBucketRegionWithClient(context.Background(), S3Client("all"), bucket)
-	if err != nil {
-		errutil.HandleErr(err)
-	}
+	errutil.HandleErr(err)
 	return region
 }
 
@@ -59,9 +55,7 @@ func FindBucketAcl(bucket string, region string) string {
 	}
 	svc := S3Client(region)
 	result, err := svc.GetBucketAcl(input)
-	if err != nil {
-		errutil.HandleErr(err)
-	}
+	errutil.HandleErr(err)
 	for _, v := range result.Grants {
 		if *v.Grantee.Type == "Group" {
 			if *v.Grantee.URI == "http://acs.amazonaws.com/groups/global/AllUsers" {
@@ -116,24 +110,13 @@ func FindBucketAcl(bucket string, region string) string {
 	return bucketACL
 }
 
-func getBucketObjectInfo(bucket string, region string, s3LsObjectNumber string) (string, string) {
+func getBucketObjectSum(bucket string, region string, s3LsObjectNumber string) (string, string) {
 	var (
-		objectsKeyNum         string
-		objectsSizeSum        string
-		n                     int64
-		s3LsObjectNumberInt64 int64
-		MaxKeys               int64
+		objectsKeyNum  string
+		objectsSizeSum string
+		n              int64
 	)
-	s3LsObjectNumberInt64, err := strconv.ParseInt(s3LsObjectNumber, 10, 64)
-	if err != nil {
-		errutil.HandleErr(err)
-	}
-	if s3LsObjectNumberInt64 > 1000 {
-		MaxKeys = 1000
-	} else {
-		MaxKeys = s3LsObjectNumberInt64
-	}
-	objectsKey, objectsSize := ListObjectsV2(bucket, region, s3LsObjectNumberInt64, MaxKeys)
+	ListObjectsV2(bucket, region, s3LsObjectNumber, "")
 	objectsKeyNum = strconv.Itoa(len(objectsKey))
 	for _, v := range objectsSize {
 		n += v
@@ -143,32 +126,40 @@ func getBucketObjectInfo(bucket string, region string, s3LsObjectNumber string) 
 }
 
 func PrintBucketsListRealTime(region string, s3LsObjectNumber string) {
+	var (
+		num     int
+		dataLen int
+	)
 	buckets := ListBuckets()
 	log.Debugf("获取到 %d 条 S3 Bucket 信息 (Obtained %d S3 Bucket information)", len(buckets), len(buckets))
-
 	var data = make([][]string, len(buckets))
 	for i, o := range buckets {
 		SN := strconv.Itoa(i + 1)
 		bucketRegion := GetBucketRegion(o)
-		if region != "all" && region == bucketRegion {
+		if region == bucketRegion {
+			bucketACL := FindBucketAcl(o, region)
+			objectsKeyNum, objectsSizeSum := getBucketObjectSum(o, region, s3LsObjectNumber)
+			data[num] = []string{SN, o, bucketACL, objectsKeyNum, objectsSizeSum, region, "https://" + o + ".s3." + bucketRegion + ".amazonaws.com"}
+			num = num + 1
+			dataLen = dataLen + 1
+		} else if region == "all" {
 			bucketACL := FindBucketAcl(o, bucketRegion)
-			objectsKeyNum, objectsSizeSum := getBucketObjectInfo(o, bucketRegion, s3LsObjectNumber)
+			objectsKeyNum, objectsSizeSum := getBucketObjectSum(o, bucketRegion, s3LsObjectNumber)
 			data[i] = []string{SN, o, bucketACL, objectsKeyNum, objectsSizeSum, bucketRegion, "https://" + o + ".s3." + bucketRegion + ".amazonaws.com"}
-		} else {
-			bucketACL := FindBucketAcl(o, bucketRegion)
-			objectsKeyNum, objectsSizeSum := getBucketObjectInfo(o, bucketRegion, s3LsObjectNumber)
-			data[i] = []string{SN, o, bucketACL, objectsKeyNum, objectsSizeSum, bucketRegion, "https://" + o + ".s3." + bucketRegion + ".amazonaws.com"}
+			dataLen = dataLen + 1
 		}
 	}
 	var td = cloud.TableData{Header: header, Body: data}
-	if len(data) == 0 {
+	if dataLen == 0 {
 		log.Info("没发现存储桶 (No Buckets Found)")
 	} else {
 		Caption := "AWS 资源 (AWS resources)"
 		cloud.PrintTable(td, Caption)
 	}
-	cmdutil.WriteCacheFile(td, "aws", "s3", "all", "all")
-	util.WriteTimestamp(TimestampType)
+	if region == "all" {
+		cmdutil.WriteCacheFile(td, "aws", "s3", "all", "all")
+		util.WriteTimestamp(TimestampType)
+	}
 }
 
 func PrintBucketsListHistory(region string) {

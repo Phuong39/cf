@@ -2,6 +2,7 @@ package cmdutil
 
 import (
 	"fmt"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
 	"github.com/teamssix/cf/pkg/util/database"
