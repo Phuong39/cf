@@ -23,6 +23,7 @@ var (
 	scriptType                 string
 	commandFile                string
 	ecsLsRegion                string
+	ecsExecRegion              string
 	ecsLsSpecifiedInstanceID   string
 	ecsExecSpecifiedInstanceID string
 )
@@ -50,6 +51,7 @@ func init() {
 	ecsExecCmd.Flags().BoolVarP(&metaDataSTSToken, "metaDataSTSToken", "m", false, "一键获取实例元数据中的临时访问凭证 (Get the STS Token in the instance metadata)")
 	ecsExecCmd.Flags().IntVarP(&timeOut, "timeOut", "t", 60, "设置命令执行结果的等待时间 (Set the command execution result waiting time)")
 	ecsExecCmd.Flags().BoolVarP(&ecsExecAllRegions, "allRegions", "a", false, "使用所有区域，包括私有区域 (Use all regions, including private regions.)")
+	ecsExecCmd.Flags().StringVarP(&ecsExecRegion, "region", "r", "all", "指定区域 ID (Specify region ID)")
 
 }
 
@@ -83,7 +85,7 @@ var ecsExecCmd = &cobra.Command{
 			log.Warnf("还未指定要执行的命令 (The command to be executed has not been specified yet)\n")
 			cmd.Help()
 		} else {
-			aliecs2.ECSExec(command, commandFile, scriptType, ecsExecSpecifiedInstanceID, "all", batchCommand, userData, metaDataSTSToken, ecsFlushCache, lhost, lport, timeOut, ecsExecAllRegions)
+			aliecs2.ECSExec(command, commandFile, scriptType, ecsExecSpecifiedInstanceID, ecsExecRegion, batchCommand, userData, metaDataSTSToken, ecsFlushCache, lhost, lport, timeOut, ecsExecAllRegions)
 		}
 	},
 }
