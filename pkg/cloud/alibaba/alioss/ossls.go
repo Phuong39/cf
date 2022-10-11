@@ -46,32 +46,61 @@ var (
 	header        = []string{"序号 (SN)", "名称 (Name)", "存储桶 ACL (Bucket ACL)", "对象数量 (Object Number)", "存储桶大小 (Bucket Size)", "区域 (Region)", "存储桶地址 (Bucket URL)"}
 )
 
-func (o *OSSCollector) ListBuckets() ([]Bucket, error) {
-	region := cloud.GetGlobalRegions()[0]
-	o.OSSClient(region)
-	var size = 1000
-	var out []Bucket
-	marker := oss.Marker("")
-	var err error
-	for {
-		var lbr oss.ListBucketsResult
-		lbr, err = o.Client.ListBuckets(oss.MaxKeys(size), marker)
-		marker = oss.Marker(lbr.NextMarker)
-		for _, bucket := range lbr.Buckets {
-			obj := Bucket{Name: bucket.Name,
-				Region: bucket.Location[4:],
+func (o *OSSCollector) ListBuckets(ossLsBucket string, ossLsRegion string) ([]Bucket, error) {
+	var (
+		out []Bucket
+		err error
+	)
+	if ossLsBucket == "all" {
+		region := cloud.GetGlobalRegions()[0]
+		o.OSSClient(region)
+		var size = 1000
+		marker := oss.Marker("")
+		for {
+			var lbr oss.ListBucketsResult
+			lbr, err = o.Client.ListBuckets(oss.MaxKeys(size), marker)
+			marker = oss.Marker(lbr.NextMarker)
+			for _, bucket := range lbr.Buckets {
+				obj := Bucket{Name: bucket.Name,
+					Region: bucket.Location[4:],
+				}
+				out = append(out, obj)
 			}
-			out = append(out, obj)
+			if !lbr.IsTruncated {
+				break
+			}
 		}
-		if !lbr.IsTruncated {
-			break
+		errutil.HandleErrNoExit(err)
+	} else {
+		var bucket Bucket
+		if ossLsRegion == "all" {
+			bucket = Bucket{
+				Name:   ossLsBucket,
+				Region: o.GetBucketRegion(ossLsBucket),
+			}
+		} else {
+			bucket = Bucket{
+				Name:   ossLsBucket,
+				Region: ossLsRegion,
+			}
 		}
+		out = append(out, bucket)
 	}
-	errutil.HandleErrNoExit(err)
 	return out, err
 }
 
-func (o *OSSCollector) ListObjects(bucketName string, ossLsObjectNumber string) ([]Object, []objectContents) {
+func (o *OSSCollector) GetBucketRegion(bucketName string) string {
+	var err error
+	region := cloud.GetGlobalRegions()[0]
+	o.OSSClient(region)
+	var lbr oss.GetBucketInfoResult
+	lbr, err = o.Client.GetBucketInfo(bucketName)
+	errutil.HandleErr(err)
+	region = lbr.BucketInfo.Location[4:]
+	return region
+}
+
+func (o *OSSCollector) ListObjects(bucketName string, ossLsObjectNumber string, ossLsRegion string) ([]Object, []objectContents) {
 	var (
 		size    int
 		out     []Object
@@ -84,10 +113,9 @@ func (o *OSSCollector) ListObjects(bucketName string, ossLsObjectNumber string) 
 		size, err = strconv.Atoi(ossLsObjectNumber)
 		errutil.HandleErr(err)
 	}
-
 	marker := oss.Marker("")
 	OSSCollector := &OSSCollector{}
-	Buckets, _ = OSSCollector.ListBuckets()
+	Buckets, _ = OSSCollector.ListBuckets(bucketName, ossLsRegion)
 	if bucketName != "all" {
 		for _, obj := range Buckets {
 			if obj.Name == bucketName {
@@ -159,46 +187,61 @@ func getAllObjects(bucket *oss.Bucket, marker oss.Option, size int, ossLsObjectN
 	}
 }
 
-func (o *OSSCollector) GetBucketACL() []Acl {
+func (o *OSSCollector) GetBucketACL(ossLsBucket string, ossLsRegion string) []Acl {
 	OSSCollector := &OSSCollector{}
-	Buckets, _ := OSSCollector.ListBuckets()
-	var out []Acl
+	Buckets, _ := OSSCollector.ListBuckets(ossLsBucket, ossLsRegion)
+	var (
+		out []Acl
+		obj Acl
+	)
 	for _, j := range Buckets {
 		BucketName := j.Name
 		region := j.Region
 		o.OSSClient(region)
 		gbar, err := o.Client.GetBucketACL(BucketName)
-		errutil.HandleErr(err)
-
-		BucketACL := gbar.ACL
-		if BucketACL == "private" {
-			BucketACL = "私有 (Private)"
-		} else if BucketACL == "public-read" {
-			BucketACL = "公共读 (Public Read)"
-		} else if BucketACL == "public-read-write" {
-			BucketACL = "公共读写 (Public Read Write)"
-		}
-
-		obj := Acl{
-			BucketName: BucketName,
-			Acl:        BucketACL,
+		//errutil.HandleErr(err)
+		if err != nil {
+			BucketACL := gbar.ACL
+			if BucketACL == "private" {
+				BucketACL = "私有 (Private)"
+			} else if BucketACL == "public-read" {
+				BucketACL = "公共读 (Public Read)"
+			} else if BucketACL == "public-read-write" {
+				BucketACL = "公共读写 (Public Read Write)"
+			}
+			obj = Acl{
+				BucketName: BucketName,
+				Acl:        BucketACL,
+			}
+		} else {
+			obj = Acl{
+				BucketName: BucketName,
+				Acl:        "N/A",
+			}
 		}
 		out = append(out, obj)
 	}
 	return out
 }
 
-func PrintBucketsListRealTime(region string, ossLsObjectNumber string) {
+func PrintBucketsListRealTime(region string, ossLsObjectNumber string, ossLsBucket string) {
 	var (
 		num     int
 		dataLen int
+		Buckets []Bucket
+		Objects []Object
+		ACL     []Acl
 	)
 	OSSCollector := &OSSCollector{}
-	Buckets, _ := OSSCollector.ListBuckets()
+	Buckets, _ = OSSCollector.ListBuckets(ossLsBucket, region)
 	log.Debugf("获取到 %d 条 OSS Bucket 信息 (Obtained %d OSS Bucket information)", len(Buckets), len(Buckets))
-
-	Objects, _ := OSSCollector.ListObjects("all", ossLsObjectNumber)
-	ACL := OSSCollector.GetBucketACL()
+	if ossLsBucket == "all" {
+		ACL = OSSCollector.GetBucketACL("all", region)
+		Objects, _ = OSSCollector.ListObjects("all", ossLsObjectNumber, region)
+	} else {
+		ACL = OSSCollector.GetBucketACL(ossLsBucket, region)
+		Objects, _ = OSSCollector.ListObjects(ossLsBucket, ossLsObjectNumber, region)
+	}
 
 	for _, o := range Buckets {
 		if region == "all" {
@@ -233,8 +276,10 @@ func PrintBucketsListRealTime(region string, ossLsObjectNumber string) {
 		}
 	}
 	var td = cloud.TableData{Header: header, Body: data}
-	if dataLen == 0 {
+	if dataLen == 0 && ossLsBucket != "all" {
 		log.Info("没发现存储桶 (No Buckets Found)")
+	} else if dataLen == 0 && ossLsBucket == "all" {
+		log.Info("没发现存储桶，注意有些账号需要指定存储桶名称才能列出，可以使用 -b 命令指定存储桶名称 (No bucket found, note that some accounts require a bucket name to be listed, you can specify the bucket name with the -b command.)")
 	} else {
 		Caption := "OSS 资源 (OSS resources)"
 		cloud.PrintTable(td, Caption)
@@ -245,27 +290,27 @@ func PrintBucketsListRealTime(region string, ossLsObjectNumber string) {
 	}
 }
 
-func PrintBucketsListHistory(region string) {
-	cmdutil.PrintOSSCacheFile(header, region, "alibaba", "OSS")
+func PrintBucketsListHistory(region string, ossLsBucket string) {
+	cmdutil.PrintOSSCacheFile(header, region, "alibaba", "OSS", ossLsBucket)
 }
 
-func PrintBucketsList(region string, lsFlushCache bool, ossLsObjectNumber string) {
+func PrintBucketsList(region string, lsFlushCache bool, ossLsObjectNumber string, ossLsBucket string) {
 	if lsFlushCache {
-		PrintBucketsListRealTime(region, ossLsObjectNumber)
+		PrintBucketsListRealTime(region, ossLsObjectNumber, ossLsBucket)
 	} else {
 		oldTimestamp := util.ReadTimestamp(TimestampType)
 		if oldTimestamp == 0 {
-			PrintBucketsListRealTime(region, ossLsObjectNumber)
+			PrintBucketsListRealTime(region, ossLsObjectNumber, ossLsBucket)
 		} else if util.IsFlushCache(oldTimestamp) {
-			PrintBucketsListRealTime(region, ossLsObjectNumber)
+			PrintBucketsListRealTime(region, ossLsObjectNumber, ossLsBucket)
 		} else {
 			util.TimeDifference(oldTimestamp)
-			PrintBucketsListHistory(region)
+			PrintBucketsListHistory(region, ossLsBucket)
 		}
 	}
 }
 
-func ReturnBucketList() []string {
+func ReturnBucketList(ossLsBucket string, ossLsRegion string) []string {
 	var (
 		buckets  []string
 		ossCache []pubutil.OSSCache
@@ -273,7 +318,7 @@ func ReturnBucketList() []string {
 	OSSCollector := &OSSCollector{}
 	ossCache = cmdutil.ReadOSSCache("alibaba")
 	if len(ossCache) == 0 {
-		BucketsList, _ := OSSCollector.ListBuckets()
+		BucketsList, _ := OSSCollector.ListBuckets(ossLsBucket, ossLsRegion)
 		for _, v := range BucketsList {
 			buckets = append(buckets, v.Name)
 		}

@@ -163,7 +163,7 @@ func PrintBucketsListRealTime(region string, s3LsObjectNumber string) {
 }
 
 func PrintBucketsListHistory(region string) {
-	cmdutil.PrintOSSCacheFile(header, region, "aws", "s3")
+	cmdutil.PrintOSSCacheFile(header, region, "aws", "s3", "all")
 }
 
 func PrintBucketsList(region string, lsFlushCache bool, s3LsObjectNumber string) {

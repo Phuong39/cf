@@ -27,7 +27,7 @@ var data2 [][]string
 const (
 	osslsAction        = "cf alibaba oss ls"
 	osslsDescription   = "列出 OSS 资源"
-	ossgetAction       = "cf alibaba oss get"
+	ossgetAction       = "cf alibaba oss obj get"
 	ossgetDescription  = "下载 OSS 资源"
 	ecslsAction        = "cf alibaba ecs ls"
 	ecslsDescription   = "列出 ECS 资源"
@@ -234,7 +234,7 @@ func traversalPermissions() ([][]string, [][]string) {
 	} else {
 		log.Traceln(err1.Error())
 		log.Debugln("正在判断 oss ls 权限 (Determining the permission of oss ls)")
-		_, err11 := OSSCollector.ListBuckets()
+		_, err11 := OSSCollector.ListBuckets("all", "all")
 		if err11 == nil {
 			obj1 = append(obj1, []string{"AliyunOSSReadOnlyAccess", "只读访问对象存储服务(OSS)的权限"})
 			obj2 = append(obj2, []string{osslsAction, osslsDescription})
