@@ -26,7 +26,7 @@ Current Supported Clouds:
 
 - [x] Alibaba Cloud
 - [x] Tencent Cloud
-- [ ] AWS (Expected to be supported by October 14, 2022)
+- [x] AWS
 - [ ] Huawei Cloud (Expected to be supported by December 14, 2022)
 
 For the scheduling of functions you can refer to: [github.com/teamssix/cf/discussions/130](https://github.com/teamssix/cf/discussions/130)
