@@ -14,7 +14,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func getObject(bucketName string, objectKey string, outputPath string) {
+func getObject(bucketName string, objectKey string, outputPath string, ossLsRegion string) {
 	if objectKey[len(objectKey)-1:] == "/" {
 		pubutil.CreateFolder(returnBucketFileName(outputPath, bucketName, objectKey))
 	} else {
@@ -24,14 +24,14 @@ func getObject(bucketName string, objectKey string, outputPath string) {
 			region     string
 		)
 		OSSCollector := &OSSCollector{}
-		Buckets, _ := OSSCollector.ListBuckets()
+		Buckets, _ := OSSCollector.ListBuckets(bucketName, ossLsRegion)
 		for _, v := range Buckets {
 			if v.Name == bucketName {
 				region = v.Region
 			}
 		}
 		fd, body, oserr, outputFile := OSSCollector.ReturnBucket(bucketName, objectKey, outputPath, region)
-		_, objects := OSSCollector.ListObjects(bucketName, "all")
+		_, objects := OSSCollector.ListObjects(bucketName, "all", ossLsRegion)
 		for _, obj := range objects {
 			if objectKey == obj.Key {
 				objectSize = obj.Size
@@ -47,7 +47,7 @@ func getObject(bucketName string, objectKey string, outputPath string) {
 	}
 }
 
-func DownloadAllObjects(bucketName string, outputPath string) {
+func DownloadAllObjects(bucketName string, outputPath string, ossLsRegion string, ossDownloadNumber string) {
 	var (
 		objectKey  string
 		region     string
@@ -55,13 +55,13 @@ func DownloadAllObjects(bucketName string, outputPath string) {
 	)
 	OSSCollector := &OSSCollector{}
 	objectList = append(objectList, "all")
-	Buckets, _ := OSSCollector.ListBuckets()
+	Buckets, _ := OSSCollector.ListBuckets(bucketName, ossLsRegion)
 	for _, v := range Buckets {
 		if v.Name == bucketName {
 			region = v.Region
 		}
 	}
-	_, objects := OSSCollector.ListObjects(bucketName, "all")
+	_, objects := OSSCollector.ListObjects(bucketName, ossDownloadNumber, ossLsRegion)
 	if len(objects) == 0 {
 		log.Warnf("在 %s 存储桶中没有发现对象 (No object found in %s bucket)", bucketName, bucketName)
 	} else {
@@ -96,19 +96,19 @@ func DownloadAllObjects(bucketName string, outputPath string) {
 			if objectKey[len(objectKey)-1:] == "/" {
 				pubutil.CreateFolder(returnBucketFileName(outputPath, bucketName, objectKey))
 			} else {
-				getObject(bucketName, objectKey, outputPath)
+				getObject(bucketName, objectKey, outputPath, ossLsRegion)
 			}
 		}
 	}
 }
 
-func DownloadObjects(bucketName string, objectKey string, outputPath string) {
+func DownloadObjects(bucketName string, objectKey string, outputPath string, ossLsRegion string, ossDownloadNumber string) {
 	if outputPath == "./result" {
 		pubutil.CreateFolder("./result")
 	}
 	if bucketName == "all" {
 		var bucketList []string
-		buckets := ReturnBucketList()
+		buckets := ReturnBucketList(bucketName, ossLsRegion)
 		if len(buckets) == 0 {
 			log.Info("没发现存储桶 (No Buckets Found)")
 		} else {
@@ -127,32 +127,26 @@ func DownloadObjects(bucketName string, objectKey string, outputPath string) {
 			if SelectBucketName == "all" {
 				for _, v := range buckets {
 					if objectKey == "all" {
-						DownloadAllObjects(v, outputPath)
+						DownloadAllObjects(v, outputPath, ossLsRegion, ossDownloadNumber)
 					} else {
-						getObject(v, objectKey, outputPath)
+						getObject(v, objectKey, outputPath, ossLsRegion)
 					}
 				}
 			} else if SelectBucketName == "exit" {
 				os.Exit(0)
 			} else {
 				if objectKey == "all" {
-					DownloadAllObjects(SelectBucketName, outputPath)
+					DownloadAllObjects(SelectBucketName, outputPath, ossLsRegion, ossDownloadNumber)
 				} else {
-					getObject(SelectBucketName, objectKey, outputPath)
+					getObject(SelectBucketName, objectKey, outputPath, ossLsRegion)
 				}
 			}
 		}
 	} else {
-		OSSCollector := &OSSCollector{}
-		_, objects := OSSCollector.ListObjects(bucketName, "all")
-		if len(objects) > 0 {
-			if objectKey == "all" {
-				DownloadAllObjects(bucketName, outputPath)
-			} else {
-				getObject(bucketName, objectKey, outputPath)
-			}
+		if objectKey == "all" {
+			DownloadAllObjects(bucketName, outputPath, ossLsRegion, ossDownloadNumber)
 		} else {
-			log.Warnf("在 %s 存储桶中没有发现对象 (No object found in %s bucket)", bucketName, bucketName)
+			getObject(bucketName, objectKey, outputPath, ossLsRegion)
 		}
 	}
 }

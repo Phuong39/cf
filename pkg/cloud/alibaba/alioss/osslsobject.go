@@ -19,8 +19,8 @@ var (
 	objectsHeader = []string{"序号 (SN)", "名称 (Key)", "大小 (Size)", "上次修改时间 (LastModified)"}
 )
 
-func PrintObjectsList(ossLsObjectNumber string) {
-	buckets := ReturnBucketList()
+func PrintObjectsList(ossLsObjectNumber string, ossLsBucket string, ossLsRegion string) {
+	buckets := ReturnBucketList(ossLsBucket, ossLsRegion)
 	if len(buckets) == 0 {
 		log.Info("没发现存储桶 (No Buckets Found)")
 	} else {
@@ -36,7 +36,7 @@ func PrintObjectsList(ossLsObjectNumber string) {
 			os.Exit(0)
 		} else {
 			OSSCollector := &OSSCollector{}
-			objectsSum, objects := OSSCollector.ListObjects(bucketName, ossLsObjectNumber)
+			objectsSum, objects := OSSCollector.ListObjects(bucketName, ossLsObjectNumber, ossLsRegion)
 			objectSize := pubutil.FormatFileSize(objectsSum[0].ObjectSize)
 			var objectsData = make([][]string, len(objects))
 			for i, o := range objects {
