@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/teamssix/cf/pkg/util/errutil"
-
 	"github.com/AlecAivazis/survey/v2"
+
+	"github.com/teamssix/cf/pkg/util/errutil"
 
 	"github.com/teamssix/cf/pkg/util/cmdutil"
 
@@ -102,7 +102,22 @@ func ECSExec(command string, commandFile string, scriptType string, specifiedIns
 	if ecsFlushCache == false {
 		data := cmdutil.ReadECSCache("alibaba")
 		for _, v := range data {
-			if specifiedInstanceID != "all" {
+			switch {
+			case specifiedInstanceID != "all" && region != "all":
+				if specifiedInstanceID == v.InstanceId && region == v.RegionId {
+					obj := Instances{
+						InstanceId:       v.InstanceId,
+						InstanceName:     v.InstanceName,
+						OSName:           v.OSName,
+						OSType:           v.OSType,
+						Status:           v.Status,
+						PrivateIpAddress: v.PrivateIpAddress,
+						PublicIpAddress:  v.PublicIpAddress,
+						RegionId:         v.RegionId,
+					}
+					InstancesList = append(InstancesList, obj)
+				}
+			case specifiedInstanceID != "all" && region == "all":
 				if specifiedInstanceID == v.InstanceId {
 					obj := Instances{
 						InstanceId:       v.InstanceId,
@@ -116,7 +131,21 @@ func ECSExec(command string, commandFile string, scriptType string, specifiedIns
 					}
 					InstancesList = append(InstancesList, obj)
 				}
-			} else {
+			case specifiedInstanceID == "all" && region != "all":
+				if region == v.RegionId {
+					obj := Instances{
+						InstanceId:       v.InstanceId,
+						InstanceName:     v.InstanceName,
+						OSName:           v.OSName,
+						OSType:           v.OSType,
+						Status:           v.Status,
+						PrivateIpAddress: v.PrivateIpAddress,
+						PublicIpAddress:  v.PublicIpAddress,
+						RegionId:         v.RegionId,
+					}
+					InstancesList = append(InstancesList, obj)
+				}
+			case specifiedInstanceID == "all" && region == "all":
 				obj := Instances{
 					InstanceId:       v.InstanceId,
 					InstanceName:     v.InstanceName,
