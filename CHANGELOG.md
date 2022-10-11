@@ -1,3 +1,23 @@
+## [v0.4.2](https://github.com/teamssix/cf/releases/tag/v0.4.2) 2022.10.11
+
+### 新增功能
+
+* [#176](https://github.com/teamssix/cf/pull/176) 增加 aws s3 列出功能
+* [#177](https://github.com/teamssix/cf/pull/177) 增加阿里云 oss 指定 Bucket 的功能
+* [#179](https://github.com/teamssix/cf/pull/179) 增加阿里云 ecs ecs 指定区域的功能
+
+### 功能优化
+
+* [#166](https://github.com/teamssix/cf/pull/166) 优化权限获取功能
+* [#169](https://github.com/teamssix/cf/pull/169) 优化程序提示信息
+* [#170](https://github.com/teamssix/cf/pull/170) 优化配置 AK 的逻辑
+* [#178](https://github.com/teamssix/cf/pull/178) 增强阿里云 ecs 列出功能
+
+### Bug 修复
+
+* [#167](https://github.com/teamssix/cf/pull/167) 修复一处由于历史代码造成的 Bug
+* [#175](https://github.com/teamssix/cf/pull/175) 修复一处配置 AK 时的 Bug
+
 ## [v0.4.1](https://github.com/teamssix/cf/releases/tag/v0.4.1) 2022.9.20
 
 ### 新增功能
