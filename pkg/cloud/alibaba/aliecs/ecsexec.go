@@ -3,12 +3,13 @@ package aliecs
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/teamssix/cf/pkg/util/errutil"
 	"io/ioutil"
 	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/teamssix/cf/pkg/util/errutil"
 
 	"github.com/AlecAivazis/survey/v2"
 
@@ -96,7 +97,7 @@ func DescribeInvocationResults(region string, CommandId string, InvokeId string,
 	return output
 }
 
-func ECSExec(command string, commandFile string, scriptType string, specifiedInstanceID string, region string, batchCommand bool, userData bool, metaDataSTSToken bool, ecsFlushCache bool, lhost string, lport string, timeOut int) {
+func ECSExec(command string, commandFile string, scriptType string, specifiedInstanceID string, region string, batchCommand bool, userData bool, metaDataSTSToken bool, ecsFlushCache bool, lhost string, lport string, timeOut int, ecsExecAllRegions bool) {
 	var InstancesList []Instances
 	if ecsFlushCache == false {
 		data := cmdutil.ReadECSCache("alibaba")
@@ -130,7 +131,7 @@ func ECSExec(command string, commandFile string, scriptType string, specifiedIns
 			}
 		}
 	} else {
-		InstancesList = ReturnInstancesList(region, false, specifiedInstanceID)
+		InstancesList = ReturnInstancesList(region, false, specifiedInstanceID, ecsExecAllRegions)
 	}
 	if len(InstancesList) == 0 {
 		if specifiedInstanceID == "all" {

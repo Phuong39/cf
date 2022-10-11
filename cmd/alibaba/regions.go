@@ -9,10 +9,13 @@ import (
 	"github.com/teamssix/cf/pkg/cloud/alibaba/alirds"
 )
 
+var ecsRegionsAllRegions bool
+
 func init() {
 	alibabaCmd.AddCommand(regionsCmd)
-	regionsCmd.AddCommand(ECSRegionsCmd)
-	regionsCmd.AddCommand(RDSRegionsCmd)
+	regionsCmd.AddCommand(ecsRegionsCmd)
+	regionsCmd.AddCommand(rdsRegionsCmd)
+	ecsRegionsCmd.Flags().BoolVarP(&ecsRegionsAllRegions, "allRegions", "a", false, "列出所有区域，包括私有区域 (List all regions, including private regions.)")
 }
 
 var regionsCmd = &cobra.Command{
@@ -21,12 +24,12 @@ var regionsCmd = &cobra.Command{
 	Long:  "列出可用区域 (List available regions)",
 }
 
-var ECSRegionsCmd = &cobra.Command{
+var ecsRegionsCmd = &cobra.Command{
 	Use:   "ecs",
 	Short: "列出阿里云 ECS 的区域 (List the regions of alibaba cloud ECS)",
 	Long:  "列出阿里云 ECS 的区域 (List the regions of alibaba cloud ECS)",
 	Run: func(cmd *cobra.Command, args []string) {
-		regions := aliecs.GetECSRegions()
+		regions := aliecs.GetECSRegions(ecsRegionsAllRegions)
 		var data = make([][]string, len(regions))
 		for i, v := range regions {
 			SN := strconv.Itoa(i + 1)
@@ -38,7 +41,7 @@ var ECSRegionsCmd = &cobra.Command{
 	},
 }
 
-var RDSRegionsCmd = &cobra.Command{
+var rdsRegionsCmd = &cobra.Command{
 	Use:   "rds",
 	Short: "列出阿里云 RDS 的区域 (List the regions of alibaba cloud RDS)",
 	Long:  "列出阿里云 RDS 的区域 (List the regions of alibaba cloud RDS)",

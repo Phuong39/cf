@@ -3,8 +3,9 @@ package aliecs
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/teamssix/cf/pkg/util/errutil"
 	"strconv"
+
+	"github.com/teamssix/cf/pkg/util/errutil"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
@@ -98,11 +99,11 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string, 
 	return DescribeInstancesOut
 }
 
-func ReturnInstancesList(region string, running bool, specifiedInstanceID string) []Instances {
+func ReturnInstancesList(region string, running bool, specifiedInstanceID string, ecsLsAllRegions bool) []Instances {
 	var InstancesList []Instances
 	var Instance []Instances
 	if region == "all" {
-		for _, j := range GetECSRegions() {
+		for _, j := range GetECSRegions(ecsLsAllRegions) {
 			region := j.RegionId
 			Instance = DescribeInstances(region, running, specifiedInstanceID, "")
 			DescribeInstancesOut = nil
@@ -116,8 +117,8 @@ func ReturnInstancesList(region string, running bool, specifiedInstanceID string
 	return InstancesList
 }
 
-func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID string) {
-	InstancesList := ReturnInstancesList(region, running, specifiedInstanceID)
+func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID string, ecsLsAllRegions bool) {
+	InstancesList := ReturnInstancesList(region, running, specifiedInstanceID, ecsLsAllRegions)
 	var data = make([][]string, len(InstancesList))
 	for i, o := range InstancesList {
 		SN := strconv.Itoa(i + 1)
@@ -129,24 +130,24 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 	} else {
 		Caption := "ECS 资源 (ECS resources)"
 		cloud.PrintTable(td, Caption)
+		cmdutil.WriteCacheFile(td, "alibaba", "ecs", region, specifiedInstanceID)
+		util.WriteTimestamp(TimestampType)
 	}
-	cmdutil.WriteCacheFile(td, "alibaba", "ecs", region, specifiedInstanceID)
-	util.WriteTimestamp(TimestampType)
 }
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {
 	cmdutil.PrintECSCacheFile(header, region, specifiedInstanceID, "alibaba", "ECS", running)
 }
 
-func PrintInstancesList(region string, running bool, specifiedInstanceID string, ecsFlushCache bool) {
+func PrintInstancesList(region string, running bool, specifiedInstanceID string, ecsFlushCache bool, ecsLsAllRegions bool) {
 	if ecsFlushCache {
-		PrintInstancesListRealTime(region, running, specifiedInstanceID)
+		PrintInstancesListRealTime(region, running, specifiedInstanceID, ecsLsAllRegions)
 	} else {
 		oldTimestamp := util.ReadTimestamp(TimestampType)
 		if oldTimestamp == 0 {
-			PrintInstancesListRealTime(region, running, specifiedInstanceID)
+			PrintInstancesListRealTime(region, running, specifiedInstanceID, ecsLsAllRegions)
 		} else if util.IsFlushCache(oldTimestamp) {
-			PrintInstancesListRealTime(region, running, specifiedInstanceID)
+			PrintInstancesListRealTime(region, running, specifiedInstanceID, ecsLsAllRegions)
 		} else {
 			util.TimeDifference(oldTimestamp)
 			PrintInstancesListHistory(region, running, specifiedInstanceID)
