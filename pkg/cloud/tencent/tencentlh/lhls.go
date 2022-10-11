@@ -2,11 +2,12 @@ package tencentlh
 
 import (
 	"encoding/json"
+	"strconv"
+	"strings"
+
 	"github.com/teamssix/cf/pkg/cloud/tencent/tencentcvm"
 	"github.com/teamssix/cf/pkg/util/errutil"
 	lh "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/lighthouse/v20200324"
-	"strconv"
-	"strings"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
@@ -128,8 +129,8 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 	} else {
 		Caption := "LH 资源 (LH resources)"
 		cloud.PrintTable(td, Caption)
+		cmdutil.WriteCacheFile(td, "tencent", "lh", region, specifiedInstanceID)
 	}
-	cmdutil.WriteCacheFile(td, "tencent", "lh", region, specifiedInstanceID)
 }
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {

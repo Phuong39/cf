@@ -2,9 +2,10 @@ package tencentcvm
 
 import (
 	"encoding/json"
-	"github.com/teamssix/cf/pkg/util/errutil"
 	"strconv"
 	"strings"
+
+	"github.com/teamssix/cf/pkg/util/errutil"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
@@ -128,8 +129,8 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 	} else {
 		Caption := "CVM 资源 (CVM resources)"
 		cloud.PrintTable(td, Caption)
+		cmdutil.WriteCacheFile(td, "tencent", "cvm", region, specifiedInstanceID)
 	}
-	cmdutil.WriteCacheFile(td, "tencent", "cvm", region, specifiedInstanceID)
 }
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {

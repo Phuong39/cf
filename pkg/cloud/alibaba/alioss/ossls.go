@@ -283,8 +283,6 @@ func PrintBucketsListRealTime(region string, ossLsObjectNumber string, ossLsBuck
 	} else {
 		Caption := "OSS 资源 (OSS resources)"
 		cloud.PrintTable(td, Caption)
-	}
-	if region == "all" {
 		cmdutil.WriteCacheFile(td, "alibaba", "oss", region, "all")
 		util.WriteTimestamp(TimestampType)
 	}

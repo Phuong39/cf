@@ -1,9 +1,10 @@
 package alirds
 
 import (
+	"strconv"
+
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/teamssix/cf/pkg/util/errutil"
-	"strconv"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/rds"
 	log "github.com/sirupsen/logrus"
@@ -119,9 +120,9 @@ func PrintDBInstancesListRealTime(region string, running bool, specifiedDBInstan
 	} else {
 		Caption := "RDS 资源 (RDS resources)"
 		cloud.PrintTable(td, Caption)
+		cmdutil.WriteCacheFile(td, "alibaba", "rds", region, specifiedDBInstanceID)
+		util.WriteTimestamp(TimestampType)
 	}
-	cmdutil.WriteCacheFile(td, "alibaba", "rds", region, specifiedDBInstanceID)
-	util.WriteTimestamp(TimestampType)
 }
 
 func PrintDBInstancesListHistory(region string, running bool, specifiedDBInstanceID string, engine string) {
