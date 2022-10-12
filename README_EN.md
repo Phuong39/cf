@@ -20,7 +20,7 @@ CF is a cloud exploitation framework, It can facilitate the work of the red team
 
 CF releases: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
 
-![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209232137924.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202210121148263.png)
 
 Current Supported Clouds:
 
@@ -37,7 +37,7 @@ For detailed manuals, please visit: [wiki.teamssix.com/cf](https://wiki.teamssix
 
 > The manual currently supports Chinese only
 
-[![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209081100625.png)](https://wiki.teamssix.com/cf)
+[![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202210121147330.png)](https://wiki.teamssix.com/cf)
 
 ## Install
 
@@ -78,7 +78,7 @@ Download the ZIP file corresponding to your system in the CF download url: [gith
 
 ## Easy to start
 
-![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737405.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202210121148379.png)
 
 > Here is the example of Alibaba Cloud, other more operations can be viewed in the user manual.
 
@@ -120,7 +120,7 @@ View the help information for the operation of the command executed by CF for th
 cf alibaba ecs exec -h
 ```
 
-![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737411.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202210121148805.png)
 
 One-click command to execute proof of privilege for all instances
 

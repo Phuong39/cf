@@ -15,7 +15,7 @@ func init() {
 	alibabaCmd.AddCommand(regionsCmd)
 	regionsCmd.AddCommand(ecsRegionsCmd)
 	regionsCmd.AddCommand(rdsRegionsCmd)
-	ecsRegionsCmd.Flags().BoolVarP(&ecsRegionsAllRegions, "allRegions", "a", false, "列出所有区域，包括私有区域 (List all regions, including private regions.)")
+	ecsRegionsCmd.Flags().BoolVarP(&ecsRegionsAllRegions, "allRegions", "a", false, "列出所有区域，包括私有区域 (List all regions, including private regions)")
 }
 
 var regionsCmd = &cobra.Command{

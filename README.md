@@ -19,7 +19,7 @@ CF 是一个云环境利用框架，适用于在红队场景中对云上内网�
 
 CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
 
-![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209232137126.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202210121146288.png)
 
 当前已支持的云：
 
@@ -34,7 +34,7 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 
 使用手册请参见：[wiki.teamssix.com/cf](https://wiki.teamssix.com/cf)
 
-[![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209081100625.png)](https://wiki.teamssix.com/cf)
+[![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202210121147330.png)](https://wiki.teamssix.com/cf)
 
 ## 安装
 
@@ -75,7 +75,7 @@ chmod +x cf
 
 ## 简单上手
 
-![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737405.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202210121148379.png)
 
 > 这里以阿里云为例，其他更多操作可以查看上面的使用手册。
 
@@ -117,7 +117,7 @@ cf alibaba ls
 cf alibaba ecs exec -h
 ```
 
-![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209071737411.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202210121148805.png)
 
 一键为所有实例执行三要素，方便 HVV
 

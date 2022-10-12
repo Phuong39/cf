@@ -38,7 +38,7 @@ func init() {
 	ecsLsCmd.Flags().StringVarP(&ecsLsRegion, "region", "r", "all", "指定区域 ID (Specify region ID)")
 	ecsLsCmd.Flags().StringVarP(&ecsLsSpecifiedInstanceID, "instanceID", "i", "all", "指定实例 ID (Specify instance ID)")
 	ecsLsCmd.Flags().BoolVar(&running, "running", false, "只显示正在运行的实例 (Show only running instances)")
-	ecsLsCmd.Flags().BoolVarP(&ecsLsAllRegions, "allRegions", "a", false, "使用所有区域，包括私有区域 (Use all regions, including private regions.)")
+	ecsLsCmd.Flags().BoolVarP(&ecsLsAllRegions, "allRegions", "a", false, "使用所有区域，包括私有区域 (Use all regions, including private regions)")
 
 	ecsExecCmd.Flags().StringVarP(&ecsExecSpecifiedInstanceID, "instanceID", "i", "all", "指定实例 ID (Specify Instance ID)")
 	ecsExecCmd.Flags().StringVarP(&command, "command", "c", "", "设置待执行的命令 (Set the command you want to execute)")
@@ -50,7 +50,7 @@ func init() {
 	ecsExecCmd.Flags().BoolVarP(&userData, "userData", "u", false, "一键获取实例中的用户数据 (Get the user data on the instance)")
 	ecsExecCmd.Flags().BoolVarP(&metaDataSTSToken, "metaDataSTSToken", "m", false, "一键获取实例元数据中的临时访问凭证 (Get the STS Token in the instance metadata)")
 	ecsExecCmd.Flags().IntVarP(&timeOut, "timeOut", "t", 60, "设置命令执行结果的等待时间 (Set the command execution result waiting time)")
-	ecsExecCmd.Flags().BoolVarP(&ecsExecAllRegions, "allRegions", "a", false, "使用所有区域，包括私有区域 (Use all regions, including private regions.)")
+	ecsExecCmd.Flags().BoolVarP(&ecsExecAllRegions, "allRegions", "a", false, "使用所有区域，包括私有区域 (Use all regions, including private regions)")
 	ecsExecCmd.Flags().StringVarP(&ecsExecRegion, "region", "r", "all", "指定区域 ID (Specify region ID)")
 
 }
