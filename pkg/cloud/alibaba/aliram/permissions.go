@@ -112,7 +112,7 @@ func ListPermissions() {
 			var data1 = make([][]string, len(obj1))
 			var data2 = make([][]string, len(obj2))
 			if len(obj1) == 0 {
-				log.Infoln("当前凭证没有任何权限 (The current access key does not have any permissions)")
+				log.Infoln("当前凭证没有遍历到任何权限 (No permissions were found for the current access key)")
 			} else {
 				for i, o := range obj1 {
 					SN := strconv.Itoa(i + 1)
