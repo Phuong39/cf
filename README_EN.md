@@ -71,10 +71,11 @@ Download the ZIP file corresponding to your system in the CF download url: [gith
 
 ## Cases
 
-|               Title                | Version |                             URL                              |   Time    |
-| :--------------------------------: | :-----: | :----------------------------------------------------------: | :-------: |
-| 《记录一次平平无奇的云上攻防过程》 | v0.4.0  | [https://zone.huoxian.cn/d/2557](https://zone.huoxian.cn/d/2557) | 2022.9.14 |
-|   《我用 CF 打穿了他的云上内网》   | v0.2.4  | [https://zone.huoxian.cn/d/1341-cf](https://zone.huoxian.cn/d/1341-cf) | 2022.7.13 |
+|               Title                | Version |                         Article URL                          |  Author  | Release Time |
+| :--------------------------------: | :-----: | :----------------------------------------------------------: | :------: | :----------: |
+|    《一次简单的"云"上野战记录》    | v0.4.2  | [https://mp.weixin.qq.com/s/wi8CoNwdpfJa6eMP4t1PCQ](https://mp.weixin.qq.com/s/wi8CoNwdpfJa6eMP4t1PCQ) | carrypan |  2022.10.19  |
+| 《记录一次平平无奇的云上攻防过程》 | v0.4.0  | [https://zone.huoxian.cn/d/2557](https://zone.huoxian.cn/d/2557) | TeamsSix |  2022.9.14   |
+|   《我用 CF 打穿了他的云上内网》   | v0.2.4  | [https://zone.huoxian.cn/d/1341-cf](https://zone.huoxian.cn/d/1341-cf) | TeamsSix |  2022.7.13   |
 
 ## Easy to start
 
