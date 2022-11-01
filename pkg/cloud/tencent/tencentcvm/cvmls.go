@@ -48,9 +48,9 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 	response, err := CVMClient(region).DescribeInstances(request)
 	errutil.HandleErr(err)
 	InstancesList := response.Response.InstanceSet
-	log.Debugf("正在 %s 区域中查找实例 (Looking for instances in the %s region)", region, region)
+	log.Infof("正在 %s 区域中查找实例 (Looking for instances in the %s region)", region, region)
 	if len(InstancesList) != 0 {
-		log.Debugf("在 %s 区域下找到 %d 个实例 (Found %d instances in %s region)", region, len(InstancesList), len(InstancesList), region)
+		log.Infof("在 %s 区域下找到 %d 个实例 (Found %d instances in %s region)", region, len(InstancesList), len(InstancesList), region)
 		var (
 			PrivateIpAddressList []string
 			PublicIpAddressList  []string

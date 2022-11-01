@@ -150,6 +150,9 @@ func getAllObjects(bucket *oss.Bucket, marker oss.Option, size int, ossLsObjectN
 	errutil.HandleErr(err)
 	marker = oss.Marker(lor.NextMarker)
 	objectNum = objectNum + len(lor.Objects)
+	if objectNum%10000 == 0 {
+		log.Infof("当前已获取到 %s 条数据 (%s pieces of data have been obtained)", objectNum, objectNum)
+	}
 	for _, k := range lor.Objects {
 		ObjectSize = ObjectSize + k.Size
 		obj := objectContents{

@@ -46,9 +46,9 @@ func DescribeDBInstances(region string, running bool, specifiedDBInstanceID stri
 	response, err := RDSClient(region).DescribeDBInstances(request)
 	errutil.HandleErrNoExit(err)
 	DBInstancesList := response.Items.DBInstance
-	log.Debugf("正在 %s 区域中查找数据库实例 (Looking for DBInstances in the %s region)", region, region)
+	log.Infof("正在 %s 区域中查找数据库实例 (Looking for DBInstances in the %s region)", region, region)
 	if len(DBInstancesList) != 0 {
-		log.Debugf("在 %s 区域下找到 %d 个数据库实例 (Found %d DBInstances in %s region)", region, len(DBInstancesList), len(DBInstancesList), region)
+		log.Infof("在 %s 区域下找到 %d 个数据库实例 (Found %d DBInstances in %s region)", region, len(DBInstancesList), len(DBInstancesList), region)
 		for _, i := range DBInstancesList {
 			obj := DBInstances{
 				DBInstanceId:     i.DBInstanceId,

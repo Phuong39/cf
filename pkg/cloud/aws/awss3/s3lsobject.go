@@ -54,6 +54,9 @@ func ListObjectsV2(bucket string, region string, s3LsObjectNumber string, NextCo
 		objectsSize = append(objectsSize, *v.Size)
 	}
 	objectNum := len(objectsKey)
+	if objectNum%10000 == 0 {
+		log.Infof("当前已获取到 %s 条数据 (%s pieces of data have been obtained)", objectNum, objectNum)
+	}
 	if objectNum == 100000 {
 		var name bool
 		prompt := &survey.Confirm{

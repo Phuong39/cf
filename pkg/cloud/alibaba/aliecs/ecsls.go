@@ -46,12 +46,12 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string, 
 	if SpecifiedInstanceID != "all" {
 		request.InstanceIds = fmt.Sprintf("[\"%s\"]", SpecifiedInstanceID)
 	}
-	log.Debugf("正在 %s 区域中查找实例 (Looking for instances in the %s region)", region, region)
+	log.Infof("正在 %s 区域中查找实例 (Looking for instances in the %s region)", region, region)
 	response, err := ECSClient(region).DescribeInstances(request)
 	errutil.HandleErr(err)
 	InstancesList := response.Instances.Instance
 	if len(InstancesList) != 0 {
-		log.Debugf("在 %s 区域下找到 %d 个实例 (Found %d instances in %s region)", region, len(InstancesList), len(InstancesList), region)
+		log.Infof("在 %s 区域下找到 %d 个实例 (Found %d instances in %s region)", region, len(InstancesList), len(InstancesList), region)
 		for _, i := range InstancesList {
 			// When the instance has multiple IPs, it is presented in a different format.
 			var PrivateIpAddressList []string
