@@ -35,7 +35,7 @@ var ecsRegionsCmd = &cobra.Command{
 			SN := strconv.Itoa(i + 1)
 			data[i] = []string{SN, v.RegionId, v.LocalName, v.RegionEndpoint}
 		}
-		var header = []string{"序号 (SN)", "地域 ID (Region Id)", "地理位置 (Local Name)", "区域终端节点 (Region Endpoint)"}
+		var header = []string{"序号 (SN)", "区域 ID (Region Id)", "地理位置 (Local Name)", "区域终端节点 (Region Endpoint)"}
 		var td = cloud.TableData{Header: header, Body: data}
 		cloud.PrintTable(td, "")
 	},
@@ -52,7 +52,7 @@ var rdsRegionsCmd = &cobra.Command{
 			SN := strconv.Itoa(i + 1)
 			data[i] = []string{SN, v.RegionId, v.ZoneId, v.ZoneName, v.LocalName, v.RegionEndpoint}
 		}
-		var header = []string{"序号 (SN)", "地域 ID (Region Id)", "可用区 ID (Zone ID)", "可用区名称 (Zone Name)", "地理位置 (Local Name)", "区域终端节点 (Region Endpoint)"}
+		var header = []string{"序号 (SN)", "区域 ID (Region Id)", "可用区 ID (Zone ID)", "可用区名称 (Zone Name)", "地理位置 (Local Name)", "区域终端节点 (Region Endpoint)"}
 		var td = cloud.TableData{Header: header, Body: data}
 		cloud.PrintTable(td, "")
 	},

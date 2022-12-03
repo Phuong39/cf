@@ -27,6 +27,7 @@ var errorMessages = map[string]string{
 	"InvalidAccessKeyId.Inactive":  "当前 AK 已被禁用 (The current AccessKeyId is inactive)",
 	"interrupt":                    "程序已退出 (Program exited.)",
 	"ErrorCode=AccessDenied, ErrorMessage=\"The bucket you access does not belong to you.\"": "获取 Bucket 信息失败，访问被拒绝 (Failed to get Bucket information, access is denied.)",
+	"ExpiredToken": "当前访问凭证已过期 (Current token has expired)",
 }
 
 var errorMessagesNoExit = map[string]string{

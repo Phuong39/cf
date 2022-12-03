@@ -111,6 +111,7 @@ func FindBucketAcl(bucket string, region string) string {
 }
 
 func getBucketObjectSum(bucket string, region string, s3LsObjectNumber string) (string, string) {
+	log.Infof("正在获取 %s 存储桶的数据 (Fetching data for %s bucket)", bucket, bucket)
 	var (
 		objectsKeyNum  string
 		objectsSizeSum string
@@ -131,7 +132,7 @@ func PrintBucketsListRealTime(region string, s3LsObjectNumber string) {
 		dataLen int
 	)
 	buckets := ListBuckets()
-	log.Debugf("获取到 %d 条 S3 Bucket 信息 (Obtained %d S3 Bucket information)", len(buckets), len(buckets))
+	log.Infof("获取到 %d 条 S3 Bucket 信息 (Obtained %d pieces of S3 Bucket information)", len(buckets), len(buckets))
 	var data = make([][]string, len(buckets))
 	for i, o := range buckets {
 		SN := strconv.Itoa(i + 1)
