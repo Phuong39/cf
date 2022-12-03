@@ -174,7 +174,7 @@ func getAllObjects(bucket *oss.Bucket, marker oss.Option, size int, ossLsObjectN
 		_ = survey.AskOne(prompt, &name)
 		if !name {
 			NextMarker = ""
-			log.Infoln("已停止继续查询对象，你还可以通过 -n 参数指定你想要查询对象的数量。(Has stopped continuing to query objects. You can specify the number of objects to query with the -n parameter.)")
+			log.Infoln("已停止继续查询对象，您还可以通过 -n 参数指定您想要查询对象的数量。(Has stopped continuing to query objects. You can specify the number of objects to query with the -n parameter.)")
 		}
 	}
 	if ossLsObjectNumber != "all" {

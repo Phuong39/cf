@@ -26,7 +26,7 @@ func CreateOSSEndpoint(region string) string {
 func (o *OSSCollector) OSSClient(region string) *OSSCollector {
 	config := cmdutil.GetConfig("alibaba")
 	if config.AccessKeyId == "" {
-		log.Warnln("需要先配置访问凭证 (Access Key need to be configured first)")
+		log.Warnln("需要先配置访问密钥 (Access Key need to be configured first)")
 		os.Exit(0)
 		return nil
 	} else {
