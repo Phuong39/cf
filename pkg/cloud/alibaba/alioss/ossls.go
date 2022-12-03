@@ -126,6 +126,7 @@ func (o *OSSCollector) ListObjects(bucketName string, ossLsObjectNumber string, 
 	}
 	for _, j := range Buckets {
 		BucketName := j.Name
+		log.Infof("正在获取 %s 存储桶的数据 (Fetching data for %s bucket)", BucketName, BucketName)
 		region := j.Region
 		o.OSSClient(region)
 		bucket, err := o.Client.Bucket(BucketName)
@@ -150,8 +151,8 @@ func getAllObjects(bucket *oss.Bucket, marker oss.Option, size int, ossLsObjectN
 	errutil.HandleErr(err)
 	marker = oss.Marker(lor.NextMarker)
 	objectNum = objectNum + len(lor.Objects)
-	if objectNum%10000 == 0 {
-		log.Infof("当前已获取到 %s 条数据 (%s pieces of data have been obtained)", objectNum, objectNum)
+	if objectNum%10000 == 0 && objectNum != 0 {
+		log.Infof("当前已获取到 %d 条数据 (%d pieces of data have been obtained)", objectNum, objectNum)
 	}
 	for _, k := range lor.Objects {
 		ObjectSize = ObjectSize + k.Size
@@ -237,7 +238,7 @@ func PrintBucketsListRealTime(region string, ossLsObjectNumber string, ossLsBuck
 	)
 	OSSCollector := &OSSCollector{}
 	Buckets, _ = OSSCollector.ListBuckets(ossLsBucket, region)
-	log.Debugf("获取到 %d 条 OSS Bucket 信息 (Obtained %d OSS Bucket information)", len(Buckets), len(Buckets))
+	log.Infof("获取到 %d 条 OSS Bucket 信息 (Obtained %d pieces of OSS Bucket information)", len(Buckets), len(Buckets))
 	if ossLsBucket == "all" {
 		ACL = OSSCollector.GetBucketACL("all", region)
 		Objects, _ = OSSCollector.ListObjects("all", ossLsObjectNumber, region)
