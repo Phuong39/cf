@@ -53,7 +53,8 @@ func DeleteConfig() {
 		} else if config == "exit" {
 			os.Exit(0)
 		} else {
-			CacheDb.Where("access_key_id = ?", strings.Split(config, "-")[2]).Delete(&configList)
+			accessKeyIdList := strings.Split(config, "-")[2:]
+			CacheDb.Where("access_key_id = ?", strings.Join(accessKeyIdList, "-")).Delete(&configList)
 			log.Infof("%s 访问凭证已删除 (%s Access Key deleted)", config, config)
 		}
 	} else {
