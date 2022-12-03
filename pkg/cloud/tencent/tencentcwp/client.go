@@ -13,7 +13,7 @@ import (
 func CWPClient(region string) *cwp.Client {
 	tencentConfig := cmdutil.GetConfig("tencent")
 	if tencentConfig.AccessKeyId == "" {
-		log.Warnln("需要先配置访问凭证 (Access Key need to be configured first)")
+		log.Warnln("需要先配置访问密钥 (Access Key need to be configured first)")
 		os.Exit(0)
 		return nil
 	} else {

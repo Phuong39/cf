@@ -28,8 +28,8 @@ var configCmd = &cobra.Command{
 
 var ConfigDel = &cobra.Command{
 	Use:   "del",
-	Short: "删除访问凭证 (Delete access key)",
-	Long:  `删除访问凭证 (Delete access key)`,
+	Short: "删除访问密钥 (Delete access key)",
+	Long:  `删除访问密钥 (Delete access key)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmdutil.ConfigDel()
 	},
@@ -37,8 +37,8 @@ var ConfigDel = &cobra.Command{
 
 var ConfigLs = &cobra.Command{
 	Use:   "ls",
-	Short: "列出已配置过的访问凭证 (List configured access key)",
-	Long:  `列出已配置过的访问凭证 (List configured access key)`,
+	Short: "列出已配置过的访问密钥 (List configured access key)",
+	Long:  `列出已配置过的访问密钥 (List configured access key)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmdutil.ConfigLs(selectAll)
 	},
@@ -46,8 +46,8 @@ var ConfigLs = &cobra.Command{
 
 var ConfigMf = &cobra.Command{
 	Use:   "mf",
-	Short: "修改已配置过的访问凭证 (Modify configured access key)",
-	Long:  `修改已配置过的访问凭证 (Modify configured access key)`,
+	Short: "修改已配置过的访问密钥 (Modify configured access key)",
+	Long:  `修改已配置过的访问密钥 (Modify configured access key)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmdutil.ConfigMf()
 	},
@@ -55,8 +55,8 @@ var ConfigMf = &cobra.Command{
 
 var ConfigSw = &cobra.Command{
 	Use:   "sw",
-	Short: "切换访问凭证 (Switch access key)",
-	Long:  `切换访问凭证 (Switch access key)`,
+	Short: "切换访问密钥 (Switch access key)",
+	Long:  `切换访问密钥 (Switch access key)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmdutil.ConfigSw()
 	},

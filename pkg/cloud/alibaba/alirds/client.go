@@ -14,7 +14,7 @@ import (
 func RDSClient(region string) *rds.Client {
 	aliconfig := cmdutil.GetConfig("alibaba")
 	if aliconfig.AccessKeyId == "" {
-		log.Warnln("需要先配置访问凭证 (Access Key need to be configured first)")
+		log.Warnln("需要先配置访问密钥 (Access Key need to be configured first)")
 		os.Exit(0)
 		return nil
 	} else {

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"os"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"time"
 
@@ -26,6 +27,7 @@ func PrintObjectsList(ossLsObjectNumber string, ossLsBucket string, ossLsRegion 
 	} else {
 		var bucketName string
 		buckets = append(buckets, "exit")
+		sort.Strings(buckets)
 		prompt := &survey.Select{
 			Message: "选择一个存储桶 (Choose a bucket): ",
 			Options: buckets,
@@ -71,7 +73,7 @@ func PrintObjectsList(ossLsObjectNumber string, ossLsBucket string, ossLsRegion 
 						w.WriteString(v)
 					}
 					w.Flush()
-					log.Infof("全部对象列表已保存到 %s 文件中，如果你想查看全部对象，可打开该文件进行查看。(The full list of objects has been saved to the %s file, so if you want to see all the objects, you can open this file to view them.)", cacheFileName, cacheFileName)
+					log.Infof("全部对象列表已保存到 %s 文件中，如果您想查看全部对象，可打开该文件进行查看。(The full list of objects has been saved to the %s file, so if you want to see all the objects, you can open this file to view them.)", cacheFileName, cacheFileName)
 				} else {
 					printTd(objectsData)
 				}

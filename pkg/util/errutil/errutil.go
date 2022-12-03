@@ -12,12 +12,12 @@ type error interface {
 }
 
 var errorMessages = map[string]string{
-	"InvalidAccessKeyId.NotFound": "当前访问凭证无效 (Current access key are invalid)",
-	"Message: The specified parameter \"SecurityToken.Expired\" is not valid.": "当前临时访问凭证已过期 (Current SecurityToken has expired)",
-	"ErrorCode: InvalidSecurityToken.Expired":                                  "当前临时访问凭证已过期 (Current SecurityToken has expired)",
-	"Message: The Access Key is disabled.":                                     "当前访问凭证已被禁用 (The Access Key is disabled)",
-	"ErrorCode: Forbidden.RAM":                                                 "当前访问凭证没有执行命令的权限 (Current Access Key do not have permission to execute commands)",
-	"ErrorCode: NoPermission":                                                  "当前访问凭证没有接管控制台的权限 (Current Access Key do not have permission to take over the console)",
+	"InvalidAccessKeyId.NotFound": "当前访问密钥无效 (Current access key are invalid)",
+	"Message: The specified parameter \"SecurityToken.Expired\" is not valid.": "当前临时访问密钥已过期 (Current SecurityToken has expired)",
+	"ErrorCode: InvalidSecurityToken.Expired":                                  "当前临时访问密钥已过期 (Current SecurityToken has expired)",
+	"Message: The Access Key is disabled.":                                     "当前访问密钥已被禁用 (The Access Key is disabled)",
+	"ErrorCode: Forbidden.RAM":                                                 "当前访问密钥没有执行命令的权限 (Current Access Key do not have permission to execute commands)",
+	"ErrorCode: NoPermission":                                                  "当前访问密钥没有接管控制台的权限 (Current Access Key do not have permission to take over the console)",
 	"ErrorCode=NoSuchKey":                                                      "存储桶中没有这个对象 (There is no such key in the bucket)",
 	"Code=ResourceNotFound, Message=未查询到对应机器":                                  "指定资源不存在 (ResourceNotFound)",
 	//"Code=UnauthorizedOperation":                                               "当前 AK 权限不足 (Insufficient Access Key permissions)",
@@ -27,12 +27,12 @@ var errorMessages = map[string]string{
 	"InvalidAccessKeyId.Inactive":  "当前 AK 已被禁用 (The current AccessKeyId is inactive)",
 	"interrupt":                    "程序已退出 (Program exited.)",
 	"ErrorCode=AccessDenied, ErrorMessage=\"The bucket you access does not belong to you.\"": "获取 Bucket 信息失败，访问被拒绝 (Failed to get Bucket information, access is denied.)",
-	"ExpiredToken": "当前访问凭证已过期 (Current token has expired)",
+	"ExpiredToken": "当前访问密钥已过期 (Current token has expired)",
 }
 
 var errorMessagesNoExit = map[string]string{
-	"ErrorCode: Forbidden.RAM": "当前访问凭证没有执行命令的权限 (Current Access Key do not have permission to execute commands)",
-	//"ErrorCode: Forbidden":                                               " 当前访问凭证没有 RDS 的读取权限 (Current Access Key do not have read access to RDS"),
+	"ErrorCode: Forbidden.RAM": "当前访问密钥没有执行命令的权限 (Current Access Key do not have permission to execute commands)",
+	//"ErrorCode: Forbidden":                                               " 当前访问密钥没有 RDS 的读取权限 (Current Access Key do not have read access to RDS"),
 	"You are forbidden to list buckets.":                                 "当前凭证不具备 OSS 的读取权限，无法获取 OSS 数据。 (OSS data is not available because the current credential does not have read access to OSS.)",
 	"ErrorCode: EntityAlreadyExists.User.Policy":                         "已接管过控制台，无需重复接管 (Console has been taken over)",
 	"ErrorCode: EntityAlreadyExists.User":                                "已接管过控制台，无需重复接管 (Console has been taken over)",
@@ -43,8 +43,8 @@ var errorMessagesNoExit = map[string]string{
 }
 
 var errorMessagesExit = map[string]string{
-	"ErrorCode: Forbidden.RAM":     "当前访问凭证没有执行命令的权限 (Current Access Key do not have permission to execute commands)",
-	"ErrorCode: NoPermission":      "当前访问凭证没有接管控制台的权限 (Current Access Key do not have permission to take over the console)",
+	"ErrorCode: Forbidden.RAM":     "当前访问密钥没有执行命令的权限 (Current Access Key do not have permission to execute commands)",
+	"ErrorCode: NoPermission":      "当前访问密钥没有接管控制台的权限 (Current Access Key do not have permission to take over the console)",
 	"network is unreachable":       "当前网络连接异常 (Network is unreachable)",
 	"InvalidSecurityToken.Expired": "临时令牌已过期 (STS token has expired)",
 	"InvalidAccessKeyId.Inactive":  "当前 AK 已被禁用 (The current AccessKeyId is inactive)",

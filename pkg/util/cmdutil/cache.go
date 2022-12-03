@@ -135,9 +135,9 @@ func PrintRDSCacheFile(header []string, region string, specifiedDBInstanceID str
 func PrintTable(data [][]string, header []string, resourceType string) {
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {
-		log.Info(fmt.Sprintf("未发现 %s 资源，在默认情况下 CF 会使用缓存数据，你可以使用 --flushCache 命令获取实时数据。(No %s resources found, by default CF will use cached data, you can use --flushCache command to get live data.)", resourceType, resourceType))
+		log.Info(fmt.Sprintf("未发现 %s 资源，在默认情况下 CF 会使用缓存数据，您可以使用 --flushCache 命令获取实时数据。(No %s resources found, by default CF will use cached data, you can use --flushCache command to get live data.)", resourceType, resourceType))
 	} else {
-		log.Info("找到缓存数据，以下为缓存数据结果，你可以使用 --flushCache 命令获取实时数据。(Find the cached data, the following is the result of the cached data, you can use the --flushCache command to get the live data.)")
+		log.Info("找到缓存数据，以下为缓存数据结果，您可以使用 --flushCache 命令获取实时数据。(Find the cached data, the following is the result of the cached data, you can use the --flushCache command to get the live data.)")
 		Caption := fmt.Sprintf("%s 资源 (%s resources)", resourceType, resourceType)
 		cloud.PrintTable(td, Caption)
 	}

@@ -1,10 +1,11 @@
 package pubutil
 
 import (
-	"errors"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/util/global"
@@ -59,6 +60,11 @@ type TakeoverConsoleCache struct {
 	CreateTime       string
 }
 
+func GetUserDir() string {
+	home, _ := os.UserHomeDir()
+	return home
+}
+
 func GetConfigFilePath() string {
 	home, _ := GetCFHomeDir()
 	CreateFolder(home)
@@ -67,15 +73,7 @@ func GetConfigFilePath() string {
 }
 
 func GetCFHomeDir() (string, error) {
-	home := os.Getenv(global.CFHomeEnvVar)
-	if home != "" {
-		return home, nil
-	}
-	home, err := os.UserHomeDir()
-	if err != nil {
-		return "", errors.New("failed to get user home dir")
-	}
-	return filepath.Join(home, global.AppDirName), nil
+	return filepath.Join(GetUserDir(), global.AppDirName), nil
 }
 
 func FileExists(path string) bool {
@@ -110,4 +108,24 @@ func FormatFileSize(fileSize int64) (size string) {
 	} else {
 		return fmt.Sprintf("%.2fEB", float64(fileSize)/float64(1024*1024*1024*1024*1024))
 	}
+}
+
+func ReadFile(filePath string) (bool, string) {
+	if FileExists(filePath) {
+		file, err := os.Open(filePath)
+		if err != nil {
+			panic(err)
+		}
+		defer file.Close()
+		content, err := ioutil.ReadAll(file)
+		return true, string(content)
+	} else {
+		return false, ""
+	}
+}
+
+func StringClean(str string) string {
+	str = strings.TrimSpace(str)
+	str = strings.Replace(str, "\n", "", -1)
+	return str
 }

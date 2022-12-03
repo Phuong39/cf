@@ -12,6 +12,7 @@ import (
 	tat "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tat/v20201028"
 	"io/ioutil"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -155,6 +156,7 @@ func LhExec(command string, commandFile string, scriptType string, specifiedInst
 			for _, i := range InstancesList {
 				selectInstanceIDList = append(selectInstanceIDList, fmt.Sprintf("%s (%s)", i.InstanceId, i.OSName))
 			}
+			sort.Strings(selectInstanceIDList)
 			prompt := &survey.Select{
 				Message: "选择一个实例 (Choose a instance): ",
 				Options: selectInstanceIDList,
@@ -186,7 +188,7 @@ func LhExec(command string, commandFile string, scriptType string, specifiedInst
 			} else if metaDataSTSToken == true {
 				commandResult := getMetaDataSTSToken(region, OSType, scriptType, specifiedInstanceID, timeOut)
 				if commandResult == "" {
-					fmt.Println("未找到临时访问凭证 (STS Token not found)")
+					fmt.Println("未找到临时访问密钥 (STS Token not found)")
 				} else if commandResult == "disabled" {
 					fmt.Println("该实例禁止访问临时凭证 (This instance disables access to STS Token)")
 				} else {

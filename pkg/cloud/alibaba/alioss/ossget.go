@@ -8,6 +8,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"sort"
 
 	"github.com/schollz/progressbar/v3"
 
@@ -69,6 +70,7 @@ func DownloadAllObjects(bucketName string, outputPath string, ossLsRegion string
 			objectList = append(objectList, o.Key)
 		}
 		objectList = append(objectList, "exit")
+		sort.Strings(objectList)
 		prompt := &survey.Select{
 			Message: "选择一个对象 (Choose a object): ",
 			Options: objectList,
@@ -118,6 +120,7 @@ func DownloadObjects(bucketName string, objectKey string, outputPath string, oss
 			}
 			bucketList = append(bucketList, "exit")
 			var SelectBucketName string
+			sort.Strings(bucketList)
 			prompt := &survey.Select{
 				Message: "选择一个存储桶 (Choose a bucket): ",
 				Options: bucketList,
