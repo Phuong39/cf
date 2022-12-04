@@ -1,3 +1,19 @@
+## [v0.4.3](https://github.com/teamssix/cf/releases/tag/v0.4.3) 2022.12.4
+
+### 新增功能
+
+* [#189](https://github.com/teamssix/cf/pull/189) 在配置访问密钥时，会自动识别并提示导入本地的访问密钥
+* [#190](https://github.com/teamssix/cf/pull/177) 增加 aws ec2 实例的列出功能
+
+### 功能优化
+
+* [#186](https://github.com/teamssix/cf/pull/186) 优化输出信息的展示
+* [#188](https://github.com/teamssix/cf/pull/188) 优化 config 命令功能
+
+### Bug 修复
+
+* [#187](https://github.com/teamssix/cf/pull/187) 修复一处删除配置时的 Bug
+
 ## [v0.4.2](https://github.com/teamssix/cf/releases/tag/v0.4.2) 2022.10.11
 
 ### 新增功能
