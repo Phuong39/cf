@@ -19,7 +19,7 @@ CF 是一个云环境利用框架，适用于在红队场景中对云上内网�
 
 CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
 
-![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202210121146288.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202212041600750.png)
 
 当前已支持的云：
 
@@ -50,21 +50,6 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 |   cf_x.x.x_windows_386.zip   | Windows |                AMD                 |  32  |
 |  cf_x.x.x_windows_amd64.zip  | Windows |                AMD                 |  64  |
 |  cf_x.x.x_windows_arm64.zip  | Windows |                ARM                 |  64  |
-
-### MacOS && Linux
-
-> 注意将下面命令中的地址和文件名替换成 [releases](https://github.com/teamssix/cf/releases) 里的值。
-
-```bash
-wget https://github.com/teamssix/cf/releases/download/xxx/cf_xxx_xxx_xxx.tar.gz
-tar zxvf cf_xxx_xxx_xxx.tar.gz
-chmod +x cf
-./cf
-```
-
-### Windows
-
-直接在 CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases) 中下载系统对应的 ZIP 文件，解压后，在命令行中运行即可。
 
 ## 使用案例
 
