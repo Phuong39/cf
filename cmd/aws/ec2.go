@@ -6,25 +6,22 @@ import (
 )
 
 var (
-	timeOut int
+	//timeOut           int
+	//userData          bool
+	//batchCommand      bool
+	ec2FlushCache bool
+	//ec2ExecAllRegions bool
+	//metaDataSTSToken  bool
 
-	running           bool
-	userData          bool
-	batchCommand      bool
-	ec2FlushCache     bool
-	ec2LsAllRegions   bool
-	ec2ExecAllRegions bool
-	metaDataSTSToken  bool
-
-	lhost                      string
-	lport                      string
-	command                    string
-	scriptType                 string
-	commandFile                string
-	ec2LsRegion                string
-	ec2ExecRegion              string
-	ec2LsSpecifiedInstanceID   string
-	ec2Exec2pecifiedInstanceID string
+	//lhost                      string
+	//lport                      string
+	//command                    string
+	//scriptType                 string
+	//commandFile                string
+	ec2LsRegion string
+	//ec2ExecRegion              string
+	ec2LsSpecifiedInstanceID string
+	//ec2Exec2pecifiedInstanceID string
 )
 
 func init() {
@@ -35,8 +32,6 @@ func init() {
 
 	ec2LsCmd.Flags().StringVarP(&ec2LsRegion, "region", "r", "all", "指定区域 ID (Specify region ID)")
 	ec2LsCmd.Flags().StringVarP(&ec2LsSpecifiedInstanceID, "instanceID", "i", "all", "指定实例 ID (Specify instance ID)")
-	ec2LsCmd.Flags().BoolVar(&running, "running", false, "只显示正在运行的实例 (Show only running instances)")
-	ec2LsCmd.Flags().BoolVarP(&ec2LsAllRegions, "allRegions", "a", false, "使用所有区域，包括私有区域 (Use all regions, including private regions)")
 }
 
 var ec2Cmd = &cobra.Command{
@@ -50,6 +45,6 @@ var ec2LsCmd = &cobra.Command{
 	Short: "列出所有的实例 (List all instances)",
 	Long:  "列出所有的实例 (List all instances)",
 	Run: func(cmd *cobra.Command, args []string) {
-		awsec2.PrintInstancesList(ec2LsRegion, running, ec2LsSpecifiedInstanceID, ec2FlushCache, ec2LsAllRegions)
+		awsec2.PrintInstancesList(ec2LsRegion, false, ec2LsSpecifiedInstanceID, ec2FlushCache, false)
 	},
 }

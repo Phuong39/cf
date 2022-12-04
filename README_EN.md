@@ -20,7 +20,7 @@ CF is a cloud exploitation framework, It can facilitate the work of the red team
 
 CF releases: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
 
-![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202210121148263.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202212041600769.png)
 
 Current Supported Clouds:
 
@@ -53,21 +53,6 @@ Download the compressed files corresponding to the system in the CF download url
 |   cf_x.x.x_windows_386.zip   | Windows |                AMD                 |  32  |
 |  cf_x.x.x_windows_amd64.zip  | Windows |                AMD                 |  64  |
 |  cf_x.x.x_windows_arm64.zip  | Windows |                ARM                 |  64  |
-
-### MacOS && Linux
-
-> Note that the address and filename in the following command are replaced by the values in [releases](https://github.com/teamssix/cf/releases).
-
-```bash
-wget https://github.com/teamssix/cf/releases/download/xxx/cf_xxx_xxx_xxx.tar.gz
-tar zxvf cf_xxx_xxx_xxx.tar.gz
-chmod +x cf
-./cf
-```
-
-### Windows
-
-Download the ZIP file corresponding to your system in the CF download url: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases), unzip it, and run it from the command line.
 
 ## Cases
 

@@ -42,7 +42,6 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string, 
 	} else {
 		svc = EC2Client(region)
 	}
-
 	if NextToken == "" {
 		result, err = svc.DescribeInstances(nil)
 	} else {
@@ -56,7 +55,6 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string, 
 	for _, i := range result.Reservations {
 		InstancesList := i.Instances
 		if len(InstancesList) != 0 {
-			log.Infof("在 %s 区域下找到 %d 个实例 (Found %d instances in %s region)", region, len(InstancesList), len(InstancesList), region)
 			for _, i := range InstancesList {
 				var InstanceName string
 				for _, tag := range i.Tags {
@@ -78,7 +76,6 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string, 
 			}
 		}
 	}
-
 	if NextToken != "" {
 		NextToken = *result.NextToken
 		log.Tracef("Next Token: %s", NextToken)
@@ -88,19 +85,31 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string, 
 }
 
 func ReturnInstancesList(region string, running bool, specifiedInstanceID string, ec2LsAllRegions bool) []Instances {
-	var InstancesList []Instances
-	var Instance []Instances
+	var (
+		InstancesList []Instances
+		Instance      []Instances
+		instanceNum   int
+	)
 	if region == "all" {
 		for _, j := range GetEC2Regions() {
+			instanceNum = len(InstancesList)
 			region := *j.RegionName
 			Instance = DescribeInstances(region, running, specifiedInstanceID, "")
 			DescribeInstancesOut = nil
 			for _, i := range Instance {
 				InstancesList = append(InstancesList, i)
 			}
+			instanceNum = len(InstancesList) - instanceNum
+			if instanceNum != 0 {
+				log.Warnf("在 %s 区域下找到 %d 个实例 (Found %d instances in %s region)", region, len(InstancesList), len(InstancesList), region)
+			}
 		}
 	} else {
 		InstancesList = DescribeInstances(region, running, specifiedInstanceID, "")
+		instanceNum = len(InstancesList)
+		if instanceNum != 0 {
+			log.Warnf("在 %s 区域下找到 %d 个实例 (Found %d instances in %s region)", region, len(InstancesList), len(InstancesList), region)
+		}
 	}
 	return InstancesList
 }
@@ -109,8 +118,13 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 	InstancesList := ReturnInstancesList(region, running, specifiedInstanceID, ec2LsAllRegions)
 	var data = make([][]string, len(InstancesList))
 	for i, o := range InstancesList {
-		SN := strconv.Itoa(i + 1)
-		data[i] = []string{SN, o.InstanceId, o.InstanceName, o.OSName, o.OSType, o.Status, o.PrivateIpAddress, o.PublicIpAddress, o.RegionId}
+		if specifiedInstanceID == "all" {
+			SN := strconv.Itoa(i + 1)
+			data[i] = []string{SN, o.InstanceId, o.InstanceName, o.OSName, o.OSType, o.Status, o.PrivateIpAddress, o.PublicIpAddress, o.RegionId}
+		} else if specifiedInstanceID == o.InstanceId {
+			SN := strconv.Itoa(i + 1)
+			data[i] = []string{SN, o.InstanceId, o.InstanceName, o.OSName, o.OSType, o.Status, o.PrivateIpAddress, o.PublicIpAddress, o.RegionId}
+		}
 	}
 	var td = cloud.TableData{Header: header, Body: data}
 	if len(data) == 0 {

@@ -48,7 +48,7 @@ func WriteCacheFile(td cloud.TableData, provider string, serviceType string, reg
 				OSSCacheList = append(OSSCacheList, OSSCache)
 			}
 			database.InsertOSSCache(OSSCacheList)
-		case serviceType == "ecs":
+		case serviceType == "ecs" || serviceType == "ec2":
 			var ECSCacheList []pubutil.ECSCache
 			for _, v := range td.Body {
 				ECSCache := pubutil.ECSCache{
@@ -137,7 +137,7 @@ func PrintTable(data [][]string, header []string, resourceType string) {
 	if len(data) == 0 {
 		log.Info(fmt.Sprintf("未发现 %s 资源，在默认情况下 CF 会使用缓存数据，您可以使用 --flushCache 命令获取实时数据。(No %s resources found, by default CF will use cached data, you can use --flushCache command to get live data.)", resourceType, resourceType))
 	} else {
-		log.Info("找到缓存数据，以下为缓存数据结果，您可以使用 --flushCache 命令获取实时数据。(Find the cached data, the following is the result of the cached data, you can use the --flushCache command to get the live data.)")
+		log.Info("找到缓存数据，以下为缓存数据结果，您可以加上 --flushCache 参数获取最新数据。(Find the cached data, the following is the result of the cached data, you can add the --flushCache parameter to get the latest data.)")
 		Caption := fmt.Sprintf("%s 资源 (%s resources)", resourceType, resourceType)
 		cloud.PrintTable(td, Caption)
 	}
