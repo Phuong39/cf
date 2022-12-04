@@ -7,7 +7,9 @@ import (
 	"github.com/teamssix/cf/pkg/util/errutil"
 	"github.com/teamssix/cf/pkg/util/global"
 	"github.com/teamssix/cf/pkg/util/pubutil"
+	"io/ioutil"
 	"os"
+	"path"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -15,27 +17,87 @@ import (
 
 	"github.com/AlecAivazis/survey/v2"
 
+	"github.com/bitly/go-simplejson"
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
 )
 
+const (
+	alibaba = "alibaba"
+	tencent = "tencent"
+	aws     = "aws"
+)
+
 func ConfigureAccessKey() {
-	//var locaConfigList []string
 	cloudConfigList, cloudProviderList, cloudProvider := selectProvider()
 	for i, j := range cloudProviderList {
 		if j == cloudProvider {
 			var credList []cloud.Config
 			switch cloudConfigList[i] {
-			case "alibaba":
-				fmt.Println(cloudConfigList[i])
-			case "tencent":
-				fmt.Println(cloudConfigList[i])
-			case "aws":
-				//1. credential file
-				awsConfigFile := filepath.Join(pubutil.GetUserDir(), "/.aws/credentials")
-				isTrue, concent := pubutil.ReadFile(awsConfigFile)
+			case alibaba:
+				// 1. credential file
+				alibabaConfigFile := filepath.Join(pubutil.GetUserDir(), "/.aliyun/config.json")
+				isTrue, content := pubutil.ReadFile(alibabaConfigFile)
 				if isTrue {
-					for _, v := range strings.Split(concent, "[") {
+					contentJson, _ := simplejson.NewJson([]byte(content))
+					contentJsonArray, _ := contentJson.Get("profiles").Array()
+					for _, v := range contentJsonArray {
+						cred := cloud.Config{}
+						contentResult, _ := v.(map[string]interface{})
+						cred.Alias = "local_" + contentResult["name"].(string)
+						cred.AccessKeyId = contentResult["access_key_id"].(string)
+						cred.AccessKeySecret = contentResult["access_key_secret"].(string)
+						cred.STSToken = contentResult["sts_token"].(string)
+						cred.Provider = alibaba
+						credList = append(credList, cred)
+					}
+				}
+				// 2. environment variables
+				cred := cloud.Config{}
+				cred.Provider = alibaba
+				cred.Alias = "local_env"
+				cred.AccessKeyId = os.Getenv("ALIBABACLOUD_ACCESS_KEY_ID")
+				cred.AccessKeySecret = os.Getenv("ALIBABACLOUD_ACCESS_KEY_SECRET")
+				cred.STSToken = os.Getenv("SECURITY_TOKEN")
+				if cred.AccessKeyId != "" {
+					credList = append(credList, cred)
+				}
+			case tencent:
+				// 1. credential file
+				tencentConfigPath := filepath.Join(pubutil.GetUserDir(), "/.tccli")
+				tencentConfigFiles, _ := ioutil.ReadDir(tencentConfigPath)
+				for _, f := range tencentConfigFiles {
+					tencentConfigName := f.Name()
+					if path.Ext(tencentConfigName) == ".credential" {
+						tencentConfigFile := filepath.Join(tencentConfigPath, tencentConfigName)
+						isTrue, content := pubutil.ReadFile(tencentConfigFile)
+						if isTrue {
+							contentJson, _ := simplejson.NewJson([]byte(content))
+							cred := cloud.Config{}
+							cred.Alias = "local_" + strings.TrimSuffix(tencentConfigName, ".credential")
+							cred.AccessKeyId = contentJson.Get("secretId").MustString()
+							cred.AccessKeySecret = contentJson.Get("secretKey").MustString()
+							cred.Provider = tencent
+							credList = append(credList, cred)
+						}
+					}
+				}
+				// 2. environment variables
+				cred := cloud.Config{}
+				cred.Provider = tencent
+				cred.Alias = "local_env"
+				cred.AccessKeyId = os.Getenv("TENCENTCLOUD_SECRET_ID")
+				cred.AccessKeySecret = os.Getenv("TENCENTCLOUD_SECRET_KEY")
+				cred.STSToken = os.Getenv("SECURITY_TOKEN")
+				if cred.AccessKeyId != "" {
+					credList = append(credList, cred)
+				}
+			case aws:
+				// 1. credential file
+				awsConfigFile := filepath.Join(pubutil.GetUserDir(), "/.aws/credentials")
+				isTrue, content := pubutil.ReadFile(awsConfigFile)
+				if isTrue {
+					for _, v := range strings.Split(content, "[") {
 						cred := cloud.Config{}
 						if len(pubutil.StringClean(v)) != 0 {
 							for _, j := range strings.Split(v, "\n") {
@@ -49,14 +111,14 @@ func ConfigureAccessKey() {
 									cred.STSToken = pubutil.StringClean(strings.Split(j, "=")[1])
 								}
 							}
-							cred.Provider = "aws"
+							cred.Provider = aws
 							credList = append(credList, cred)
 						}
 					}
 				}
-				//	2. environment variables
+				// 2. environment variables
 				cred := cloud.Config{}
-				cred.Provider = "aws"
+				cred.Provider = aws
 				cred.Alias = "local_env"
 				cred.AccessKeyId = os.Getenv("AWS_ACCESS_KEY_ID")
 				cred.AccessKeySecret = os.Getenv("AWS_SECRET_ACCESS_KEY")
@@ -123,7 +185,6 @@ func ConfigureAccessKey() {
 func selectProvider() ([]string, []string, string) {
 	var cloudProvider string
 	cloudConfigList, cloudProviderList := ReturnCloudProviderList()
-	sort.Strings(cloudProviderList)
 	prompt := &survey.Select{
 		Message: "选择您要设置的云服务商 (Select a cloud provider): ",
 		Options: cloudProviderList,
