@@ -3,7 +3,7 @@
 ### 新增功能
 
 * [#189](https://github.com/teamssix/cf/pull/189) 在配置访问密钥时，会自动识别并提示导入本地的访问密钥
-* [#190](https://github.com/teamssix/cf/pull/177) 增加 aws ec2 实例的列出功能
+* [#190](https://github.com/teamssix/cf/pull/190) 增加 aws ec2 实例的列出功能
 
 ### 功能优化
 
