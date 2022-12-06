@@ -88,7 +88,6 @@ func ConfigureAccessKey() {
 				cred.Alias = "local_env"
 				cred.AccessKeyId = os.Getenv("TENCENTCLOUD_SECRET_ID")
 				cred.AccessKeySecret = os.Getenv("TENCENTCLOUD_SECRET_KEY")
-				cred.STSToken = os.Getenv("SECURITY_TOKEN")
 				if cred.AccessKeyId != "" {
 					credList = append(credList, cred)
 				}
