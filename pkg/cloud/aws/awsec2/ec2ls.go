@@ -56,20 +56,36 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string, 
 		InstancesList := i.Instances
 		if len(InstancesList) != 0 {
 			for _, i := range InstancesList {
-				var InstanceName string
+				var (
+					InstanceName     string
+					PrivateIpAddress string
+					PublicIpAddress  string
+				)
 				for _, tag := range i.Tags {
 					if *tag.Key == "Name" {
 						InstanceName = *tag.Value
 					}
 				}
+				if i.PrivateIpAddress == nil {
+					PrivateIpAddress = ""
+				} else {
+					PrivateIpAddress = *i.PrivateIpAddress
+				}
+
+				if i.PublicIpAddress == nil {
+					PublicIpAddress = ""
+				} else {
+					PublicIpAddress = *i.PublicIpAddress
+				}
+
 				obj := Instances{
 					InstanceId:       *i.InstanceId,
 					InstanceName:     InstanceName,
 					OSName:           *i.PlatformDetails,
 					OSType:           *i.InstanceType,
 					Status:           *i.State.Name,
-					PrivateIpAddress: *i.PrivateIpAddress,
-					PublicIpAddress:  *i.PublicIpAddress,
+					PrivateIpAddress: PrivateIpAddress,
+					PublicIpAddress:  PublicIpAddress,
 					RegionId:         *i.Placement.AvailabilityZone,
 				}
 				DescribeInstancesOut = append(DescribeInstancesOut, obj)
@@ -101,7 +117,7 @@ func ReturnInstancesList(region string, running bool, specifiedInstanceID string
 			}
 			instanceNum = len(InstancesList) - instanceNum
 			if instanceNum != 0 {
-				log.Warnf("在 %s 区域下找到 %d 个实例 (Found %d instances in %s region)", region, len(InstancesList), len(InstancesList), region)
+				log.Warnf("在 %s 区域下找到 %d 个实例 (Found %d instances in %s region)", region, instanceNum, instanceNum, region)
 			}
 		}
 	} else {
