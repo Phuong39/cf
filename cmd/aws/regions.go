@@ -1,6 +1,7 @@
 package aws
 
 import (
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/teamssix/cf/pkg/cloud"
 	"github.com/teamssix/cf/pkg/cloud/aws/awsec2"
@@ -27,13 +28,17 @@ var ec2RegionsCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		awsec2.GetEC2Regions()
 		regions := awsec2.GetEC2Regions()
-		var data = make([][]string, len(regions))
-		for i, v := range regions {
-			SN := strconv.Itoa(i + 1)
-			data[i] = []string{SN, *v.RegionName, *v.Endpoint}
+		if len(regions) > 0 {
+			var data = make([][]string, len(regions))
+			for i, v := range regions {
+				SN := strconv.Itoa(i + 1)
+				data[i] = []string{SN, *v.RegionName, *v.Endpoint}
+			}
+			var header = []string{"序号 (SN)", "区域名称 (Region Name)", "区域终端节点 (Region Endpoint)"}
+			var td = cloud.TableData{Header: header, Body: data}
+			cloud.PrintTable(td, "")
+		} else {
+			log.Infoln("未找到区域 (Regions not found)")
 		}
-		var header = []string{"序号 (SN)", "区域名称 (Region Name)", "区域终端节点 (Region Endpoint)"}
-		var td = cloud.TableData{Header: header, Body: data}
-		cloud.PrintTable(td, "")
 	},
 }
