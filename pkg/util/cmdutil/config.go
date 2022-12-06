@@ -232,14 +232,35 @@ func inputAccessKey(config cloud.Config, provider string) {
 		{
 			Name:   "AccessKeyId",
 			Prompt: &survey.Input{Message: "输入访问密钥 ID (Input Access Key Id) (必须 Required)" + OldAccessKeyId + ":"},
+			Validate: func(val interface{}) error {
+				str := val.(string)
+				if len(strings.TrimSpace(str)) < 7 {
+					log.Warnln("访问凭证似乎输入有误 (This access credential appears to be incorrect.)")
+				}
+				return nil
+			},
 		},
 		{
 			Name:   "AccessKeySecret",
 			Prompt: &survey.Password{Message: "输入访问密钥密钥 (Input Access Key Secret) (必须 Required)" + OldAccessKeySecret + ":"},
+			Validate: func(val interface{}) error {
+				str := val.(string)
+				if len(strings.TrimSpace(str)) < 7 {
+					log.Warnln("访问凭证似乎输入有误 (This access credential appears to be incorrect.)")
+				}
+				return nil
+			},
 		},
 		{
 			Name:   "STSToken",
 			Prompt: &survey.Input{Message: "输入临时凭证的 Token (Input STS Token) (可选 Optional)" + OldSTSToken + ":"},
+			Validate: func(val interface{}) error {
+				str := val.(string)
+				if len(strings.TrimSpace(str)) < 7 {
+					log.Warnln("访问凭证似乎输入有误 (This access credential appears to be incorrect.)")
+				}
+				return nil
+			},
 		},
 	}
 	cred := cloud.Config{}
@@ -343,7 +364,11 @@ func ConfigDel() {
 }
 
 func MaskAK(ak string) string {
-	prefix := ak[:2]
-	suffix := ak[len(ak)-6:]
-	return prefix + strings.Repeat("*", 18) + suffix
+	if len(ak) > 7 {
+		prefix := ak[:2]
+		suffix := ak[len(ak)-6:]
+		return prefix + strings.Repeat("*", 18) + suffix
+	} else {
+		return ak
+	}
 }
