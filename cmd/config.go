@@ -13,8 +13,10 @@ func init() {
 	configCmd.AddCommand(ConfigLs)
 	configCmd.AddCommand(ConfigMf)
 	configCmd.AddCommand(ConfigSw)
+	configCmd.AddCommand(ConfigScan)
 
 	ConfigLs.PersistentFlags().BoolVarP(&selectAll, "all", "a", false, "查询全部数据 (Search all data)")
+	ConfigScan.PersistentFlags().BoolVarP(&selectAll, "all", "a", false, "查询全部数据 (Search all data)")
 }
 
 var configCmd = &cobra.Command{
@@ -59,5 +61,14 @@ var ConfigSw = &cobra.Command{
 	Long:  `切换访问密钥 (Switch access key)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmdutil.ConfigSw()
+	},
+}
+
+var ConfigScan = &cobra.Command{
+	Use:   "scan",
+	Short: "扫描访问密钥 (Scan access keys)",
+	Long:  `扫描访问密钥 (Scan access keys)`,
+	Run: func(cmd *cobra.Command, args []string) {
+		cmdutil.ScanAccessKey(selectAll)
 	},
 }
