@@ -11,19 +11,23 @@ import (
 )
 
 func InsertConfig(config cloud.Config) {
-	var configAccessKeyIDList []string
-	configList := SelectConfig()
-	for _, v := range configList {
-		configAccessKeyIDList = append(configAccessKeyIDList, v.AccessKeyId)
-	}
-	sort.Strings(configAccessKeyIDList)
-	index := sort.SearchStrings(configAccessKeyIDList, config.AccessKeyId)
-
-	if index < len(configAccessKeyIDList) && configAccessKeyIDList[index] == config.AccessKeyId {
-		log.Warnf("已配置过 %s 访问密钥 (The %s Access Key has been configured.)", MaskAK(config.AccessKeyId), MaskAK(config.AccessKeyId))
+	if config.AccessKeyId == "" {
+		log.Warnln("当访问密钥 ID 为空的时候将不会被存储 (When the Access Key ID is empty it will not be stored.)")
 	} else {
-		CacheDb.Create(&config)
-		log.Infof("%s 访问密钥配置完成 (%s Access Key configuration complete.)", MaskAK(config.AccessKeyId), MaskAK(config.AccessKeyId))
+		var configAccessKeyIDList []string
+		configList := SelectConfig()
+		for _, v := range configList {
+			configAccessKeyIDList = append(configAccessKeyIDList, v.AccessKeyId)
+		}
+		sort.Strings(configAccessKeyIDList)
+		index := sort.SearchStrings(configAccessKeyIDList, config.AccessKeyId)
+
+		if index < len(configAccessKeyIDList) && configAccessKeyIDList[index] == config.AccessKeyId {
+			log.Warnf("已配置过 %s 访问密钥 (The %s Access Key has been configured.)", MaskAK(config.AccessKeyId), MaskAK(config.AccessKeyId))
+		} else {
+			CacheDb.Create(&config)
+			log.Infof("%s 访问密钥配置完成 (%s Access Key configuration complete.)", MaskAK(config.AccessKeyId), MaskAK(config.AccessKeyId))
+		}
 	}
 }
 
