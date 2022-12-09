@@ -49,6 +49,8 @@ var errorMessagesExit = map[string]string{
 	"InvalidSecurityToken.Expired": "临时令牌已过期 (STS token has expired)",
 	"InvalidAccessKeyId.Inactive":  "当前 AK 已被禁用 (The current AccessKeyId is inactive)",
 	//"Message=操作未授权，请检查CAM策略。":  "当前 AK 权限不足 (Insufficient Access Key permissions)",
+	"Code=AuthFailure.SecretIdNotFound": "SecretId 不存在，请输入正确的密钥 (SecretId does not exist, please enter the correct key.)",
+	"Code=AuthFailure.SignatureFailure": "请求签名验证失败，请检查您的访问密钥是否正确 (Request signature verification failed, please check if your access key is correct.)",
 }
 
 func HandleErr(e error) {
