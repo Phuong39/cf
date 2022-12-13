@@ -1,6 +1,6 @@
-﻿name: 新功能反馈
-description: 提交一个功能需求帮助完善这个项目
-title: "[Feat] 在这里输入你的标题"
+﻿name: 新功能反馈 (Feedback on new features)
+description: 提交一个功能需求帮助完善这个项目 (Submit a feature request to help improve this project)
+title: "[Feat] <在这里输入你的标题 (Enter your title here)>"
 labels: ["enhancement"]
 assignees:
   - teamssix
@@ -12,8 +12,8 @@ body:
 - type: textarea
   id: new-features
   attributes:
-    label: 描述你希望增加的需求 (Describe your needs)
-    value: "详细描述你希望增加的需求，并且描述为什么想要增加这个需求以及意义，描述的越完善该需求越有可能被采纳。"
+    label: 描述你希望增加的功能 (Describe the features you wish to add)
+    value: "详细描述你希望增加的功能，并且描述为什么想要增加这个功能以及意义，描述的越完善该反馈越有可能被采纳。(Describe in detail the feature you want to add, and describe why you want to add this feature and the significance, the better the description the more likely the feedback will be adopted.)"
   validations:
     required: true
 - type: textarea

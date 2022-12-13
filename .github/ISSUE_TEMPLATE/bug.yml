@@ -1,6 +1,6 @@
-﻿name: Bug 反馈
-description: 提交一个 issue 帮助改进这个项目
-title: "[Bug] 在这里输入你的标题"
+﻿name: Bug 反馈 (Bug Feedback)
+description: 提交一个 issue 帮助改进这个项目 (Submit an issue to help improve this project)
+title: "[Bug] <在这里输入你的标题 (Enter your title here)>"
 labels: ["bug"]
 assignees:
   - teamssix
@@ -13,7 +13,7 @@ body:
   id: what-happened
   attributes:
     label: 描述你遇到的问题 (What happened?)
-    value: "详细描述你所遇到的问题"
+    value: "详细描述你所遇到的问题 (Describe in detail the problem you are experiencing.)"
   validations:
     required: true
 - type: textarea
@@ -21,9 +21,9 @@ body:
     label: 复现步骤 (Steps To Reproduce)
     description: 复现这个问题的步骤 (Steps to reproduce the behavior.)
     placeholder: |
-      1. 在 xxx 情况下
-      2. 我执行了 xxx 命令
-      3. 出现了 xxx 错误
+      1. 在 xxx 情况下 (in the xxx case)
+      2. 执行了 xxx 命令 (executed the xxx command)
+      3. 出现了 xxx 错误 (an xxx error occurred)
   validations:
     required: true
 - type: dropdown

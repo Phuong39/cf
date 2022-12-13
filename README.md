@@ -19,16 +19,14 @@ CF 是一个云环境利用框架，适用于在红队场景中对云上内网�
 
 CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
 
-![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202212041600750.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202212132148217.png)
 
 当前已支持的云：
 
 - [x] 阿里云
 - [x] 腾讯云
 - [x] AWS
-- [ ] 华为云（预计在 2022 年 12 月 14 日前支持）
-
-功能排期可参考：[github.com/teamssix/cf/discussions/130](https://github.com/teamssix/cf/discussions/130)
+- [x] 华为云
 
 ## 使用手册
 
