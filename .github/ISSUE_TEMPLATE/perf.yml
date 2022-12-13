@@ -1,6 +1,6 @@
-name: 功能优化反馈
-description: 提交一个功能优化需求帮助改进这个项目
-title: "[Perf] 在这里输入你的标题"
+name: 功能优化反馈 (Feature optimization feedback)
+description: 提交一个功能优化需求帮助改进这个项目 (Submit a feature optimization request to help improve this project)
+title: "[Perf] <在这里输入你的标题 (Enter your title here)>"
 labels: ["performance"]
 assignees:
   - teamssix
@@ -12,8 +12,8 @@ body:
 - type: textarea
   id: performance
   attributes:
-    label: 描述你希望优化的功能 (Describe your needs)
-    value: "详细描述你希望优化的功能，并且描述为什么想要对这个地方进行优化，描述的越完善该反馈越有可能被采纳。"
+    label: 描述你希望优化的功能 (Describe the features you wish to optimize)
+    value: "详细描述你希望优化的功能，并且描述为什么想要对这个功能进行优化，描述的越完善该反馈越有可能被采纳。(Describe in detail the feature you want to optimize and why you want to optimize it, the better the description the more likely the feedback will be accepted.)"
   validations:
     required: true
 - type: textarea
