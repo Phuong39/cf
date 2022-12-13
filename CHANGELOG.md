@@ -1,3 +1,19 @@
+## [v0.4.4](https://github.com/teamssix/cf/releases/tag/v0.4.4) 2022.12.13
+
+### 新增功能
+
+* [#196](https://github.com/teamssix/cf/pull/196) 增加本地访问密钥扫描功能
+* [#198](https://github.com/teamssix/cf/pull/198) 增加 huawei obs ls 功能
+
+### 功能优化
+
+* [#197](https://github.com/teamssix/cf/pull/197) 优化错误信息输出
+
+### Bug 修复
+
+* [#193](https://github.com/teamssix/cf/pull/193) 修复一处 aws ec2 ls 处的 Bug
+* [#194](https://github.com/teamssix/cf/pull/194) 修复一处配置功能处的 Bug
+
 ## [v0.4.3](https://github.com/teamssix/cf/releases/tag/v0.4.3) 2022.12.4
 
 ### 新增功能

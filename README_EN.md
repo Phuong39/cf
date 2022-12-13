@@ -20,16 +20,14 @@ CF is a cloud exploitation framework, It can facilitate the work of the red team
 
 CF releases: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases)
 
-![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202212041600769.png)
+![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202212132148640.png)
 
 Current Supported Clouds:
 
 - [x] Alibaba Cloud
 - [x] Tencent Cloud
 - [x] AWS
-- [ ] Huawei Cloud (Expected to be supported by December 14, 2022)
-
-For the scheduling of functions you can refer to: [github.com/teamssix/cf/discussions/130](https://github.com/teamssix/cf/discussions/130)
+- [x] Huawei Cloud
 
 ## Manual
 
