@@ -5,6 +5,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/teamssix/cf/pkg/cloud"
 	"github.com/teamssix/cf/pkg/util/errutil"
+	"github.com/teamssix/cf/pkg/util/pubutil"
 	"os"
 	"sort"
 	"strings"
@@ -23,10 +24,10 @@ func InsertConfig(config cloud.Config) {
 		index := sort.SearchStrings(configAccessKeyIDList, config.AccessKeyId)
 
 		if index < len(configAccessKeyIDList) && configAccessKeyIDList[index] == config.AccessKeyId {
-			log.Warnf("已配置过 %s 访问密钥 (The %s Access Key has been configured.)", MaskAK(config.AccessKeyId), MaskAK(config.AccessKeyId))
+			log.Warnf("已配置过 %s 访问密钥 (The %s Access Key has been configured.)", pubutil.MaskAK(config.AccessKeyId), pubutil.MaskAK(config.AccessKeyId))
 		} else {
 			CacheDb.Create(&config)
-			log.Infof("%s 访问密钥配置完成 (%s Access Key configuration complete.)", MaskAK(config.AccessKeyId), MaskAK(config.AccessKeyId))
+			log.Infof("%s 访问密钥配置完成 (%s Access Key configuration complete.)", pubutil.MaskAK(config.AccessKeyId), pubutil.MaskAK(config.AccessKeyId))
 		}
 	}
 }
@@ -115,7 +116,7 @@ func UpdateConfigSwitch(provider string) {
 		accessKeyID := strings.Split(config, "\t")[2]
 		CacheDb.Model(&cloud.Config{}).Where("provider = ?", provider).Update("InUse", false)
 		CacheDb.Model(&cloud.Config{}).Where("access_key_id = ?", accessKeyID).Update("InUse", true)
-		log.Infof("访问密钥已切换至 %s (Access Key have been switched to %s )", MaskAK(accessKeyID), MaskAK(accessKeyID))
+		log.Infof("访问密钥已切换至 %s (Access Key have been switched to %s )", pubutil.MaskAK(accessKeyID), pubutil.MaskAK(accessKeyID))
 	} else {
 		log.Infof("未找到 %s 云服务商的访问密钥 (access keys for %s provider not found)", provider, provider)
 	}
@@ -191,15 +192,5 @@ func SelectConfigInUse(provider string) cloud.Config {
 		return config
 	} else {
 		return configList[0]
-	}
-}
-
-func MaskAK(ak string) string {
-	if len(ak) > 7 {
-		prefix := ak[:2]
-		suffix := ak[len(ak)-6:]
-		return prefix + strings.Repeat("*", 18) + suffix
-	} else {
-		return ak
 	}
 }

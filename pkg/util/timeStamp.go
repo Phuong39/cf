@@ -29,7 +29,7 @@ func ReturnVersionTimestampFile() string {
 }
 
 func ReturnTimestampType(provider string, TimestampType string) string {
-	cacheType := provider + "-" + TimestampType + "-" + database.SelectConfigInUse(provider).AccessKeyId
+	cacheType := provider + "-" + TimestampType + "-" + pubutil.MaskAK(database.SelectConfigInUse(provider).AccessKeyId)
 	return cacheType
 }
 

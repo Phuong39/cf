@@ -27,7 +27,8 @@ var errorMessages = map[string]string{
 	"InvalidAccessKeyId.Inactive":  "当前 AK 已被禁用 (The current AccessKeyId is inactive)",
 	"interrupt":                    "程序已退出 (Program exited.)",
 	"ErrorCode=AccessDenied, ErrorMessage=\"The bucket you access does not belong to you.\"": "获取 Bucket 信息失败，访问被拒绝 (Failed to get Bucket information, access is denied.)",
-	"ExpiredToken": "当前访问密钥已过期 (Current token has expired)",
+	"ExpiredToken":                   "当前访问密钥已过期 (Current token has expired)",
+	"read: connection reset by peer": "网络连接出现错误，请检查您的网络环境是否正常 (There is an error in your network connection, please check if your network environment is normal.)",
 }
 
 var errorMessagesNoExit = map[string]string{
@@ -51,6 +52,7 @@ var errorMessagesExit = map[string]string{
 	//"Message=操作未授权，请检查CAM策略。":  "当前 AK 权限不足 (Insufficient Access Key permissions)",
 	"Code=AuthFailure.SecretIdNotFound": "SecretId 不存在，请输入正确的密钥 (SecretId does not exist, please enter the correct key.)",
 	"Code=AuthFailure.SignatureFailure": "请求签名验证失败，请检查您的访问密钥是否正确 (Request signature verification failed, please check if your access key is correct.)",
+	"read: connection reset by peer":    "网络连接出现错误，请检查您的网络环境是否正常 (There is an error in your network connection, please check if your network environment is normal.)",
 }
 
 func HandleErr(e error) {
