@@ -1,4 +1,4 @@
-﻿name: Bug 反馈 (Bug Feedback)
+name: Bug 反馈 (Bug Feedback)
 description: 提交一个 issue 帮助改进这个项目 (Submit an issue to help improve this project)
 title: "[Bug] <在这里输入你的标题 (Enter your title here)>"
 labels: ["bug"]
