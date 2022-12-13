@@ -129,13 +129,13 @@ func inputAccessKey(config cloud.Config, provider string) {
 	AccessKeySecret := config.AccessKeySecret
 	STSToken := config.STSToken
 	if AccessKeyId != "" {
-		OldAccessKeyId = fmt.Sprintf(" [%s] ", MaskAK(AccessKeyId))
+		OldAccessKeyId = fmt.Sprintf(" [%s] ", pubutil.MaskAK(AccessKeyId))
 	}
 	if AccessKeySecret != "" {
-		OldAccessKeySecret = fmt.Sprintf(" [%s] ", MaskAK(AccessKeySecret))
+		OldAccessKeySecret = fmt.Sprintf(" [%s] ", pubutil.MaskAK(AccessKeySecret))
 	}
 	if STSToken != "" {
-		OldSTSToken = fmt.Sprintf(" [%s] ", MaskAK(STSToken))
+		OldSTSToken = fmt.Sprintf(" [%s] ", pubutil.MaskAK(STSToken))
 	}
 	var qs = []*survey.Question{
 		{
@@ -241,7 +241,7 @@ func ConfigLs(selectAll bool) {
 		} else {
 			for _, v := range configList {
 				if len(v.STSToken) > 10 {
-					STSToken = MaskAK(v.STSToken)
+					STSToken = pubutil.MaskAK(v.STSToken)
 				} else {
 					STSToken = v.STSToken
 				}
@@ -305,7 +305,7 @@ func ScanAccessKey(selectAll bool) {
 			var STSToken string
 			for _, v := range credList {
 				if len(v.STSToken) > 10 {
-					STSToken = MaskAK(v.STSToken)
+					STSToken = pubutil.MaskAK(v.STSToken)
 				} else {
 					STSToken = v.STSToken
 				}
@@ -319,15 +319,5 @@ func ScanAccessKey(selectAll bool) {
 			}
 			cloud.PrintTable(Data, "扫描到的访问密钥信息 (Scanned access key information)")
 		}
-	}
-}
-
-func MaskAK(ak string) string {
-	if len(ak) > 7 {
-		prefix := ak[:2]
-		suffix := ak[len(ak)-6:]
-		return prefix + strings.Repeat("*", 18) + suffix
-	} else {
-		return ak
 	}
 }

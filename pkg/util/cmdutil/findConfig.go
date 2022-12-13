@@ -123,8 +123,49 @@ func findAWSConfig() []cloud.Config {
 func findHuaweiConfig() []cloud.Config {
 	var credList []cloud.Config
 	// 1. credential file
-	// 由于华为云配置文件是加密的，暂时没有找到解密的办法
+	huaweiConfigFile := filepath.Join(pubutil.GetUserDir(), "/.huaweicloud/credentials")
+	isTrue, content := pubutil.ReadFile(huaweiConfigFile)
+	if isTrue {
+		for _, v := range strings.Split(content, "[") {
+			cred := cloud.Config{}
+			if len(pubutil.StringClean(v)) != 0 {
+				for _, j := range strings.Split(v, "\n") {
+					if strings.Contains(j, "]") {
+						cred.Alias = "local_" + strings.Replace(j, "]", "", -1)
+					} else if strings.Contains(j, "ak") {
+						cred.AccessKeyId = pubutil.StringClean(strings.Split(j, "=")[1])
+					} else if strings.Contains(j, "sk") {
+						cred.AccessKeySecret = pubutil.StringClean(strings.Split(j, "=")[1])
+					} else if strings.Contains(j, "security_token") {
+						cred.STSToken = pubutil.StringClean(strings.Split(j, "=")[1])
+					}
+				}
+				cred.Provider = huawei
+				if cred.AccessKeyId != "" {
+					credList = append(credList, cred)
+				}
+			}
+		}
+	}
 	// 2. environment variables
-	// 华为云似乎不支持环境变量的配置方式
+	cred := cloud.Config{}
+	cred.Provider = huawei
+	cred.Alias = "local_env_sdk"
+	cred.AccessKeyId = os.Getenv("HUAWEICLOUD_SDK_AK")
+	cred.AccessKeySecret = os.Getenv("HUAWEICLOUD_SDK_SK")
+	cred.STSToken = os.Getenv("HUAWEICLOUD_SDK_SECURITY_TOKEN")
+	if cred.AccessKeyId != "" {
+		credList = append(credList, cred)
+	}
+
+	cred = cloud.Config{}
+	cred.Provider = huawei
+	cred.Alias = "local_env_obs"
+	cred.AccessKeyId = os.Getenv("OBS_ACCESS_KEY_ID")
+	cred.AccessKeySecret = os.Getenv("OBS_SECRET_ACCESS_KEY")
+	cred.STSToken = os.Getenv("OBS_SECURITY_TOKEN")
+	if cred.AccessKeyId != "" {
+		credList = append(credList, cred)
+	}
 	return credList
 }

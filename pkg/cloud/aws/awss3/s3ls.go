@@ -57,18 +57,16 @@ func FindBucketAcl(bucket string, region string) string {
 	result, err := svc.GetBucketAcl(input)
 	errutil.HandleErr(err)
 	for _, v := range result.Grants {
-		if *v.Grantee.Type == "Group" {
-			if *v.Grantee.URI == "http://acs.amazonaws.com/groups/global/AllUsers" {
-				switch *v.Permission {
-				case "READ":
-					read = 1
-				case "WRITE":
-					write = 2
-				case "READ_ACP":
-					readACP = 4
-				case "WRITE_ACP":
-					writeACP = 8
-				}
+		if *v.Grantee.Type == "Group" && *v.Grantee.URI == "http://acs.amazonaws.com/groups/global/AllUsers" {
+			switch *v.Permission {
+			case "READ":
+				read = 1
+			case "WRITE":
+				write = 2
+			case "READ_ACP":
+				readACP = 4
+			case "WRITE_ACP":
+				writeACP = 8
 			}
 		}
 	}
@@ -132,7 +130,7 @@ func PrintBucketsListRealTime(region string, s3LsObjectNumber string) {
 		dataLen int
 	)
 	buckets := ListBuckets()
-	log.Infof("获取到 %d 条 S3 Bucket 信息 (Obtained %d pieces of S3 Bucket information)", len(buckets), len(buckets))
+	log.Infof("在全部区域下获取到 %d 条 S3 Bucket 信息 (Find %d S3 Bucket under all areas)", len(buckets), len(buckets))
 	var data = make([][]string, len(buckets))
 	for i, o := range buckets {
 		SN := strconv.Itoa(i + 1)
@@ -154,7 +152,7 @@ func PrintBucketsListRealTime(region string, s3LsObjectNumber string) {
 	if dataLen == 0 {
 		log.Info("没发现存储桶 (No Buckets Found)")
 	} else {
-		Caption := "AWS 资源 (AWS resources)"
+		Caption := "S3 资源 (S3 resources)"
 		cloud.PrintTable(td, Caption)
 		cmdutil.WriteCacheFile(td, "aws", "s3", "all", "all")
 		util.WriteTimestamp(TimestampType)

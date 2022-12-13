@@ -129,3 +129,13 @@ func StringClean(str string) string {
 	str = strings.Replace(str, "\n", "", -1)
 	return str
 }
+
+func MaskAK(ak string) string {
+	if len(ak) > 7 {
+		prefix := ak[:2]
+		suffix := ak[len(ak)-6:]
+		return prefix + strings.Repeat("*", 18) + suffix
+	} else {
+		return ak
+	}
+}
