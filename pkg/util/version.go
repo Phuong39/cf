@@ -28,10 +28,10 @@ func AlertUpdateInfo() {
 	if oldTimestamp == 0 {
 		CheckVersion(global.Version)
 	} else if IsFlushCache(oldTimestamp) {
-		check, newVersion := CheckVersion(global.Version)
+		check, newVersion, err := CheckVersion(global.Version)
 		if check {
 			log.Warnf("发现 %s 新版本，可以使用 upgrade 命令进行更新 (Found a new version of %s, use the upgrade command to update)", newVersion, newVersion)
-		} else {
+		} else if err == nil {
 			log.Debugln("未发现新版本 (No new versions found)")
 		}
 	} else {
@@ -39,9 +39,8 @@ func AlertUpdateInfo() {
 	}
 }
 
-func CheckVersion(version string) (bool, string) {
+func CheckVersion(version string) (bool, string, error) {
 	WriteTimestamp(ReturnVersionTimestampFile())
-
 	url := "https://api.github.com/repos/teamssix/cf/releases/latest"
 	spaceClient := http.Client{}
 	req, err := http.NewRequest(http.MethodGet, url, nil)
@@ -65,9 +64,9 @@ func CheckVersion(version string) (bool, string) {
 					versionNumber := caclVersionNumber(version)
 					newVersionNumber := caclVersionNumber(newVersion)
 					if versionNumber >= newVersionNumber {
-						return false, newVersion
+						return false, newVersion, err
 					} else {
-						return true, newVersion
+						return true, newVersion, err
 					}
 				}
 			}
@@ -89,7 +88,7 @@ func Atoi(s string) int {
 	return i
 }
 
-func reqErr(err error) (bool, string) {
-	log.Debugln("获取最新的 releases 版本失败 (Failed to get the latest releases version) : ", err)
-	return false, ""
+func reqErr(err error) (bool, string, error) {
+	log.Errorln("获取最新版本失败 (Failed to get the latest version) : ", err)
+	return false, "", err
 }

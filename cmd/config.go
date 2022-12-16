@@ -66,8 +66,8 @@ var ConfigSw = &cobra.Command{
 
 var ConfigScan = &cobra.Command{
 	Use:   "scan",
-	Short: "扫描访问密钥 (Scan access keys)",
-	Long:  `扫描访问密钥 (Scan access keys)`,
+	Short: "扫描本地访问密钥 (Scan for local access keys)",
+	Long:  `扫描本地访问密钥 (Scan for local access keys)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmdutil.ScanAccessKey(selectAll)
 	},
