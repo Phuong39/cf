@@ -167,13 +167,6 @@ func inputAccessKey(config cloud.Config, provider string) {
 		{
 			Name:   "STSToken",
 			Prompt: &survey.Input{Message: "输入临时凭证的 Token (Input STS Token) (可选 Optional)" + OldSTSToken + ":"},
-			Validate: func(val interface{}) error {
-				str := val.(string)
-				if len(strings.TrimSpace(str)) < 7 {
-					log.Warnln("访问凭证似乎输入有误 (This access credential appears to be incorrect.)")
-				}
-				return nil
-			},
 		},
 	}
 	cred := cloud.Config{}

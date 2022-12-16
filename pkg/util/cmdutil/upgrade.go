@@ -25,7 +25,7 @@ func Upgrade(version string) {
 		downloadURL string
 		fileName    string
 	)
-	check, newVersion := util.CheckVersion(version)
+	check, newVersion, err := util.CheckVersion(version)
 	if check {
 		log.Infof("当前版本为 %s ，发现 %s 新版本，正在下载新版本 (The current version is %s , Found %s new version, downloading new version now)", version, newVersion, version, newVersion)
 		if runtime.GOOS == "windows" {
@@ -48,7 +48,7 @@ func Upgrade(version string) {
 		err = os.Remove(fileName)
 		errutil.HandleErr(err)
 		log.Infof("更新完成，历史版本已被重命名为 %s (The update is complete and the previous version has been renamed to %s)", oldFileName+".bak", oldFileName+".bak")
-	} else {
+	} else if err == nil {
 		log.Infof("当前 %s 版本为最新版本，无需升级 (The current %s version is the latest version, no need to upgrade)", version, version)
 	}
 }
