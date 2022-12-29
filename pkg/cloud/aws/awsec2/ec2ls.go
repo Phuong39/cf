@@ -148,9 +148,9 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 	} else {
 		Caption := "EC2 资源 (EC2 resources)"
 		cloud.PrintTable(td, Caption)
-		cmdutil.WriteCacheFile(td, "aws", "ec2", region, specifiedInstanceID)
 		util.WriteTimestamp(TimestampType)
 	}
+	cmdutil.WriteCacheFile(td, "aws", "ec2", region, specifiedInstanceID)
 }
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {

@@ -129,8 +129,8 @@ func PrintInstancesListRealTime(region string, running bool, specifiedInstanceID
 	} else {
 		Caption := "LH 资源 (LH resources)"
 		cloud.PrintTable(td, Caption)
-		cmdutil.WriteCacheFile(td, "tencent", "lh", region, specifiedInstanceID)
 	}
+	cmdutil.WriteCacheFile(td, "tencent", "lh", region, specifiedInstanceID)
 }
 
 func PrintInstancesListHistory(region string, running bool, specifiedInstanceID string) {

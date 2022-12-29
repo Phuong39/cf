@@ -287,9 +287,9 @@ func PrintBucketsListRealTime(region string, ossLsObjectNumber string, ossLsBuck
 	} else {
 		Caption := "OSS 资源 (OSS resources)"
 		cloud.PrintTable(td, Caption)
-		cmdutil.WriteCacheFile(td, "alibaba", "oss", region, "all")
 		util.WriteTimestamp(TimestampType)
 	}
+	cmdutil.WriteCacheFile(td, "alibaba", "oss", region, "all")
 }
 
 func PrintBucketsListHistory(region string, ossLsBucket string) {
