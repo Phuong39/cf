@@ -120,9 +120,9 @@ func PrintDBInstancesListRealTime(region string, running bool, specifiedDBInstan
 	} else {
 		Caption := "RDS 资源 (RDS resources)"
 		cloud.PrintTable(td, Caption)
-		cmdutil.WriteCacheFile(td, "alibaba", "rds", region, specifiedDBInstanceID)
 		util.WriteTimestamp(TimestampType)
 	}
+	cmdutil.WriteCacheFile(td, "alibaba", "rds", region, specifiedDBInstanceID)
 }
 
 func PrintDBInstancesListHistory(region string, running bool, specifiedDBInstanceID string, engine string) {

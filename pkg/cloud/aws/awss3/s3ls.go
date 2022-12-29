@@ -154,9 +154,9 @@ func PrintBucketsListRealTime(region string, s3LsObjectNumber string) {
 	} else {
 		Caption := "S3 资源 (S3 resources)"
 		cloud.PrintTable(td, Caption)
-		cmdutil.WriteCacheFile(td, "aws", "s3", "all", "all")
 		util.WriteTimestamp(TimestampType)
 	}
+	cmdutil.WriteCacheFile(td, "aws", "s3", "all", "all")
 }
 
 func PrintBucketsListHistory(region string) {

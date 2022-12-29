@@ -140,9 +140,9 @@ func PrintBucketsListRealTime(region string, obsLsObjectNumber string) {
 	} else {
 		Caption := "OBS 资源 (OBS resources)"
 		cloud.PrintTable(td, Caption)
-		cmdutil.WriteCacheFile(td, "huawei", "obs", "all", "all")
 		util.WriteTimestamp(TimestampType)
 	}
+	cmdutil.WriteCacheFile(td, "huawei", "obs", "all", "all")
 }
 
 func PrintBucketsListHistory(region string) {
