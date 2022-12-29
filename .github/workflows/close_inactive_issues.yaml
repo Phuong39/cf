@@ -12,10 +12,10 @@ jobs:
     steps:
       - uses: actions/stale@v5
         with:
-          days-before-issue-stale: 14
+          days-before-issue-stale: 30
           days-before-issue-close: 7
           stale-issue-label: "stale"
-          stale-issue-message: "这个 issue 在 14 天内没有任何活动，如果在 7 天后依然没有任何动静，那么这个 issue 将会自动关闭。(This issue is stale because it has been open for 14 days with no activity.)"
+          stale-issue-message: "这个 issue 在 30 天内没有任何活动，如果在 7 天后依然没有任何动静，那么这个 issue 将会自动关闭。(This issue is stale because it has been open for 30 days with no activity.)"
           close-issue-message: "这个 issue 由于长时间没有动静，已自动关闭。(This issue was closed because it has been inactive for 7 days since being marked as stale.)"
           days-before-pr-stale: -1
           days-before-pr-close: -1
