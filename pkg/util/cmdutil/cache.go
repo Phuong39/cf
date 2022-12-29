@@ -18,11 +18,15 @@ func ReturnCacheDict() string {
 
 func WriteCacheFile(td cloud.TableData, provider string, serviceType string, region string, id string) {
 	AccessKeyId := GetConfig(provider).AccessKeyId
-	if serviceType == "lh" {
+	ecsArray := []string{"ec2", "lh", "cvm"}
+	ossArray := []string{"s3", "obs"}
+	if pubutil.IN(serviceType, ecsArray) {
 		serviceType = "ecs"
+	} else if pubutil.IN(serviceType, ossArray) {
+		serviceType = "oss"
 	}
 	if len(td.Body) == 0 {
-		if serviceType == "oss" || serviceType == "s3" {
+		if serviceType == "oss" {
 			database.DeleteOSSCache(AccessKeyId)
 		} else if serviceType == "ecs" {
 			database.DeleteECSCache(AccessKeyId)
@@ -32,7 +36,7 @@ func WriteCacheFile(td cloud.TableData, provider string, serviceType string, reg
 	} else if region == "all" && id == "all" {
 		log.Debugln("写入数据到缓存数据库 (Write data to a cache database)")
 		switch {
-		case serviceType == "oss" || serviceType == "s3":
+		case serviceType == "oss":
 			var OSSCacheList []pubutil.OSSCache
 			for _, v := range td.Body {
 				OSSCache := pubutil.OSSCache{
@@ -48,7 +52,7 @@ func WriteCacheFile(td cloud.TableData, provider string, serviceType string, reg
 				OSSCacheList = append(OSSCacheList, OSSCache)
 			}
 			database.InsertOSSCache(OSSCacheList)
-		case serviceType == "ecs" || serviceType == "ec2":
+		case serviceType == "ecs":
 			var ECSCacheList []pubutil.ECSCache
 			for _, v := range td.Body {
 				ECSCache := pubutil.ECSCache{

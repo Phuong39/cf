@@ -139,3 +139,12 @@ func MaskAK(ak string) string {
 		return ak
 	}
 }
+
+func IN(target string, str_array []string) bool {
+	for _, element := range str_array {
+		if target == element {
+			return true
+		}
+	}
+	return false
+}

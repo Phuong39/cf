@@ -80,7 +80,7 @@ func DeleteConfig() {
 			if isTrue {
 				accessKeyId := strings.Split(config, "\t")[2]
 				CacheDb.Where("access_key_id = ?", accessKeyId).Delete(&configList)
-				log.Infof("%s 访问密钥已删除 (%s Access Key deleted)", accessKeyId, accessKeyId)
+				log.Infof("%s 访问密钥已删除 (%s Access Key deleted)", pubutil.MaskAK(accessKeyId), pubutil.MaskAK(accessKeyId))
 			} else {
 				log.Infoln("已取消删除选中的访问密钥 (Canceled delete the selected access key.)")
 			}
