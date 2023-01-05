@@ -179,7 +179,8 @@ CF 现已加入 [404星链计划](https://github.com/knownsec/404StarLink)
 
 最后给我所在的团队打个广告，下面这个是狼组安全团队的公众号，欢迎师傅关注，有想法一起加入狼组的师傅也可以投递简历至 admin@wgpsec.org 加入我们。
 
-![](https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209151716790.png)
+<div align=center><img width="900" src="https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202209151716790.png"></div>
+
 
 <div align=center><a href="https://github.com/teamssix"><img src="https://api.star-history.com/svg?repos=teamssix/cf&type=Timeline"></a></div>
 
@@ -187,5 +188,7 @@ CF 现已加入 [404星链计划](https://github.com/knownsec/404StarLink)
 
 * 本工具仅用于合法合规用途，严禁用于违法违规用途。
 * 本工具中所涉及的风险点均属于租户责任，与云厂商无关。
+
+<img src="https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202301041622502.JPG" width="50%">
 
 <div align=center><b>感谢你使用我的工具</b></div>

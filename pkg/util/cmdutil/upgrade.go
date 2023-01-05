@@ -121,7 +121,7 @@ func unzipFile(fileName string) {
 		oldCfPath := filepath.Join(cacheFolder, "cf.exe")
 		newCfPath := filepath.Join(cfWorkDir, "cf.exe")
 		log.Tracef("将 %s 文件移动到 %s (Move the %s file to %s)", oldCfPath, newCfPath, oldCfPath, newCfPath)
-		os.Rename(oldCfPath, newCfPath)
+		moveFile(oldCfPath, newCfPath)
 	} else {
 		gzipStream, err := os.Open(fileName)
 		errutil.HandleErr(err)
@@ -150,7 +150,7 @@ func unzipFile(fileName string) {
 		oldCfPath := filepath.Join(cacheFolder, "cf")
 		newCfPath := filepath.Join(cfWorkDir, "cf")
 		log.Tracef("将 %s 文件移动到 %s (Move the %s file to %s)", oldCfPath, newCfPath, oldCfPath, newCfPath)
-		os.Rename(oldCfPath, newCfPath)
+		moveFile(oldCfPath, newCfPath)
 		log.Traceln("为 ./cf 文件赋予可执行权限 (Grant execute permission to ./cf file)")
 		f, err := os.Open(newCfPath)
 		errutil.HandleErr(err)
@@ -198,4 +198,13 @@ func isRegions(address string) bool {
 	} else {
 		return false
 	}
+}
+
+func moveFile(oldCfPath string, newCfPath string) {
+	oldByte, err := ioutil.ReadFile(oldCfPath)
+	errutil.HandleErr(err)
+	err = ioutil.WriteFile(newCfPath, oldByte, 0644)
+	errutil.HandleErr(err)
+	err = os.Remove(oldCfPath)
+	errutil.HandleErr(err)
 }
