@@ -39,7 +39,7 @@ For detailed manuals, please visit: [wiki.teamssix.com/cf](https://wiki.teamssix
 
 ## Install
 
-Download the compressed files corresponding to the system in the CF download url: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases), decompressing it and run it in the command line. 
+Download the compressed files corresponding to the system in the CF download url: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases), decompressing it and run it in the command line.
 
 <details> <summary>The following systems are currently supported</summary><br>
 
@@ -55,7 +55,7 @@ Download the compressed files corresponding to the system in the CF download url
 |  cf_x.x.x_windows_arm64.zip  | Windows |                ARM                 |  64  |
 
 </details>
-    
+
 ## Cases
 
 |               Title                | Version |                         Article URL                          |  Author  | Release Time |
@@ -161,6 +161,8 @@ Thank you for your contributions to CF, A note on contributions: [CONTRIBUTING](
                                 src="https://avatars.githubusercontent.com/u/24506421?v=4"  style="width: 100px;"/><br/>Dawnnnnnn</a></td>
         <td align="center"><a href="https://github.com/Belos-pretender"><img alt="Belos-pretender"
                                 src="https://avatars.githubusercontent.com/u/52148409?v=4"  style="width: 100px;"/><br/>Belos-pretender</a></td>
+        <td align="center"><a href="https://github.com/0xorOne"><img alt="Kfzz1"
+                                src="https://avatars.githubusercontent.com/u/125463022?v=4"  style="width: 100px;"/><br/>Kfzz1</a></td>
 </table>
 </div>
 

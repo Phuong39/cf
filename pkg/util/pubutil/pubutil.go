@@ -131,21 +131,20 @@ func StringClean(str string) string {
 }
 
 func MaskAK(ak string) string {
-	if ak != "" {
-		//捕获异常
+	if len(ak) > 7 {
 		defer func() {
 			err := recover()
 			if err != nil {
-				log.Error("输入的 AK 或者 SK有误 (Input Error)")
+				log.Error("输入的访问密钥有误 (The entered access key is incorrect.)")
 				os.Exit(1)
-
 			}
 		}()
 		prefix := ak[:2]
 		suffix := ak[len(ak)-6:]
 		return prefix + strings.Repeat("*", 18) + suffix
+	} else {
+		return ak
 	}
-	return ""
 }
 
 func IN(target string, str_array []string) bool {
