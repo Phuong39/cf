@@ -161,6 +161,8 @@ Thank you for your contributions to CF, A note on contributions: [CONTRIBUTING](
                                 src="https://avatars.githubusercontent.com/u/24506421?v=4"  style="width: 100px;"/><br/>Dawnnnnnn</a></td>
         <td align="center"><a href="https://github.com/Belos-pretender"><img alt="Belos-pretender"
                                 src="https://avatars.githubusercontent.com/u/52148409?v=4"  style="width: 100px;"/><br/>Belos-pretender</a></td>
+        <td align="center"><a href="https://github.com/0xorOne"><img alt="Kfzz1"
+                                src="https://avatars.githubusercontent.com/u/125463022?v=4"  style="width: 100px;"/><br/>Kfzz1</a></td>
 </table>
 </div>
 

@@ -53,6 +53,8 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
     
 </details>
 
+</details>
+
 ## 使用案例
 
 |                标题                | 所使用的 CF 版本 |                           文章地址                           |   作者   |  发布时间  |
@@ -160,6 +162,8 @@ cf upgrade
                                 src="https://avatars.githubusercontent.com/u/24506421?v=4"  style="width: 100px;"/><br/>Dawnnnnnn</a></td>
         <td align="center"><a href="https://github.com/Belos-pretender"><img alt="Belos-pretender"
                                 src="https://avatars.githubusercontent.com/u/52148409?v=4"  style="width: 100px;"/><br/>Belos-pretender</a></td>
+        <td align="center"><a href="https://github.com/0xorOne"><img alt="Kfzz1"
+                                src="https://avatars.githubusercontent.com/u/125463022?v=4"  style="width: 100px;"/><br/>Kfzz1</a></td>
 </table>
 </div>
 
