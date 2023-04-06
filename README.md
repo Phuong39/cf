@@ -36,7 +36,9 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 
 ## 安装
 
-直接在 CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases) 中下载系统对应的压缩文件，解压后在命令行中运行即可，目前支持以下系统：
+直接在 CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases) 中下载系统对应的压缩文件，解压后在命令行中运行即可。
+
+<details> <summary>目前支持的系统</summary><br>
 
 |            文件名            |  系统   |                架构                | 位数 |
 | :--------------------------: | :-----: | :--------------------------------: | :--: |
@@ -48,6 +50,8 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 |   cf_x.x.x_windows_386.zip   | Windows |                AMD                 |  32  |
 |  cf_x.x.x_windows_amd64.zip  | Windows |                AMD                 |  64  |
 |  cf_x.x.x_windows_arm64.zip  | Windows |                ARM                 |  64  |
+    
+</details>
 
 ## 使用案例
 
@@ -189,6 +193,6 @@ CF 现已加入 [404星链计划](https://github.com/knownsec/404StarLink)
 * 本工具仅用于合法合规用途，严禁用于违法违规用途。
 * 本工具中所涉及的风险点均属于租户责任，与云厂商无关。
 
-<img src="https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202301041622502.JPG" width="50%">
+<div align=center><img width="400" src="https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202301041622502.JPG"></div><br>
 
 <div align=center><b>感谢你使用我的工具</b></div>
