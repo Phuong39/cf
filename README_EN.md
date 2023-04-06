@@ -39,7 +39,9 @@ For detailed manuals, please visit: [wiki.teamssix.com/cf](https://wiki.teamssix
 
 ## Install
 
-Download the compressed files corresponding to the system in the CF download url: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases), decompressing it and run it in the command line. The following systems are currently supported:
+Download the compressed files corresponding to the system in the CF download url: [github.com/teamssix/cf/releases](https://github.com/teamssix/cf/releases), decompressing it and run it in the command line. 
+
+<details> <summary>The following systems are currently supported</summary><br>
 
 |          File name           | System  |            Architecture            | Bit  |
 | :--------------------------: | :-----: | :--------------------------------: | :--: |
@@ -52,6 +54,8 @@ Download the compressed files corresponding to the system in the CF download url
 |  cf_x.x.x_windows_amd64.zip  | Windows |                AMD                 |  64  |
 |  cf_x.x.x_windows_arm64.zip  | Windows |                ARM                 |  64  |
 
+</details>
+    
 ## Cases
 
 |               Title                | Version |                         Article URL                          |  Author  | Release Time |
@@ -192,5 +196,7 @@ If you would like to work with me on this, you can join the team by sending your
 
 * This tool can only be used in legal scenarios and is strictly forbidden to be used in illegal scenarios.
 * The risks involved in this tool are the responsibility of the tenant and not the cloud providers.
+
+<div align=center><img width="400" src="https://cdn.jsdelivr.net/gh/teamssix/BlogImages/imgs/202301041622502.JPG"></div><br>
 
 <div align=center><b>Thank you for using my tool.</b></div>
