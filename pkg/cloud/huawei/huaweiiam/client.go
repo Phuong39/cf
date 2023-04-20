@@ -1,0 +1,3 @@
+package huaweiiam
+
+func IAMClient()
