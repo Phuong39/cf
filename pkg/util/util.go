@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-//去除重复字符串和空格
+// 去除重复字符串和空格
 func RemoveDuplicatesAndEmpty(a []string) (ret []string) {
 	a_len := len(a)
 	for i := 0; i < a_len; i++ {
@@ -36,4 +36,18 @@ func GenerateRandomPasswords() string {
 	})
 	str := string(buf)
 	return str
+}
+
+// 生成随机名称
+func GetRandomString(length int) string {
+	const charset = "abcdefghijklmnopqrstuvwxyz" +
+		"0123456789"
+
+	rand.Seed(time.Now().UnixNano())
+
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[rand.Intn(len(charset))]
+	}
+	return string(b)
 }
