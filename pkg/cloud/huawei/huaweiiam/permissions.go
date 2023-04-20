@@ -2,8 +2,10 @@ package huaweiiam
 
 import (
 	"fmt"
+	"math/rand"
 	"sort"
 	"strconv"
+	"time"
 
 	"github.com/teamssix/cf/pkg/cloud"
 	"github.com/teamssix/cf/pkg/util"
@@ -278,10 +280,15 @@ func traversalPermissions() ([][]string, [][]string) {
 	}
 
 	log.Debugln("正在判断 console 权限 (Determining the permission of console)")
+	// 初始化随机数生成器
+	rand.Seed(time.Now().UnixNano())
+	// 从切片中随机选择一个元素
+	// randomIndex := rand.Intn(len(global.ChineseUserName))
+	// userName := global.ChineseUserName[randomIndex]
 	createUserRequestContent := &iamModel.CreateUserRequest{}
-	passwordUser := "1qaz@WSX3edc"
+	passwordUser := util.GenerateRandomPasswords()
 	userbody := &iamModel.CreateUserOption{
-		Name:     "zhangsan",
+		Name:     "ggA2K2e4yxqN",
 		DomainId: domainId[0],
 		Password: &passwordUser,
 	}
