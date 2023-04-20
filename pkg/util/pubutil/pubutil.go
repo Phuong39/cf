@@ -54,6 +54,7 @@ type TakeoverConsoleCache struct {
 	Provider         string
 	AccessKeyId      string
 	PrimaryAccountID string
+	UserId           string
 	UserName         string
 	Password         string
 	LoginUrl         string
