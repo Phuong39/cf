@@ -106,5 +106,5 @@ func TakeoverConsole(userName string) {
 	var header = []string{"用户名 (User Name)", "密码 (Password)", "控制台登录地址 (Login Url)"}
 	var td = cloud.TableData{Header: header, Body: data}
 	cloud.PrintTable(td, "")
-	log.Infof("接管控制台成功，接管控制台会创建 %s 后门用户，如果想删除该后门用户，请执行 cf huawei console cancel 命令。(Successfully take over the console. Since taking over the console creates the backdoor user crossfire, if you want to delete the backdoor user, execute the command cf huawei console cancel.)", userName)
+	log.Infof("接管控制台成功，接管控制台会创建 %s 后门用户，如果想删除该后门用户，请执行 cf huawei console cancel 命令。(Successfully take over the console. Since taking over the console creates the backdoor user %s , if you want to delete the backdoor user, execute the command cf huawei console cancel.)", userName, userName)
 }
