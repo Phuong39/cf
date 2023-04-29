@@ -15,8 +15,9 @@ import (
 )
 
 var (
-	header   = []string{"序号 (SN)", "实例 ID (Instance ID)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private IP)", "公网 IP (Public IP)", "区域 ID (Region ID)"}
-	LinuxSet = []string{"CentOS", "Ubuntu", "Debian", "OpenSUSE", "SUSE", "CoreOS", "FreeBSD", "Kylin", "UnionTech", "TencentOS", "Other Linux"}
+	header       = []string{"序号 (SN)", "实例 ID (Instance ID)", "实例名称 (Instance Name)", "系统名称 (OS Name)", "系统类型 (OS Type)", "状态 (Status)", "私有 IP (Private IP)", "公网 IP (Public IP)", "区域 ID (Region ID)"}
+	LinuxSet     = []string{"CentOS", "Ubuntu", "Debian", "OpenSUSE", "SUSE", "CoreOS", "FreeBSD", "Kylin", "UnionTech", "TencentOS", "Other Linux"}
+	InstancesOut []Instances
 )
 
 type Instances struct {
@@ -30,9 +31,10 @@ type Instances struct {
 	RegionId         string
 }
 
-func DescribeInstances(region string, running bool, SpecifiedInstanceID string) []Instances {
-	var out []Instances
+func DescribeInstances(region string, running bool, specifiedInstanceID string, offSet int64) []Instances {
 	request := cvm.NewDescribeInstancesRequest()
+	request.Offset = common.Int64Ptr(offSet)
+	request.Limit = common.Int64Ptr(100)
 	request.SetScheme("https")
 	if running {
 		request.Filters = []*cvm.Filter{
@@ -42,13 +44,14 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 			},
 		}
 	}
-	if SpecifiedInstanceID != "all" {
-		request.InstanceIds = common.StringPtrs([]string{SpecifiedInstanceID})
+	if specifiedInstanceID != "all" {
+		request.InstanceIds = common.StringPtrs([]string{specifiedInstanceID})
 	}
 	response, err := CVMClient(region).DescribeInstances(request)
 	errutil.HandleErr(err)
 	InstancesList := response.Response.InstanceSet
 	log.Infof("正在 %s 区域中查找实例 (Looking for instances in the %s region)", region, region)
+	InstancesTotalCount := *response.Response.TotalCount
 	if len(InstancesList) != 0 {
 		log.Infof("在 %s 区域下找到 %d 个实例 (Found %d instances in %s region)", region, len(InstancesList), len(InstancesList), region)
 		var (
@@ -93,10 +96,13 @@ func DescribeInstances(region string, running bool, SpecifiedInstanceID string) 
 				PublicIpAddress:  PublicIpAddress,
 				RegionId:         *v.Placement.Zone,
 			}
-			out = append(out, obj)
+			InstancesOut = append(InstancesOut, obj)
 		}
 	}
-	return out
+	if InstancesTotalCount > int64(len(InstancesOut)) {
+		_ = DescribeInstances(region, running, specifiedInstanceID, int64(len(InstancesOut)))
+	}
+	return InstancesOut
 }
 
 func ReturnInstancesList(region string, running bool, specifiedInstanceID string) []Instances {
@@ -105,13 +111,14 @@ func ReturnInstancesList(region string, running bool, specifiedInstanceID string
 	if region == "all" {
 		for _, j := range GetCVMRegions() {
 			region := *j.Region
-			Instance = DescribeInstances(region, running, specifiedInstanceID)
+			Instance = DescribeInstances(region, running, specifiedInstanceID, 0)
+			InstancesOut = nil
 			for _, i := range Instance {
 				InstancesList = append(InstancesList, i)
 			}
 		}
 	} else {
-		InstancesList = DescribeInstances(region, running, specifiedInstanceID)
+		InstancesList = DescribeInstances(region, running, specifiedInstanceID, 0)
 	}
 	return InstancesList
 }
