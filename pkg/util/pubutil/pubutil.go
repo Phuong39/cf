@@ -54,6 +54,7 @@ type TakeoverConsoleCache struct {
 	Provider         string
 	AccessKeyId      string
 	PrimaryAccountID string
+	UserId           string
 	UserName         string
 	Password         string
 	LoginUrl         string
@@ -132,13 +133,6 @@ func StringClean(str string) string {
 
 func MaskAK(ak string) string {
 	if len(ak) > 7 {
-		defer func() {
-			err := recover()
-			if err != nil {
-				log.Error("输入的访问密钥有误 (The entered access key is incorrect.)")
-				os.Exit(1)
-			}
-		}()
 		prefix := ak[:2]
 		suffix := ak[len(ak)-6:]
 		return prefix + strings.Repeat("*", 18) + suffix

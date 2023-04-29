@@ -53,8 +53,6 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
     
 </details>
 
-</details>
-
 ## 使用案例
 
 |                标题                | 所使用的 CF 版本 |                           文章地址                           |   作者   |  发布时间  |

@@ -2,10 +2,11 @@ package aliram
 
 import (
 	"fmt"
-	"github.com/teamssix/cf/pkg/util/errutil"
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/teamssix/cf/pkg/util/errutil"
 
 	"github.com/teamssix/cf/pkg/cloud/alibaba/aliecs"
 	"github.com/teamssix/cf/pkg/cloud/alibaba/alioss"
@@ -40,9 +41,11 @@ const (
 )
 
 func ListPermissions() {
+	// 获取当前AK的用户名
 	userName := getCallerIdentity()
 	log.Infof("当前用户名为 %s (Current username is %s)", userName, userName)
 	var data [][]string
+	// 如果是root用户，直接返回root权限
 	if userName == "root" {
 		data = append(data, []string{"1", "AdministratorAccess", "管理所有阿里云资源的权限"})
 		var td = cloud.TableData{Header: header, Body: data}
@@ -59,6 +62,7 @@ func ListPermissions() {
 		Caption2 := "当前凭证可以执行的操作 (Available actions)"
 		cloud.PrintTable(td2, Caption2)
 	} else {
+		// 如果不是root用户，获取当前用户的权限列表
 		data, err := listAllPoliciesForUser(userName)
 		if err == nil {
 			if len(data) == 0 {
@@ -188,6 +192,7 @@ func listPoliciesForUser(userName string) ([][]string, error) {
 }
 
 func listPoliciesForGroup(groupName string) [][]string {
+	// 获取用户组权限
 	request := ram.CreateListPoliciesForGroupRequest()
 	request.Scheme = "https"
 	request.GroupName = groupName

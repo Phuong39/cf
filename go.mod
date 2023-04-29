@@ -9,8 +9,8 @@ require (
 	github.com/aws/aws-sdk-go v1.44.109
 	github.com/bitly/go-simplejson v0.5.0
 	github.com/gookit/color v1.5.1
-	github.com/huaweicloud/huaweicloud-sdk-go-obs v3.22.11+incompatible
-	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.34
+	github.com/huaweicloud/huaweicloud-sdk-go-obs v3.23.3+incompatible
+	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.36
 	github.com/ivanpirog/coloredcobra v1.0.1
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/schollz/progressbar/v3 v3.8.7
@@ -24,6 +24,7 @@ require (
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/lighthouse v1.0.447
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sts v1.0.475
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tat v1.0.447
+	github.com/thoas/go-funk v0.9.3
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
 	gorm.io/gorm v1.23.8
 )

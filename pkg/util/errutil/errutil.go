@@ -27,10 +27,11 @@ var errorMessages = map[string]string{
 	"InvalidAccessKeyId.Inactive":  "当前 AK 已被禁用 (The current AccessKeyId is inactive)",
 	"interrupt":                    "程序已退出 (Program exited.)",
 	"ErrorCode=AccessDenied, ErrorMessage=\"The bucket you access does not belong to you.\"": "获取 Bucket 信息失败，访问被拒绝 (Failed to get Bucket information, access is denied.)",
-	"ExpiredToken":                               "当前访问密钥已过期 (Current token has expired)",
-	"read: connection reset by peer":             "网络连接出现错误，请检查您的网络环境是否正常 (There is an error in your network connection, please check if your network environment is normal.)",
-	"Code=ResourceUnavailable.AgentNotInstalled": "Agent 未安装 (Agent not installed)",
-	"AuthFailure: AWS was not able to validate the provided access credentials": "AWS 无法验证您提供的访问凭证，注意 CF 不支持 AWS 中国区域 (AWS was not able to validate the provided access credentials, Note CF does not support AWS China region.)",
+	"ExpiredToken":                                                        "当前访问密钥已过期 (Current token has expired)",
+	"read: connection reset by peer":                                      "网络连接出现错误，请检查您的网络环境是否正常 (There is an error in your network connection, please check if your network environment is normal.)",
+	"Code=ResourceUnavailable.AgentNotInstalled":                          "Agent 未安装 (Agent not installed)",
+	"Incorrect IAM authentication information":                            "当前 AK 信息无效 (Current AccessKey information is invalid)",
+	"The API does not exist or has not been published in the environment": "当前用户已存在，请指定其他用户名 (User already exists, please specify another user name)",
 }
 
 var errorMessagesNoExit = map[string]string{
@@ -52,11 +53,10 @@ var errorMessagesExit = map[string]string{
 	"InvalidSecurityToken.Expired": "临时令牌已过期 (STS token has expired)",
 	"InvalidAccessKeyId.Inactive":  "当前 AK 已被禁用 (The current AccessKeyId is inactive)",
 	//"Message=操作未授权，请检查CAM策略。":  "当前 AK 权限不足 (Insufficient Access Key permissions)",
-	"Code=AuthFailure.SecretIdNotFound":                                         "SecretId 不存在，请输入正确的密钥 (SecretId does not exist, please enter the correct key.)",
-	"Code=AuthFailure.SignatureFailure":                                         "请求签名验证失败，请检查您的访问密钥是否正确 (Request signature verification failed, please check if your access key is correct.)",
-	"read: connection reset by peer":                                            "网络连接出现错误，请检查您的网络环境是否正常 (There is an error in your network connection, please check if your network environment is normal.)",
-	"InvalidAccessKeyId.NotFound":                                               "当前访问密钥无效 (Current access key are invalid)",
-	"AuthFailure: AWS was not able to validate the provided access credentials": "AWS 无法验证您提供的访问凭证，注意 CF 不支持 AWS 中国区域 (AWS was not able to validate the provided access credentials, Note CF does not support AWS China region.)",
+	"Code=AuthFailure.SecretIdNotFound": "SecretId 不存在，请输入正确的密钥 (SecretId does not exist, please enter the correct key.)",
+	"Code=AuthFailure.SignatureFailure": "请求签名验证失败，请检查您的访问密钥是否正确 (Request signature verification failed, please check if your access key is correct.)",
+	"read: connection reset by peer":    "网络连接出现错误，请检查您的网络环境是否正常 (There is an error in your network connection, please check if your network environment is normal.)",
+	"InvalidAccessKeyId.NotFound":       "当前访问密钥无效 (Current access key are invalid)",
 }
 
 func HandleErr(e error) {
