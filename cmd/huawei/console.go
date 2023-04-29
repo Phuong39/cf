@@ -33,7 +33,7 @@ var cancelConsoleCmd = &cobra.Command{
 	Short: "取消接管控制台 (Cancel Takeover console)",
 	Long:  "取消接管控制台 (Cancel Takeover console)",
 	Run: func(cmd *cobra.Command, args []string) {
-		huaweiconsole.CancelTakeoverConsole(userName)
+		huaweiconsole.CancelTakeoverConsole()
 	},
 }
 

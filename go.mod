@@ -1,6 +1,5 @@
 module github.com/teamssix/cf
 
-
 go 1.18
 
 require (

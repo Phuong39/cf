@@ -283,8 +283,6 @@ func traversalPermissions() ([][]string, [][]string) {
 	// 初始化随机数生成器
 	rand.Seed(time.Now().UnixNano())
 	// 从切片中随机选择一个元素
-	// randomIndex := rand.Intn(len(global.ChineseUserName))
-	// userName := global.ChineseUserName[randomIndex]
 	createUserRequestContent := &iamModel.CreateUserRequest{}
 	passwordUser := util.GenerateRandomPasswords()
 	userbody := &iamModel.CreateUserOption{
@@ -296,19 +294,19 @@ func traversalPermissions() ([][]string, [][]string) {
 		User: userbody,
 	}
 	createUserRequestResponse, err := IAMClient().CreateUser(createUserRequestContent)
-	newUserId := createUserRequestResponse.User.Id
 	if err == nil {
 		log.Debugln(createUserRequestResponse)
 		obj1 = append(obj1, []string{"Security Administrator", "统一身份认证服务(除切换角色外)所有权限"})
 		obj2 = append(obj2, []string{consoleAction, consoleDescription})
-	} else {
-		log.Traceln(err)
-	}
-	keystoneDeleteUserRequestContent := &iamModel.KeystoneDeleteUserRequest{}
-	keystoneDeleteUserRequestContent.UserId = newUserId
-	keystoneDeleteUserRequestResponse, err := IAMClient().KeystoneDeleteUser(keystoneDeleteUserRequestContent)
-	if err == nil {
-		log.Debugln(keystoneDeleteUserRequestResponse)
+		newUserId := createUserRequestResponse.User.Id
+		keystoneDeleteUserRequestContent := &iamModel.KeystoneDeleteUserRequest{}
+		keystoneDeleteUserRequestContent.UserId = newUserId
+		keystoneDeleteUserRequestResponse, err := IAMClient().KeystoneDeleteUser(keystoneDeleteUserRequestContent)
+		if err == nil {
+			log.Debugln(keystoneDeleteUserRequestResponse)
+		} else {
+			log.Traceln(err)
+		}
 	} else {
 		log.Traceln(err)
 	}

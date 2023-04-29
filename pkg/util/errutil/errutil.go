@@ -19,7 +19,7 @@ var errorMessages = map[string]string{
 	"ErrorCode: Forbidden.RAM":                                                 "当前访问密钥没有执行命令的权限 (Current Access Key do not have permission to execute commands)",
 	"ErrorCode: NoPermission":                                                  "当前访问密钥没有接管控制台的权限 (Current Access Key do not have permission to take over the console)",
 	"ErrorCode=NoSuchKey":                                                      "存储桶中没有这个对象 (There is no such key in the bucket)",
-	"Code=ResourceNotFound, Message=未查询到对应机器":                          "指定资源不存在 (Resource not found)",
+	"Code=ResourceNotFound, Message=未查询到对应机器":                                  "指定资源不存在 (Resource not found)",
 	//"Code=UnauthorizedOperation":                                               "当前 AK 权限不足 (Insufficient Access Key permissions)",
 	"you are not authorized to perform operation (tat:CreateCommand)": "当前 AK 不具备执行命令的权限 (This Access Key does not have permission to execute commands)",
 	"network is unreachable":       "当前网络连接异常 (Network is unreachable)",
@@ -27,9 +27,11 @@ var errorMessages = map[string]string{
 	"InvalidAccessKeyId.Inactive":  "当前 AK 已被禁用 (The current AccessKeyId is inactive)",
 	"interrupt":                    "程序已退出 (Program exited.)",
 	"ErrorCode=AccessDenied, ErrorMessage=\"The bucket you access does not belong to you.\"": "获取 Bucket 信息失败，访问被拒绝 (Failed to get Bucket information, access is denied.)",
-	"ExpiredToken":                               "当前访问密钥已过期 (Current token has expired)",
-	"read: connection reset by peer":             "网络连接出现错误，请检查您的网络环境是否正常 (There is an error in your network connection, please check if your network environment is normal.)",
-	"Code=ResourceUnavailable.AgentNotInstalled": "Agent 未安装 (Agent not installed)",
+	"ExpiredToken":                                                        "当前访问密钥已过期 (Current token has expired)",
+	"read: connection reset by peer":                                      "网络连接出现错误，请检查您的网络环境是否正常 (There is an error in your network connection, please check if your network environment is normal.)",
+	"Code=ResourceUnavailable.AgentNotInstalled":                          "Agent 未安装 (Agent not installed)",
+	"Incorrect IAM authentication information":                            "当前 AK 信息无效 (Current AccessKey information is invalid)",
+	"The API does not exist or has not been published in the environment": "当前用户已存在，请指定其他用户名 (User already exists, please specify another user name)",
 }
 
 var errorMessagesNoExit = map[string]string{
@@ -39,7 +41,7 @@ var errorMessagesNoExit = map[string]string{
 	"ErrorCode: EntityAlreadyExists.User.Policy":                         "已接管过控制台，无需重复接管 (Console has been taken over)",
 	"ErrorCode: EntityAlreadyExists.User":                                "已接管过控制台，无需重复接管 (Console has been taken over)",
 	"ErrorCode: EntityNotExist.User":                                     "已取消接管控制台，无需重复取消 (Console has been de-taken over)",
-	"Code=ResourceNotFound, Message=指定资源":                            "指定资源不存在 (ResourceNotFound)",
+	"Code=ResourceNotFound, Message=指定资源":                                "指定资源不存在 (ResourceNotFound)",
 	"InvalidParameter.SubUserNameInUse":                                  "已接管过控制台，无需重复接管 (Console has been taken over)",
 	"you are not authorized to perform operation (cwp:DescribeMachines)": "当前 AK 没有 CWP 权限",
 }

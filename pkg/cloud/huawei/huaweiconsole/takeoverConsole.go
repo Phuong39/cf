@@ -1,6 +1,8 @@
 package huaweiconsole
 
 import (
+	"github.com/teamssix/cf/pkg/util/errutil"
+	"os"
 	"strings"
 
 	iamModel "github.com/huaweicloud/huaweicloud-sdk-go-v3/services/iam/v3/model"
@@ -27,31 +29,30 @@ func CreateUser(userName string, password string, domainId string) string {
 		User: userbody,
 	}
 	createUserRequestResponse, err := IAMClient().CreateUser(createUserRequestContent)
-	newUserId := createUserRequestResponse.User.Id
 	if err == nil {
 		log.Debugf("创建 %s 用户成功 (Create %s user successfully)", userName, userName)
-		log.Debugln("成功创建控制台登录密码 (Successfully created console login password)")
 	} else {
 		if strings.Contains(err.Error(), "1109") {
 			log.Warnf("%s 用户已存在，无法接管，请指定其他的用户名 (%s user already exists and cannot take over, please specify another user name.)", userName, userName)
+			os.Exit(0)
 		}
 	}
+	newUserId := createUserRequestResponse.User.Id
+
 	return newUserId
 }
 
 func getDomainId() ([]string, []string) {
 	keystoneListAuthDomainsRequestContent := &iamModel.KeystoneListAuthDomainsRequest{}
 	keystoneListAuthDomainsRequestResponse, err := IAMClient().KeystoneListAuthDomains(keystoneListAuthDomainsRequestContent)
-	if err != nil {
-		log.Traceln(err)
-	}
+	errutil.HandleErrNoExit(err)
 	domains := keystoneListAuthDomainsRequestResponse.Domains
 	domainsId := []string{}
 	domainsName := []string{}
 	for _, domain := range *domains {
 		domainsId = append(domainsId, domain.Id)
 		domainsName = append(domainsName, domain.Name)
-		log.Debugf("查询IAM用户可以访问到的账户(Root Account)为 %s  (The domain to get the current user is %s)", domain.Name, domain.Name)
+		log.Debugf("查询 IAM 用户可以访问到的账户为 %s  (The domain to get the current user is %s)", domain.Name, domain.Name)
 	}
 	return domainsId, domainsName
 }
@@ -61,15 +62,13 @@ func getUserGroup(domainId string) string {
 	keystoneListGroupsRequestContent := &iamModel.KeystoneListGroupsRequest{}
 	keystoneListGroupsRequestContent.DomainId = &domainId
 	keystoneListGroupsRequestResponse, err := IAMClient().KeystoneListGroups(keystoneListGroupsRequestContent)
-	if err != nil {
-		log.Traceln(err)
-	}
+	errutil.HandleErrNoExit(err)
 
 	groups := keystoneListGroupsRequestResponse.Groups
 	var groupId string
 	for _, group := range *groups {
 		if group.Name == "admin" {
-			log.Debugf("获得到admin用户组的ID为 %s (The admin user group ID is %s)", group.Id, group.Id)
+			log.Debugf("获得到 admin 用户组的 ID 为 %s (The admin user group ID is %s)", group.Id, group.Id)
 			groupId = group.Id
 		}
 	}
@@ -80,14 +79,12 @@ func AddUserToGroup(userName string, userId string, groupId string) {
 	keystoneAddUserToGroupRequestContent := &iamModel.KeystoneAddUserToGroupRequest{}
 	keystoneAddUserToGroupRequestContent.GroupId = groupId
 	keystoneAddUserToGroupRequestContent.UserId = userId
-	keystoneAddUserToGroupRequestResponse, err := IAMClient().KeystoneAddUserToGroup(keystoneAddUserToGroupRequestContent)
+	_, err := IAMClient().KeystoneAddUserToGroup(keystoneAddUserToGroupRequestContent)
 	if err != nil {
-		log.Traceln(err)
+		errutil.HandleErrNoExit(err)
 	} else {
-		log.Debugln(keystoneAddUserToGroupRequestResponse)
 		log.Debugf("成功为 %s 用户赋予管理员权限 (Successfully grant AdministratorAccess policy to the %s user)", userName, userName)
 	}
-
 }
 
 func TakeoverConsole(userName string) {
@@ -95,7 +92,7 @@ func TakeoverConsole(userName string) {
 	password := util.GenerateRandomPasswords()
 	domainId, domainName := getDomainId()
 	userId := CreateUser(userName, password, domainId[0])
-	// 获取admin用户组ID
+	// 获取 admin 用户组 ID
 	groupId := getUserGroup(domainId[0])
 	AddUserToGroup(userName, userId, groupId)
 	loginURL := "https://auth.huaweicloud.com/authui/login?id=" + domainName[0]
