@@ -50,6 +50,8 @@ CF 下载地址：[github.com/teamssix/cf/releases](https://github.com/teamssix/
 |   cf_x.x.x_windows_386.zip   | Windows |                AMD                 |  32  |
 |  cf_x.x.x_windows_amd64.zip  | Windows |                AMD                 |  64  |
 |  cf_x.x.x_windows_arm64.zip  | Windows |                ARM                 |  64  |
+    
+</details>
 
 </details>
 
