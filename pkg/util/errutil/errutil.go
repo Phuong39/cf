@@ -32,6 +32,7 @@ var errorMessages = map[string]string{
 	"Code=ResourceUnavailable.AgentNotInstalled":                          "Agent 未安装 (Agent not installed)",
 	"Incorrect IAM authentication information":                            "当前 AK 信息无效 (Current AccessKey information is invalid)",
 	"The API does not exist or has not been published in the environment": "当前用户已存在，请指定其他用户名 (User already exists, please specify another user name)",
+	"Status=403 Forbidden, Code=AccessDenied":                             "当前权限不足 (Insufficient permissions)",
 }
 
 var errorMessagesNoExit = map[string]string{
